@@ -2,7 +2,7 @@ function maxAnimalsFor(cargoData, maxAnimals) {
     return maxAnimals ?? cargoData._mechanics.maxAnimalsEquipped;
 }
 
-export function computeTotalCargo(bagId, equippedAnimals, cargoData, hasExtraCargoSlot = false, maxAnimals = null, guildCargo = 0) {
+export function computeTotalCargo(bagId, equippedAnimals, cargoData, hasExtraCargoSlot = false, maxAnimals = null, guildCargo = 0, perAnimalBonus = 0) {
     const bag = cargoData.bags.types.find(b => b.id === bagId);
     if (!bag) throw new Error(`Unknown bag id: ${bagId}`);
     const cap = maxAnimalsFor(cargoData, maxAnimals);
@@ -18,6 +18,7 @@ export function computeTotalCargo(bagId, equippedAnimals, cargoData, hasExtraCar
         if (entry.saddlebag && animal.cargoWithSaddlebag !== null) {
             cargo = animal.cargoWithSaddlebag;
         }
+        cargo += perAnimalBonus;
         total += cargo;
         breakdown.push({ source: animal.name + (entry.saddlebag ? ' (+ saddlebag)' : ''), cargo });
     }

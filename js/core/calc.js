@@ -248,6 +248,7 @@ export function computeBuyPrice(goodId, cityId, context, opts) {
 
     const base = good.basePrice;
     if (base === null) return null;
+    if (good.originOnly && !isLocallyProduced(city, good.id)) return null;
 
     let total = base;
     total += supplyDemandDollar(base, city, good, cityId, modifiersData, citiesData);
@@ -288,6 +289,7 @@ export function computePriceBreakdown(goodId, cityId, context, opts, isSell) {
     const good = findGood(goodsData, goodId);
     const city = findCity(citiesData, cityId);
     if (city.traits.includes('Ruined City') || good.basePrice === null) return null;
+    if (!isSell && good.originOnly && !isLocallyProduced(city, good.id)) return null;
 
     const base = good.basePrice;
     const lines = [];

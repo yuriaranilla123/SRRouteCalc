@@ -1,6 +1,7 @@
 import { getCargoData } from '../core/state.js';
 import { computeTotalCargo, computeAutoWalkSpeed } from '../core/cargoCalc.js';
 import { getGuildCargoBonus, getGuildSpeedMultiplier } from './guildPanel.js';
+import { getPlayerRanks } from './reputationPanel.js';
 
 export function populateCaravanSelects() {
     const cargoData = getCargoData();
@@ -36,24 +37,34 @@ function getEquippedAnimals() {
 }
 
 function getMaxAnimals() {
-    return document.getElementById('gamepass-extra-caravan-slot').checked ? 4 : 3;
+    const ranks = getPlayerRanks();
+    const gamepass = document.getElementById('gamepass-extra-caravan-slot').checked ? 1 : 0;
+    const rank = (ranks.byzantine || 0) >= 8 || (ranks.sasanian || 0) >= 8 ? 1 : 0;
+    return 3 + gamepass + rank;
 }
 
-function updateFourthSlotVisibility() {
-    const slot4 = document.getElementById('animal-slot-4');
-    if (slot4) slot4.style.display = getMaxAnimals() === 4 ? '' : 'none';
+function getRankCargoPerAnimal() {
+    return (getPlayerRanks().sogdia || 0) >= 5 ? 1 : 0;
+}
+
+function updateSlotVisibility() {
+    const max = getMaxAnimals();
+    [4, 5].forEach(n => {
+        const slot = document.getElementById(`animal-slot-${n}`);
+        if (slot) slot.style.display = max >= n ? '' : 'none';
+    });
 }
 
 export function recomputeCaravan() {
     const cargoData = getCargoData();
     const bagId = document.getElementById('bag-select').value;
     const maxAnimals = getMaxAnimals();
-    updateFourthSlotVisibility();
+    updateSlotVisibility();
     const equipped = getEquippedAnimals();
     const hasExtraCargoSlot = document.getElementById('gamepass-extra-cargo').checked;
     const hasSpeedBoost = document.getElementById('gamepass-speed-boost').checked;
 
-    const { total } = computeTotalCargo(bagId, equipped, cargoData, hasExtraCargoSlot, maxAnimals, getGuildCargoBonus());
+    const { total } = computeTotalCargo(bagId, equipped, cargoData, hasExtraCargoSlot, maxAnimals, getGuildCargoBonus(), getRankCargoPerAnimal());
     document.getElementById('cargo-total').textContent = `${total}`;
 
     const speed = computeAutoWalkSpeed(equipped, cargoData, hasSpeedBoost, maxAnimals, getGuildSpeedMultiplier());
@@ -79,4 +90,5 @@ export function wireCaravanControls() {
     document.getElementById('gamepass-extra-cargo').addEventListener('change', recomputeCaravan);
     document.getElementById('gamepass-speed-boost').addEventListener('change', recomputeCaravan);
     document.getElementById('gamepass-extra-caravan-slot').addEventListener('change', recomputeCaravan);
+    document.querySelectorAll('.faction-rank-select').forEach(select => select.addEventListener('change', recomputeCaravan));
 }

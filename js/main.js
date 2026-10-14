@@ -3,7 +3,7 @@ import { setDropdownStyle } from './ui/dropDownStyle.js';
 import { setTheme } from './ui/themeStyle.js';
 import { populateCaravanSelects, recomputeCaravan, wireCaravanControls } from './panels/caravanPanel.js';
 import { populateReputationFields, renderLockedGoodsHint, renderQuestMoney, wireReputationControls } from './panels/reputationPanel.js';
-import { populateLanguageFields, wireTraderControls, renderFaithHint } from './panels/traderPanel.js';
+import { populateLanguageFields, wireTraderControls, renderFaithHint, updateNativeLanguageLock } from './panels/traderPanel.js';
 import { populateGuildPerks, wireGuildControls } from './panels/guildPanel.js';
 import { populateGoodsDatalist, wireGoodsDatalistReactivity } from './ui/goodsDatalist.js';
 import { renderGeneralBest, wireTabControls } from './panels/allTradesPanel.js';
@@ -19,6 +19,7 @@ import { renderCredits } from './panels/creditsPanel.js';
 import { wireGoodsCombobox } from './ui/goodsComboBox.js';
 import { wireThemedSelects } from './ui/themedSelect.js';
 import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
+import { restoreSettings, wireAutoSave, clearSettings } from './core/storage.js';
 
 function populateCitySelects() {
     const citiesData = getCitiesData();
@@ -57,6 +58,8 @@ async function init() {
     populateReputationFields();
     populateLanguageFields();
     populateGuildPerks();
+    restoreSettings(updateNativeLanguageLock);
+    wireAutoSave();
 
     wireTraderControls();
     wireCaravanControls();
@@ -84,6 +87,11 @@ async function init() {
     renderGeneralBest();
     renderFundingBar();
     renderCredits();
+
+    document.getElementById('reset-settings').addEventListener('click', () => {
+        clearSettings();
+        window.location.reload();
+    });
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';

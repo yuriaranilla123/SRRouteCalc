@@ -353,3 +353,12 @@ td.loss {
 .credits ul {
     padding-left: 1.1rem;
 }
+.link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--saffron);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}

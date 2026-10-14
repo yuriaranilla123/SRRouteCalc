@@ -153,6 +153,17 @@
                             <option value="">None</option>
                         </select>
                     </div>
+                    <div class="caravan-slot" id="animal-slot-5" style="display:none">
+                        <span class="field-label">Animal 5</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="saddlebag-check" data-slot="4">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Saddlebag</span>
+                        </label>
+                        <select class="animal-select" data-slot="4">
+                            <option value="">None</option>
+                        </select>
+                    </div>
                 </div>
                 <p class="caravan-total">Total cargo capacity: <strong id="cargo-total">—</strong></p>
                 <p class="caravan-total">Auto-walk speed: <strong id="walk-speed">—</strong> studs/sec</p>
@@ -393,6 +404,8 @@
                 <span class="funding-percent" id="funding-percent"></span>
             </div>
             <details id="credits" class="credits"></details>
+            <p class="field-hint">Your settings are saved in this browser only and never sent anywhere.
+                <button type="button" id="reset-settings" class="link-btn">Reset saved settings</button></p>
         </footer>
     </div>
 

@@ -1,9 +1,3 @@
-/**
- * state.js — the single source of truth for loaded data and display
- * settings. This is the ONLY module other panels are allowed to depend on
- * for shared data; panels never reach into each other directly.
- */
-
 let goodsData, citiesData, modifiersData, cargoData, reputationData, distancesData;
 let roundToInt = false;
 let detailedMode = false;
@@ -33,7 +27,6 @@ export function getCargoData() { return cargoData; }
 export function getReputationData() { return reputationData; }
 export function getDistancesData() { return distancesData; }
 
-/** Convenience bundle — this is the exact shape calc.js's functions expect. */
 export function getCalcOpts() {
     return { goodsData, citiesData, modifiersData, reputationData, activeEvent };
 }
@@ -41,7 +34,6 @@ export function getCalcOpts() {
 export function isRoundToInt() { return roundToInt; }
 export function setRoundToInt(value) { roundToInt = value; }
 
-/** Whether the trades table should show the itemized per-modifier breakdown under each row. */
 export function isDetailedMode() { return detailedMode; }
 export function setDetailedMode(value) { detailedMode = value; }
 

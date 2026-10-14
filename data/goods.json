@@ -17,6 +17,7 @@
         },
         {
             "id": "byzantine_silk",
+            "originOnly": true,
             "name": "Byzantine Silk",
             "basePrice": 1000,
             "category": "textile",
@@ -155,6 +156,7 @@
         },
         {
             "id": "persian_carpets",
+            "originOnly": true,
             "name": "Persian Carpets",
             "basePrice": 1000,
             "category": "textile",
@@ -176,6 +178,7 @@
         },
         {
             "id": "sancai_dragon_ware",
+            "originOnly": true,
             "name": "Sancai Dragon Ware",
             "basePrice": 1500,
             "category": "craft",
@@ -195,6 +198,7 @@
         },
         {
             "id": "sogdian_ewer",
+            "originOnly": true,
             "name": "Sogdian Ewer",
             "basePrice": 1500,
             "category": "craft",
@@ -248,6 +252,7 @@
         },
         {
             "id": "minakari_ware",
+            "originOnly": true,
             "name": "Minakari Ware",
             "basePrice": 300,
             "category": "craft"
