@@ -1,6 +1,6 @@
 // Style 2 popup for every <select>. The select stays in place, keeps its value, events and look; only its popup is replaced.
 // Touch devices keep the native picker, which is better on phones.
-import { getDropdownStyle, onDropdownStyleChange } from './dropdownStyle.js';
+import { getDropdownStyle, onDropdownStyleChange } from './dropDownStyle.js';
 
 let menu = null;
 let select = null;

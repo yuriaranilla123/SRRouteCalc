@@ -1,5 +1,5 @@
 import { loadData, setRoundToInt, setDetailedMode, getCitiesData } from './core/state.js';
-import { setDropdownStyle } from './ui/dropdownStyle.js';
+import { setDropdownStyle } from './ui/dropDownStyle.js';
 import { setTheme } from './ui/themeStyle.js';
 import { populateCaravanSelects, recomputeCaravan, wireCaravanControls } from './panels/caravanPanel.js';
 import { populateReputationFields, renderLockedGoodsHint, renderQuestMoney, wireReputationControls } from './panels/reputationPanel.js';
@@ -16,7 +16,7 @@ import {
 } from './panels/routeFinderPanel.js';
 import { renderFundingBar } from './panels/fundingBar.js';
 import { renderCredits } from './panels/creditsPanel.js';
-import { wireGoodsCombobox } from './ui/goodsCombobox.js';
+import { wireGoodsCombobox } from './ui/goodsComboBox.js';
 import { wireThemedSelects } from './ui/themedSelect.js';
 import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
 
