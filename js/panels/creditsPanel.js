@@ -2,7 +2,7 @@
 const CREDITS = {
     project: { name: 'SRRouteCalc', license: 'AGPLv3 or later', author: 'Yuri123_YT (yuriaranilla_123)' },
     links: [
-        { label: 'Source code (GitHub)', url: '' },
+        { label: 'Source code (GitHub)', url: 'https://github.com/yuriaranilla123/SRRouteCalc' },
         { label: 'Ko-fi', url: 'https://ko-fi.com/yuriaranilla123' },
     ],
     sources: [
