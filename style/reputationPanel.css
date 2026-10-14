@@ -1,0 +1,24 @@
+.quest-money {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--hairline);
+}
+
+.quest-money h3 {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    color: var(--parchment);
+}
+
+.quest-money-result {
+    margin: 0.75rem 0 0.25rem;
+    font-size: 0.9rem;
+    color: var(--parchment-dim);
+}
+
+.quest-money-result strong {
+    color: var(--saffron);
+    font-variant-numeric: tabular-nums;
+}

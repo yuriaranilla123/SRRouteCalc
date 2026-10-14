@@ -1,0 +1,158 @@
+.process-card {
+    background: var(--ink-surface-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.process-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.process-label {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--saffron);
+}
+
+.remove-process-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    background: transparent;
+    border: 1px solid var(--hairline);
+    color: var(--clay);
+    border-radius: 4px;
+    width: 1.8rem;
+    height: 1.8rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.remove-process-btn:hover {
+    background: var(--ink-surface);
+}
+
+.add-process-btn {
+    background: transparent;
+    border: 1px dashed var(--hairline);
+    color: var(--saffron);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-top: 0.25rem;
+}
+
+.add-process-btn:hover {
+    border-color: var(--saffron);
+}
+
+.leg-row {
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.leg-cities {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.leg-cities select {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.leg-arrow {
+    color: var(--parchment-dim);
+    font-style: normal;
+}
+
+.chain-btn,
+.remove-leg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    background: transparent;
+    border: 1px solid var(--hairline);
+    color: var(--saffron);
+    border-radius: 4px;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.remove-leg-btn {
+    color: var(--clay);
+}
+
+.chain-btn:hover,
+.remove-leg-btn:hover {
+    background: var(--ink-surface);
+}
+
+.loop-toggle {
+    margin: 0.5rem 0;
+}
+
+.browse-btn {
+    background: transparent;
+    border: 1px dashed var(--hairline);
+    color: var(--saffron);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+}
+
+.browse-btn:hover {
+    border-color: var(--saffron);
+}
+
+.browse-results,
+.leg-results {
+    margin-bottom: 0.5rem;
+}
+
+.leg-total-row,
+.process-total-row,
+.all-complete-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.85rem;
+    color: var(--parchment-dim);
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--hairline);
+}
+
+.process-total-row {
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
+.all-complete-total-row {
+    font-size: 1.05rem;
+    margin-top: 0.5rem;
+}
+
+.leg-total-value,
+.process-total-value,
+.all-complete-total-row strong {
+    color: var(--saffron);
+    font-variant-numeric: tabular-nums;
+}

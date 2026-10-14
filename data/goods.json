@@ -1,0 +1,277 @@
+{
+    "_source": "Rebuilt from the Framer info hub's 'All Goods' master table.",
+    "goods": [
+        {
+            "id": "barley",
+            "name": "Barley",
+            "basePrice": 10,
+            "category": "agriculture"
+        },
+        {
+            "id": "beeswax",
+            "name": "Beeswax",
+            "basePrice": 11,
+            "category": "craft",
+            "buyable": false,
+            "source": "Harvested from a Beehive at an Apiary"
+        },
+        {
+            "id": "byzantine_silk",
+            "name": "Byzantine Silk",
+            "basePrice": 1000,
+            "category": "textile",
+            "requirement": "Level 4 'Mathetes Guild Apprentice' reputation with the Byzantine Empire"
+        },
+        {
+            "id": "candles",
+            "name": "Candles",
+            "basePrice": 800,
+            "category": "household"
+        },
+        {
+            "id": "clay",
+            "name": "Clay",
+            "basePrice": 10,
+            "category": "craft"
+        },
+        {
+            "id": "copper_ingot",
+            "name": "Copper Ingot",
+            "basePrice": 35,
+            "category": "metal"
+        },
+        {
+            "id": "copper_ore",
+            "name": "Copper Ore",
+            "basePrice": 3,
+            "category": "metal",
+            "buyable": false,
+            "source": "Mined at the Copper Mine"
+        },
+        {
+            "id": "coriander",
+            "name": "Coriander",
+            "basePrice": 130,
+            "category": "spice"
+        },
+        {
+            "id": "cotton",
+            "name": "Cotton",
+            "basePrice": 3,
+            "category": "textile",
+            "buyable": false,
+            "source": "Harvested at a Cotton Farm"
+        },
+        {
+            "id": "cotton_yarn",
+            "name": "Cotton Yarn",
+            "basePrice": 20,
+            "category": "textile"
+        },
+        {
+            "id": "dried_fish",
+            "name": "Dried Fish",
+            "basePrice": 20,
+            "category": "household"
+        },
+        {
+            "id": "earthenware",
+            "name": "Earthenware",
+            "basePrice": 20,
+            "category": "craft"
+        },
+        {
+            "id": "glassware",
+            "name": "Glassware",
+            "basePrice": 200,
+            "category": "craft"
+        },
+        {
+            "id": "hides",
+            "name": "Hides",
+            "basePrice": 20,
+            "category": "textile"
+        },
+        {
+            "id": "honey",
+            "name": "Honey",
+            "basePrice": 35,
+            "category": "agriculture"
+        },
+        {
+            "id": "iron_ingot",
+            "name": "Iron Ingot",
+            "basePrice": 50,
+            "category": "metal"
+        },
+        {
+            "id": "iron_ore",
+            "name": "Iron Ore",
+            "basePrice": 3,
+            "category": "metal",
+            "buyable": false,
+            "source": "Mined at an Iron Mine"
+        },
+        {
+            "id": "leather",
+            "name": "Leather",
+            "basePrice": 10,
+            "category": "textile"
+        },
+        {
+            "id": "linen",
+            "name": "Linen",
+            "basePrice": 10,
+            "category": "textile"
+        },
+        {
+            "id": "marble_statues",
+            "name": "Marble Statues",
+            "basePrice": 100,
+            "category": "luxury",
+            "buyable": false,
+            "source": "Crafted, not bought: mine Marble Chunks at Persepolis with a pickaxe (Bronze $100 / Iron $500 / Steel $1000), then have them Polished ($25) and Carved ($50) at Susa's Stonemason (the only city with one) - $75 total crafting cost per statue on top of the pickaxe.",
+            "note": "Fandom Wiki confirms it sells for $800-$1200 'depending on external factors such as the player's culture and the distance from the nearest producing city' - independent confirmation of the same distance-to-nearest-producer pricing mechanic also confirmed via an official support ticket. KNOWN LIMITATION: our current calc engine is still locally-produced/imported binary, not distance-based, and Persepolis (the only mining source) can't trade at all while Susa only processes it rather than 'producing' it in the cities.json sense - so this good's computed price will be far below its real $800-1200 range until a distance-based pricing model exists. Flagging rather than leaving basePrice null, since the base price and production chain are now genuinely confirmed even though final pricing isn't calculable yet."
+        },
+        {
+            "id": "milled_grain",
+            "name": "Milled Grain",
+            "basePrice": 10,
+            "category": "food",
+            "buyable": false,
+            "source": "Milling unhulled wheat or barley at a Mill (costs $10)"
+        },
+        {
+            "id": "olive_oil",
+            "name": "Olive Oil",
+            "basePrice": 50,
+            "category": "household"
+        },
+        {
+            "id": "paper",
+            "name": "Paper",
+            "basePrice": 50,
+            "category": "craft"
+        },
+        {
+            "id": "persian_carpets",
+            "name": "Persian Carpets",
+            "basePrice": 1000,
+            "category": "textile",
+            "requirement": "Level 4 'Sagerd Guild Apprentice' reputation with the Sasanian Empire"
+        },
+        {
+            "id": "picked_olives",
+            "name": "Picked Olives",
+            "basePrice": 3,
+            "category": "food",
+            "buyable": false,
+            "source": "Harvested at an Olive Tree Field"
+        },
+        {
+            "id": "saffron",
+            "name": "Saffron",
+            "basePrice": 250,
+            "category": "spice"
+        },
+        {
+            "id": "sancai_dragon_ware",
+            "name": "Sancai Dragon Ware",
+            "basePrice": 1500,
+            "category": "craft",
+            "requirement": "Level 4 'Licensed Merchant' reputation with the Tang Empire"
+        },
+        {
+            "id": "sea_salt",
+            "name": "Sea Salt",
+            "basePrice": 80,
+            "category": "spice"
+        },
+        {
+            "id": "sesame",
+            "name": "Sesame",
+            "basePrice": 100,
+            "category": "spice"
+        },
+        {
+            "id": "sogdian_ewer",
+            "name": "Sogdian Ewer",
+            "basePrice": 1500,
+            "category": "craft",
+            "requirement": "Level 4 'Chakar Guild Apprentice' reputation with Sogdia"
+        },
+        {
+            "id": "tools",
+            "name": "Tools",
+            "basePrice": 100,
+            "category": "metal"
+        },
+        {
+            "id": "unhulled_barley",
+            "name": "Unhulled Barley",
+            "basePrice": 3,
+            "category": "food",
+            "buyable": false,
+            "source": "Harvested at a Barley Field"
+        },
+        {
+            "id": "unhulled_wheat",
+            "name": "Unhulled Wheat",
+            "basePrice": 3,
+            "category": "food",
+            "buyable": false,
+            "source": "Harvested at a Wheat Field"
+        },
+        {
+            "id": "weapons",
+            "name": "Weapons",
+            "basePrice": 130,
+            "category": "metal"
+        },
+        {
+            "id": "wheat",
+            "name": "Wheat",
+            "basePrice": 10,
+            "category": "agriculture"
+        },
+        {
+            "id": "wool",
+            "name": "Wool",
+            "basePrice": 10,
+            "category": "textile"
+        },
+        {
+            "id": "books",
+            "name": "Books",
+            "basePrice": 500,
+            "category": "craft"
+        },
+        {
+            "id": "minakari_ware",
+            "name": "Minakari Ware",
+            "basePrice": 300,
+            "category": "craft"
+        }
+    ],
+    "_priceHistory": [
+        "Candles: \\$150 -> \\$800",
+        "Clay: \\$7 -> \\$10",
+        "Copper Ingot: \\$200 -> \\$35",
+        "Coriander: \\$85 -> \\$130",
+        "Dried Fish: \\$100 -> \\$20",
+        "Earthenware: \\$18 -> \\$20",
+        "Glassware: \\$20 -> \\$200",
+        "Iron Ingot: \\$35 -> \\$50",
+        "Leather: \\$35 -> \\$10",
+        "Olive Oil: \\$20 -> \\$50",
+        "Saffron: \\$200 -> \\$250",
+        "Sancai Dragon Ware: \\$None -> \\$1500",
+        "Sogdian Ewer: \\$1000 -> \\$1500",
+        "Tools: \\$35 -> \\$100",
+        "Weapons: \\$35 -> \\$130",
+        "Wool: \\$35 -> \\$10",
+        "Books: \\$250 -> \\$500",
+        "Minakari Ware: NEW (was missing entirely)",
+        "Marble Statues: null -> $100 base (crafted good, real $800-1200 sell range confirmed but not yet calculable - see note on the entry)"
+    ]
+}

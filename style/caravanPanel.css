@@ -1,0 +1,36 @@
+.caravan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+    .caravan-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.caravan-slot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.caravan-total {
+    margin: 1rem 0 0;
+    font-size: 0.9rem;
+    color: var(--parchment-dim);
+}
+
+.caravan-total strong {
+    color: var(--saffron);
+    font-variant-numeric: tabular-nums;
+}
+
+.gamepass-toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}

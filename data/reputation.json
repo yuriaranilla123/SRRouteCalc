@@ -1,0 +1,360 @@
+{
+    "_source": "Ranks 1-7 for all 4 factions confirmed via a headless-browser carousel crawl of the SR:TS Information Hub's 'Reputation' page (favored per project convention). Rank 8 for all factions was Fandom-sourced but now matches the Info Hub (2026-10 re-crawl) (screenshots, user-provided) - the crawl's final click on this carousel silently failed, likely because the '>' button disappears rather than disables on the last slide, so it never reached rank 8. Reward SCOPE clarified via the same Framer crawl: reward text literally reads '+50% Money from Reputation Quests' on every rank 1-7 - confirmed to apply to quest payouts only, NOT to regular trade-good selling profit. Do not apply this bonus in the trade route calculator.",
+    "_corrections_2026_09_carousel_crawl": [
+        "Sogdia Rank 3 title: 'Pragmateutai Caravan Leader' (a copy of Byzantine's Rank 3 title) -> corrected to 'Sartawul Caravan Leader'.",
+        "Rank 3 discount unlock was identical ('10% Discount on Cosmetics and Animals') across all 4 factions - corrected to the real, faction-specific, asymmetric text: Byzantine/Sasanian get a discount INSIDE their own empire's shops; Sogdia/Tang get one OUTSIDE their own territory.",
+        "Rank 6 discount unlock reworded to match the same inside/outside distinction, previously stated generically as 'Faction-Bought Goods' for all 4.",
+        "Sasanian Rank 7 title spelling: 'Wazarbed' -> 'Wazardbed' (matches source exactly; possible source-side typo, kept verbatim per convention)."
+    ],
+    "_questMoneyFormula": {
+        "formula": "floor(baseReward * 1.5^rank)",
+        "verifiedAgainst": "A third-party 'Quest Money by Rank' table (Short Distance Delivery, $30 base) matched this formula exactly for all 8 ranks: 45, 67, 101, 151, 227, 341, 512, 768.",
+        "caveat": "Only the Short Distance Delivery ($30 base) progression was independently verified number-for-number. Long Distance Delivery ($50 base) is assumed to follow the same formula since it's the same '+50% Money from Reputation Quests' reward, but that specific progression hasn't been cross-checked against a second source."
+    },
+    "baseQuestRewards": {
+        "short_distance_delivery": {
+            "baseMoney": 30,
+            "baseReputation": 30
+        },
+        "long_distance_delivery": {
+            "baseMoney": 50,
+            "baseReputation": 50,
+            "unlockedAtRank": 1
+        }
+    },
+    "factions": [
+        {
+            "id": "byzantine",
+            "name": "Byzantine Empire",
+            "cities": [
+                "tyre",
+                "antioch",
+                "palmyra",
+                "damascus"
+            ],
+            "ranks": [
+                {
+                    "rank": 1,
+                    "title": "Gyrologos Peddler",
+                    "reputation": 100,
+                    "fee": 500,
+                    "unlocks": [
+                        "Long-Distance Quest"
+                    ]
+                },
+                {
+                    "rank": 2,
+                    "title": "Emporos Freelance Trader",
+                    "reputation": 300,
+                    "fee": 2500,
+                    "unlocks": []
+                },
+                {
+                    "rank": 3,
+                    "title": "Pragmateutai Caravan Leader",
+                    "reputation": 500,
+                    "fee": 5000,
+                    "unlocks": [
+                        "10% Discount at Shops inside Byzantine Empire"
+                    ]
+                },
+                {
+                    "rank": 4,
+                    "title": "Mathetes Guild Apprentice",
+                    "reputation": 800,
+                    "fee": 10000,
+                    "unlocks": [
+                        "byzantine_silk"
+                    ]
+                },
+                {
+                    "rank": 5,
+                    "title": "Symponos Guild Merchant",
+                    "reputation": 1400,
+                    "fee": 50000,
+                    "unlocks": [
+                        "Imperial Diadem (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 6,
+                    "title": "Patrician Royal Envoy",
+                    "reputation": 2500,
+                    "fee": 100000,
+                    "unlocks": [
+                        "10% Discount for Goods Bought inside Byzantine Markets",
+                        "Byzantine Queen's Coronet (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 7,
+                    "title": "Eparch Market Overseer",
+                    "reputation": 5000,
+                    "fee": 200000,
+                    "unlocks": [
+                        "Byzantine Emperor's Crown (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 8,
+                    "title": "Protomaistor Guild Master",
+                    "reputation": 10000,
+                    "fee": 400000,
+                    "unlocks": [
+                        "+1 Caravan Slot (non-stackable with Sasanian Rank 8)",
+                        "Byzantine Queen's High Crown (cosmetic)"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "sasanian",
+            "name": "Sasanian Empire",
+            "cities": [
+                "ctesiphon",
+                "susa",
+                "persepolis",
+                "ecbatana"
+            ],
+            "ranks": [
+                {
+                    "rank": 1,
+                    "title": "Ramak Peddler",
+                    "reputation": 100,
+                    "fee": 500,
+                    "unlocks": [
+                        "Long-Distance Quest"
+                    ]
+                },
+                {
+                    "rank": 2,
+                    "title": "Pasanig Freelance Trader",
+                    "reputation": 300,
+                    "fee": 2500,
+                    "unlocks": []
+                },
+                {
+                    "rank": 3,
+                    "title": "Hambiyah Caravan Leader",
+                    "reputation": 500,
+                    "fee": 5000,
+                    "unlocks": [
+                        "10% Discount at Shops inside Sasanian Empire"
+                    ]
+                },
+                {
+                    "rank": 4,
+                    "title": "Sagerd Guild Apprentice",
+                    "reputation": 800,
+                    "fee": 10000,
+                    "unlocks": [
+                        "persian_carpets"
+                    ]
+                },
+                {
+                    "rank": 5,
+                    "title": "Kirrog Guild Merchant",
+                    "reputation": 1400,
+                    "fee": 50000,
+                    "unlocks": [
+                        "Imperial Diadem (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 6,
+                    "title": "Wazarganan Royal Merchant",
+                    "reputation": 2500,
+                    "fee": 100000,
+                    "unlocks": [
+                        "10% Discount for Goods Bought inside Sasanian Markets",
+                        "Ardavan's Parthian Crown (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 7,
+                    "title": "Wazardbed Master of the Bazaar",
+                    "reputation": 5000,
+                    "fee": 200000,
+                    "unlocks": [
+                        "Shah Shapur's Crown (cosmetic)"
+                    ],
+                    "note": "Title corrected from 'Wazarbed' to 'Wazardbed' per the Framer source - kept verbatim, possibly a source-side typo."
+                },
+                {
+                    "rank": 8,
+                    "title": "Kirrogbed Guild Master",
+                    "reputation": 10000,
+                    "fee": 400000,
+                    "unlocks": [
+                        "+1 Caravan Slot (non-stackable with Byzantine Rank 8)",
+                        "Peroz's Pearl Korymbos Crown (cosmetic)"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "sogdia",
+            "name": "Sogdia",
+            "cities": [
+                "samarkand"
+            ],
+            "ranks": [
+                {
+                    "rank": 1,
+                    "title": "Xwakar Peddler",
+                    "reputation": 30,
+                    "fee": 500,
+                    "unlocks": [
+                        "Long-Distance Quest"
+                    ]
+                },
+                {
+                    "rank": 2,
+                    "title": "Saliya Freelance Trader",
+                    "reputation": 100,
+                    "fee": 2500,
+                    "unlocks": []
+                },
+                {
+                    "rank": 3,
+                    "title": "Sartawul Caravan Leader",
+                    "reputation": 200,
+                    "fee": 5000,
+                    "unlocks": [
+                        "10% Discount at Shops outside Sogdia"
+                    ],
+                    "note": "Title corrected - previous data had this as 'Pragmateutai Caravan Leader', which is actually Byzantine's Rank 3 title, copied here by mistake."
+                },
+                {
+                    "rank": 4,
+                    "title": "Chakar Guild Apprentice",
+                    "reputation": 500,
+                    "fee": 10000,
+                    "unlocks": [
+                        "sogdian_ewer",
+                        "Red Caftan (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 5,
+                    "title": "Nafsarta Guild Merchant",
+                    "reputation": 750,
+                    "fee": 25000,
+                    "unlocks": [
+                        "+1 Cargo Slot per Pack Animal"
+                    ]
+                },
+                {
+                    "rank": 6,
+                    "title": "Khwaday Royal Envoy",
+                    "reputation": 1250,
+                    "fee": 50000,
+                    "unlocks": [
+                        "10% Discount for Goods Bought outside Sogdian Markets",
+                        "Sogdian Winged Crown (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 7,
+                    "title": "Vaxsarch Market Overseer",
+                    "reputation": 1500,
+                    "fee": 100000,
+                    "unlocks": [
+                        "King Varkhuman's Crown (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 8,
+                    "title": "Sartapao Guild Master",
+                    "reputation": 2500,
+                    "fee": 200000,
+                    "unlocks": [
+                        "Significant Boost to Distance Bonuses (magnitude unconfirmed)",
+                        "Sogdian Gemstone Headdress (cosmetic)"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "tang",
+            "name": "Tang Empire",
+            "cities": [
+                "dunhuang"
+            ],
+            "ranks": [
+                {
+                    "rank": 1,
+                    "title": "Village Newcomer",
+                    "reputation": 30,
+                    "fee": 500,
+                    "unlocks": [
+                        "Long-Distance Quest"
+                    ]
+                },
+                {
+                    "rank": 2,
+                    "title": "Market Hand",
+                    "reputation": 100,
+                    "fee": 2500,
+                    "unlocks": []
+                },
+                {
+                    "rank": 3,
+                    "title": "Caravan Retainer",
+                    "reputation": 200,
+                    "fee": 5000,
+                    "unlocks": [
+                        "10% Discount at Shops outside Tang Empire"
+                    ]
+                },
+                {
+                    "rank": 4,
+                    "title": "Licensed Merchant",
+                    "reputation": 500,
+                    "fee": 10000,
+                    "unlocks": [
+                        "sancai_dragon_ware"
+                    ]
+                },
+                {
+                    "rank": 5,
+                    "title": "Guild Elder",
+                    "reputation": 750,
+                    "fee": 25000,
+                    "unlocks": [
+                        "Official's Black Silk Futou (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 6,
+                    "title": "Dunhuang Notable",
+                    "reputation": 1250,
+                    "fee": 50000,
+                    "unlocks": [
+                        "10% Discount for Goods Bought outside Tang Markets",
+                        "Court Guan (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 7,
+                    "title": "Prefectural Patron",
+                    "reputation": 1500,
+                    "fee": 100000,
+                    "unlocks": [
+                        "Official's Cicada's Wing Crown (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 8,
+                    "title": "Protector of the Western Routes",
+                    "reputation": 2500,
+                    "fee": 200000,
+                    "unlocks": [
+                        "Significant Boost to Distance Bonuses (magnitude unconfirmed)",
+                        "Warlord's Mianguan (cosmetic)"
+                    ]
+                }
+            ]
+        }
+    ]
+}

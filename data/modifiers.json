@@ -1,0 +1,544 @@
+{
+    "_source": "Silk Road Trading Simulator Fandom Wiki, crawled 2026-09. Corrections below (2026-09-27) come from ~30 in-game purchase/sale breakdown screenshots (a tester's own trades), which itemize every modifier as its own line and let real gating rules be reverse-engineered from what does/doesn't fire.",
+    "_warning": "Several values below are placeholders needing community confirmation — search this file for 'UNCONFIRMED' before treating any number as final.",
+    "supplyDemand": {
+        "locallyProducedDiscount": 0,
+        "importedMarkup": 0.2,
+        "_status": "CORRECTED 2026-09-27: locally produced goods show NO supply/demand line in any screenshot (6 buys: Tyre candles, Damascus weapons, Palmyra yarn, Antioch silk, Samarkand ewer, Dunhuang Sancai all match base minus favorability lines exactly). Local production just means Distance Bonus = $0; there is no separate percentage discount. locallyProducedDiscount kept at 0 for reference only - calc.js no longer reads it. importedMarkup (20%) is only a fallback when the distance graph can't connect a pair."
+    },
+    "cityTraits": {
+        "Cosmopolitan City": {
+            "appliesTo": "foreign_culture_trader",
+            "modifier": 0.1,
+            "description": "+10% price bonus for traders from a different culture than the city's"
+        },
+        "Homogenous City": {
+            "appliesTo": "foreign_culture_trader",
+            "modifier": -0.1,
+            "description": "-10% price penalty for traders from a different culture than the city's"
+        },
+        "Port City": {
+            "appliesTo": "all_goods",
+            "modifier": 0.05,
+            "description": "+5% price bonus on all goods"
+        },
+        "Capital City": {
+            "appliesTo": "category:craft_textile",
+            "modifier": 0.1,
+            "description": "+10% price increase for luxury goods (\"Capital Luxury Trade\" in-game)",
+            "note": "Corrected from 'category:luxury' - no good in goods.json ever had category 'luxury', so this modifier was permanently dead code. Screenshots confirm it fires on craft-category goods (Byzantine Silk, Sogdian Ewer, Minakari Ware, Sancai Dragon Ware) and textile-category goods (Persian Carpets) in Capital cities, and does NOT fire on a spice-category good (Sesame) bought/sold in Merv (a Capital city) - so the gate is category:craft_textile, not a blanket luxury-price-tier flag."
+        },
+        "Frontier City": {
+            "appliesTo": "goods:tools,weapons",
+            "modifier": 0.1,
+            "description": "+10% price bonus for tools and weapons",
+            "note": "Corrected: was 'category:tools_weapons', which matched nothing (weapons/tools are category 'metal'). Gating on category metal would wrongly hit Iron Ingot, which screenshots show gets no Frontier line in Dunhuang/Jiayuguan. Confirmed by 'Frontier Tool Trade' +$13 on Weapons ($130) in Palmyra."
+        },
+        "Desert City": {
+            "appliesTo": "category:food",
+            "modifier": 0.1,
+            "description": "+10% price bonus for food items (Info Hub; Fandom's Events page said 5%)."
+        },
+        "Pentarchy City": {
+            "appliesTo": "religion:Christianity",
+            "modifier": 0.1,
+            "description": "+10% price increase for Christian traders"
+        },
+        "Earthquake Prone City": {
+            "appliesTo": "goods:tools",
+            "modifier": 0.1,
+            "description": "+10% price increase for tools",
+            "note": "Same category bug as Frontier City (no 'tools' category exists) - changed to goods:tools. Not yet confirmed by a screenshot."
+        },
+        "Fine Tapestry City": {
+            "appliesTo": "category:textile",
+            "modifier": 0.1,
+            "description": "+10% price bonus for textile goods"
+        },
+        "Ruined City": {
+            "appliesTo": "none",
+            "modifier": 0,
+            "description": "No goods traded here at all."
+        },
+        "Fertile City": {
+            "appliesTo": "category:food",
+            "modifier": -0.1,
+            "description": "10% price decrease for food items (Info Hub).",
+            "note": "Sign is a guess: treated as a penalty-style trait like Homogenous. Unconfirmed by any itemized screenshot."
+        }
+    },
+    "religionModifiers": {
+        "_source": "SR:TS Information Hub 'Religions' page, captured via a headless-browser crawl that clicks through every carousel slide (a plain HTTP fetch only ever saw the first/active slide - confirmed via DevTools that the '>' button is a live JS-driven element, not a static list merely hidden by CSS).",
+        "_faithMechanic": "Faith [points] are earned by praying at one's own religion's site, capped at 500 total / 100 per prayer session. Level 1 at 5 Faith, Level 2 at 120 Faith, Level 3 at 300 Faith. Each religion's effects below are gated behind reaching that level - they do NOT apply at Faith Level 0, unlike the previous (incorrect) version of this file which applied everything unconditionally the moment a religion was selected.",
+        "_buildingCities": "Each religion's 'buildingCities' list traces to that religion's 'Location' field on the Religions page - i.e. which cities have that religion's building present. This is NOT the same as a city's own dominant religion in cities.json - e.g. Samarkand's dominant religion is Manichaeism, but it still appears in Christianity's buildingCities, meaning a Church exists there too (cosmopolitan cities host multiple faiths' buildings). Used for Christianity Level 1 (Church Hospitality) only - see christianBrothersGating note below for Level 2.",
+        "christianBrothersGating": "IMPORTANT: Christianity's Level 2 effect ('Brothers in Christ') is NOT gated on buildingCities, despite what its name suggests and despite earlier versions of this file assuming so. ~17 screenshot trades across 8 cities show it firing in every city EXCEPT the 4 Sasanian Empire cities (Ctesiphon, Susa, Ecbatana, Isfahan) - including firing in Samarkand, Dunhuang, and Jiayuguan, none of which are Christian-dominant or on the old buildingCities list's core set. The real gate, wired in calc.js's religionOwnModifiersDollar, is city.empire !== 'Sasanian Empire'. Kept as a plain empire check rather than a data list since it matches the in-game text ('Brothers in Christ' implying solidarity against a specific rival empire, not literal church presence).",
+        "Christianity": {
+            "buildingCities": [
+                "bosra",
+                "antioch",
+                "tyre",
+                "damascus",
+                "ctesiphon",
+                "ecbatana",
+                "susa",
+                "isfahan",
+                "merv",
+                "samarkand",
+                "dunhuang",
+                "jiayuguan"
+            ],
+            "buildingCitiesNote": "Excludes Palmyra and Persepolis. Palmyra confirmed via screenshot: Church Hospitality did NOT fire there (places_of_worship: None on the wiki), despite Palmyra being Cosmopolitan/Capital-eligible under the old (wrong) gating - confirming Level 1 gates on building presence, not city traits.",
+            "levels": {
+                "1": {
+                    "name": "Church Hospitality",
+                    "capitalOrCosmopolitanBonus": 0.1,
+                    "gatingNote": "Despite the name, this is gated on buildingCities (church presence), not the Capital/Cosmopolitan traits - confirmed by Palmyra (Cosmopolitan, no church) never firing it, while Ecbatana (Homogenous only, has a church) always does."
+                },
+                "2": {
+                    "name": "Brothers In Christ",
+                    "christianCityBonus": 0.1,
+                    "gatingNote": "See top-level christianBrothersGating note - gates on city.empire !== 'Sasanian Empire', not buildingCities."
+                },
+                "3": {
+                    "name": "Ecclesiastical Influence",
+                    "cityPenaltyReduction": 0.5
+                }
+            }
+        },
+        "Judaism": {
+            "buildingCities": [
+                "bosra",
+                "tyre",
+                "damascus",
+                "ctesiphon",
+                "ecbatana",
+                "susa",
+                "isfahan",
+                "merv",
+                "samarkand"
+            ],
+            "buildingCitiesNote": "Not currently used by any Judaism effect below (all three are global, not city-gated) - stored for completeness since it's sourced data.",
+            "levels": {
+                "1": {
+                    "name": "Unequal Terms",
+                    "cityPenaltyMultiplier": 2.0,
+                    "note": "Previously entirely missing from this file - city-attribute price PENALTIES are 100% stronger (x2), newly confirmed."
+                },
+                "2": {
+                    "name": "Merchant Literacy",
+                    "languageModifierMultiplier": 1.75
+                },
+                "3": {
+                    "name": "Master of Trade",
+                    "cityTraitBonusMultiplier": 1.5
+                }
+            }
+        },
+        "Zoroastrianism": {
+            "buildingCities": [
+                "ctesiphon",
+                "ecbatana",
+                "susa",
+                "isfahan",
+                "merv",
+                "samarkand",
+                "dunhuang",
+                "jiayuguan"
+            ],
+            "levels": {
+                "1": {
+                    "name": "War of Aniquity",
+                    "byzantineCityPenaltyMultiplier": 1.5,
+                    "note": "'Aniquity' is spelled that way on the source page itself, kept verbatim."
+                },
+                "2": {
+                    "name": "Sassanid State Religion",
+                    "fireTempleCityBonus": 0.05,
+                    "note": "This value existed in the file before but was never actually wired into calc.js - real bug, now fixed and gated to buildingCities."
+                },
+                "3": {
+                    "name": "Persian Quality",
+                    "metalCraftSellBonus": 0.1
+                }
+            }
+        },
+        "Manichaeism": {
+            "buildingCities": [
+                "ctesiphon",
+                "ecbatana",
+                "susa",
+                "isfahan",
+                "merv",
+                "samarkand",
+                "dunhuang",
+                "jiayuguan"
+            ],
+            "levels": {
+                "1": {
+                    "name": "Spark of Light",
+                    "goodsBonus": {
+                        "goods": [
+                            "candles"
+                        ],
+                        "modifier": 0.1
+                    },
+                    "note": "Wiki also mentions incense and 'religious goods' more broadly, neither exists in goods.json yet."
+                },
+                "2": {
+                    "name": "Communal Shelter",
+                    "propertyDiscount": 0.1,
+                    "note": "No property-purchase system exists in the calculator yet (see PROJECT_HANDOFF's deferred features) - defined here for completeness but not wired into any calculation."
+                },
+                "3": {
+                    "name": "Illuminated Doctrine",
+                    "goodsBonus": {
+                        "goods": [
+                            "books"
+                        ],
+                        "modifier": 0.15
+                    },
+                    "note": "Wiki also mentions dyes and silk robes, neither exists in goods.json yet."
+                }
+            },
+            "wiringNote": "None of Manichaeism's effects were previously wired into calc.js at all - real bug, now fixed for Levels 1 and 3 (Level 2 is out of scope, see above)."
+        },
+        "Mahayana Buddhism": {
+            "buildingCities": [
+                "ctesiphon",
+                "merv",
+                "samarkand",
+                "dunhuang",
+                "jiayuguan"
+            ],
+            "levels": {
+                "1": {
+                    "name": "Merit of Compassion",
+                    "status": "UNCONFIRMED — applies to herbs and spices in a Monastery city, but 'herbs' isn't a good/category in goods.json yet. Per the user, herbs are upcoming game content not yet added - left unimplemented rather than guessed at."
+                },
+                "2": {
+                    "name": "Sanctuary",
+                    "status": "Not applicable to this calculator — +300% Reputation from trading in a Monastery city is a reputation-GAIN mechanic. The calculator only tracks reputation RANK for gating/quest-money, it doesn't simulate reputation accumulation from trades."
+                },
+                "3": {
+                    "name": "Literature and Wisdom",
+                    "goodsBonus": {
+                        "goods": [
+                            "books",
+                            "paper"
+                        ],
+                        "categories": [
+                            "textile"
+                        ],
+                        "modifier": 0.1
+                    }
+                }
+            }
+        },
+        "_jiayuguanNote": "Jiayuguan added to Christianity/Zoroastrianism/Manichaeism/Mahayana Buddhism buildingCities per the infohub Religions page (Aug 2026 update); confirmed for Christianity by a Church Hospitality line firing there in screenshots."
+    },
+    "languageProficiency": {
+        "Broken": {
+            "xpThreshold": 0,
+            "modifier": -0.03
+        },
+        "Proficient": {
+            "xpThreshold": 100,
+            "modifier": 0
+        },
+        "Fluent": {
+            "xpThreshold": 200,
+            "modifier": 0.03
+        },
+        "Native": {
+            "modifier": 0.03,
+            "note": "Same stat value as Fluent, but a distinct label/level in-game (Fluent = Level 3, Native = Level 4). Native is always tied to your culture and can't be independently selected."
+        }
+    },
+    "languages": [
+        "Greek",
+        "Aramaic",
+        "Persian",
+        "Sogdian",
+        "Middle Chinese"
+    ],
+    "nativeLanguageByCulture": {
+        "Byzantine": "Greek",
+        "Syriac": "Aramaic",
+        "Persian": "Persian",
+        "Sogdian": "Sogdian",
+        "Han Chinese": "Middle Chinese"
+    },
+    "reputationDiscount": {
+        "_status": "WIRED. Rank 6 gives a 10% buy-only discount on goods: inside the empire for Byzantine/Sasanian, outside it for Sogdia/Tang (Info Hub). Confirmed by 5 Sasanian screenshots only; the outside variants and stacking across factions are unconfirmed. Rank 3's discount covers shops (cosmetics/animals), not goods, so it is not applied.",
+        "rate": 0.1,
+        "minRank": 6,
+        "scope": {
+            "byzantine": "inside",
+            "sasanian": "inside",
+            "sogdia": "outside",
+            "tang": "outside"
+        }
+    },
+    "events": {
+        "frequencyMinutes": 30,
+        "durationMinutes": 60,
+        "tiers": [
+            {
+                "level": 1,
+                "multiplier": 0.05,
+                "flatBase": 3
+            },
+            {
+                "level": 2,
+                "multiplier": 0.1,
+                "flatBase": 5
+            },
+            {
+                "level": 3,
+                "multiplier": 0.2,
+                "flatBase": 8
+            }
+        ],
+        "types": {
+            "drought": {
+                "categories": [
+                    "agriculture"
+                ],
+                "direction": "increase",
+                "levelNames": [
+                    "Small Drought",
+                    "Moderate Drought",
+                    "Severe Drought"
+                ]
+            },
+            "harvest": {
+                "categories": [
+                    "agriculture"
+                ],
+                "direction": "decrease",
+                "levelNames": [
+                    "Good Harvest",
+                    "Plentiful Harvest",
+                    "Abundant Harvest"
+                ]
+            },
+            "conflict": {
+                "categories": [
+                    "metal"
+                ],
+                "direction": "increase",
+                "levelNames": [
+                    "Small Conflict",
+                    "Local Conflict",
+                    "Major Conflict"
+                ],
+                "note": "Weapons and all metal-category goods (Iron/Copper Ingot, Tools) share the 'metal' category in goods.json, matching the wiki's 'weapons and metal' wording."
+            },
+            "festival": {
+                "categories": [
+                    "craft",
+                    "household"
+                ],
+                "direction": "increase",
+                "levelNames": [
+                    "Minor Festival",
+                    "Local Festival",
+                    "Major Festival"
+                ]
+            }
+        }
+    },
+    "distanceBonus": {
+        "status": "Cells present in Buy_Data_v2 are exact; the rest are extrapolated and UNCONFIRMED. Exotic rate is from one sale screenshot.",
+        "bases": [
+            10,
+            20,
+            35,
+            50,
+            80,
+            100,
+            130,
+            200,
+            250,
+            500,
+            800
+        ],
+        "grid": [
+            [
+                7,
+                9,
+                10,
+                11,
+                12,
+                14,
+                16,
+                21,
+                22,
+                30,
+                36
+            ],
+            [
+                17,
+                21,
+                23,
+                24,
+                25,
+                28,
+                32,
+                43,
+                46,
+                61,
+                73
+            ],
+            [
+                31,
+                36,
+                38,
+                39,
+                40,
+                44,
+                51,
+                68,
+                72,
+                95,
+                113
+            ],
+            [
+                50,
+                56,
+                55,
+                56,
+                56,
+                61,
+                70,
+                93,
+                98,
+                128,
+                153
+            ],
+            [
+                73,
+                81,
+                76,
+                74,
+                73,
+                80,
+                90,
+                120,
+                126,
+                164,
+                196
+            ],
+            [
+                105,
+                115,
+                105,
+                95,
+                93,
+                101,
+                114,
+                151,
+                158,
+                206,
+                246
+            ],
+            [
+                145,
+                158,
+                142,
+                118,
+                114,
+                124,
+                139,
+                184,
+                192,
+                250,
+                298
+            ],
+            [
+                198,
+                215,
+                190,
+                142,
+                137,
+                149,
+                166,
+                220,
+                230,
+                298,
+                356
+            ]
+        ],
+        "exotic": {
+            "rate": 0.02
+        },
+        "virtualProducers": {
+            "dried_fish": [
+                "hyrcania"
+            ],
+            "sea_salt": [
+                "hyrcania"
+            ]
+        }
+    },
+    "guildPerks": {
+        "perks": [
+            {
+                "id": "junk_hoarding",
+                "name": "Junk Hoarding",
+                "cost": 1000000,
+                "description": "Common goods sell for 20% more",
+                "effect": "sellBonus",
+                "rate": 0.2,
+                "rarity": "any",
+                "status": "UNCONFIRMED: fired on an Exotic good in screenshots"
+            },
+            {
+                "id": "merchant_favors",
+                "name": "Merchant Favors",
+                "cost": 3000000,
+                "description": "Fine goods sell for 15% more",
+                "effect": "sellBonus",
+                "rate": 0.15,
+                "rarity": "fine",
+                "status": "UNCONFIRMED: needs good rarity"
+            },
+            {
+                "id": "caravan_haste",
+                "name": "Caravan Haste",
+                "cost": 5000000,
+                "description": "Auto-walk speed +10%",
+                "effect": "speedMultiplier",
+                "rate": 0.1
+            },
+            {
+                "id": "better_packing",
+                "name": "Better Packing",
+                "cost": 5000000,
+                "description": "Cargo space +1",
+                "effect": "cargoBonus",
+                "amount": 1
+            },
+            {
+                "id": "supply_chains",
+                "name": "Supply Chains",
+                "cost": 8000000,
+                "description": "Rare goods sell for 10% more",
+                "effect": "sellBonus",
+                "rate": 0.1,
+                "rarity": "rare",
+                "status": "UNCONFIRMED: needs good rarity"
+            },
+            {
+                "id": "artisan_connections",
+                "name": "Artisan Connections",
+                "cost": 14000000,
+                "description": "Exotic goods sell for 5% more",
+                "effect": "sellBonus",
+                "rate": 0.05,
+                "rarity": "exotic",
+                "status": "UNCONFIRMED: needs good rarity"
+            }
+        ]
+    }
+}

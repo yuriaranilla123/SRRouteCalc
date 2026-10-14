@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRRouteCalc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/dropdowns.css">
+    <link rel="stylesheet" href="style/components.css">
+    <link rel="stylesheet" href="style/caravanPanel.css">
+    <link rel="stylesheet" href="style/reputationPanel.css">
+    <link rel="stylesheet" href="style/routeFinderPanel.css">
+    <link rel="stylesheet" href="style/legChainPanel.css">
+    <link rel="stylesheet" href="style/theme-infohub.css">
+</head>
+
+<body>
+
+    <div id="loading">Loading trade data…</div>
+
+    <div id="app" style="display:none">
+        <datalist id="goods-datalist"></datalist>
+
+        <header class="site-header">
+            <div class="header-top">
+                <h1>SRRouteCalc</h1>
+                <div class="header-toggles">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="round-to-int">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Round to whole numbers</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="detailed-mode">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Show detailed breakdown</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="dropdown-style" checked>
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Themed dropdowns (Style 2)</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="infohub-style">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">SR:TS Information Hub Style</span>
+                    </label>
+                </div>
+            </div>
+            <p class="tagline">A fan-made trade route calculator for Silk Road Trading Simulator. Not affiliated with or
+                endorsed by the game's developers.</p>
+        </header>
+
+        <main>
+            <section class="panel" id="trader-profile">
+                <h2>Your trader</h2>
+                <div class="profile-fields">
+                    <label class="form-field">
+                        Culture
+                        <select id="culture">
+                            <option value="Byzantine">Byzantine</option>
+                            <option value="Syriac">Syriac</option>
+                            <option value="Persian">Persian</option>
+                            <option value="Sogdian">Sogdian</option>
+                            <option value="Han Chinese">Han Chinese</option>
+                        </select>
+                    </label>
+                    <label class="form-field">
+                        Religion
+                        <select id="religion">
+                            <option value="Christianity">Christianity</option>
+                            <option value="Judaism">Judaism</option>
+                            <option value="Zoroastrianism">Zoroastrianism</option>
+                            <option value="Manichaeism">Manichaeism</option>
+                            <option value="Mahayana Buddhism">Mahayana Buddhism</option>
+                        </select>
+                    </label>
+                    <label class="form-field">
+                        Faith Level
+                        <select id="faith-level">
+                            <option value="0">No Faith</option>
+                            <option value="1">Level 1 (5 Faith)</option>
+                            <option value="2">Level 2 (120 Faith)</option>
+                            <option value="3">Level 3 (300 Faith)</option>
+                        </select>
+                    </label>
+                </div>
+                <p class="field-hint" id="faith-level-hint"></p>
+
+                <h3 class="explorer-section-title">Languages</h3>
+                <p class="field-hint">Your native language (set by culture) is always Fluent. Others level up through
+                    trading with foreign merchants.</p>
+                <div class="profile-fields" id="language-fields"></div>
+            </section>
+
+            <section class="panel" id="caravan">
+                <h2>Your caravan</h2>
+                <div class="caravan-grid">
+                    <div class="caravan-slot">
+                        <span class="field-label">Bag</span>
+                        <span class="toggle-switch toggle-placeholder" aria-hidden="true">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Saddlebag</span>
+                        </span>
+                        <select id="bag-select"></select>
+                    </div>
+                    <div class="caravan-slot">
+                        <span class="field-label">Animal 1</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="saddlebag-check" data-slot="0">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Saddlebag</span>
+                        </label>
+                        <select class="animal-select" data-slot="0">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                    <div class="caravan-slot">
+                        <span class="field-label">Animal 2</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="saddlebag-check" data-slot="1">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Saddlebag</span>
+                        </label>
+                        <select class="animal-select" data-slot="1">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                    <div class="caravan-slot">
+                        <span class="field-label">Animal 3</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="saddlebag-check" data-slot="2">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Saddlebag</span>
+                        </label>
+                        <select class="animal-select" data-slot="2">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                    <div class="caravan-slot" id="animal-slot-4" style="display:none">
+                        <span class="field-label">Animal 4</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="saddlebag-check" data-slot="3">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Saddlebag</span>
+                        </label>
+                        <select class="animal-select" data-slot="3">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="caravan-total">Total cargo capacity: <strong id="cargo-total">—</strong></p>
+                <p class="caravan-total">Auto-walk speed: <strong id="walk-speed">—</strong> studs/sec</p>
+            </section>
+
+            <section class="panel" id="gamepasses">
+                <h2>Gamepasses</h2>
+                <p class="field-hint">Everything here defaults off (free-to-play). Extra Cargo Slot, Auto-Walk Speed
+                    Boost, Extra Caravan Slot, and Nobility change your numbers below; the rest are tracked for
+                    reference but are acquisition-only (their stats are already selectable in the dropdowns above
+                    regardless of how you got them).</p>
+                <div class="gamepass-toggles">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-extra-cargo">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Extra Cargo Slot (+1 cargo) - 79 R$</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-speed-boost">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Auto-Walk Speed Boost (+4 speed) - 59 R$</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-extra-caravan-slot">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Extra Caravan Slot (4th animal) - 399 R$</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-nobility">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Nobility (+20% sale revenue) - 119 R$</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-royal-indian-elephant">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Royal Indian Elephant (acquisition only) - 559 R$</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-royal-white-nisean">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Royal White Nisean Horse (acquisition only) - 279 R$</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-starter-mule">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Starter Mule (acquisition only) - 55 R$</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gamepass-starter-backpack">
+                        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                        <span class="toggle-text">Starter Backpack (acquisition only) - 119 R$</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="panel" id="guild">
+                <h2>Guild perks</h2>
+                <p class="field-hint">Perks bought with the guild treasury. Everything defaults off. Rarity-based sell
+                    perks only apply once goods have a rarity.</p>
+                <div class="gamepass-toggles" id="guild-perks"></div>
+            </section>
+
+            <section class="panel" id="reputation">
+                <h2>Reputation</h2>
+                <div class="profile-fields" id="reputation-fields"></div>
+                <p class="field-hint" id="locked-goods-hint"></p>
+
+                <div class="quest-money">
+                    <h3>Quest money calculator</h3>
+                    <div class="profile-fields">
+                        <label class="form-field">
+                            Faction
+                            <select id="quest-faction"></select>
+                        </label>
+                        <label class="form-field">
+                            Quest type
+                            <select id="quest-type">
+                                <option value="short_distance_delivery">Short Distance Delivery</option>
+                                <option value="long_distance_delivery">Long Distance Delivery</option>
+                            </select>
+                        </label>
+                    </div>
+                    <p class="quest-money-result">Reward at your current rank: <strong id="quest-money-value">—</strong>
+                    </p>
+                    <p class="field-hint">Applies only to reputation quest payouts, not trade profit.</p>
+                </div>
+            </section>
+
+            <section class="panel" id="active-event">
+                <h2>Active event</h2>
+                <p class="field-hint">Simulate one city currently experiencing an event (matches the old SilkroadCalc's
+                    "active events" bar - only one at a time). Only goods in that event's affected categories change
+                    price, and only in that one city.</p>
+                <div class="profile-fields">
+                    <label class="form-field">
+                        City
+                        <select id="event-city" class="city-select">
+                            <option value="">None</option>
+                        </select>
+                    </label>
+                    <label class="form-field">
+                        Event
+                        <select id="event-type">
+                            <option value="">None</option>
+                            <option value="drought">Drought</option>
+                            <option value="harvest">Harvest</option>
+                            <option value="conflict">Conflict</option>
+                            <option value="festival">Festival</option>
+                        </select>
+                    </label>
+                    <label class="form-field">
+                        Level
+                        <select id="event-level">
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                            <option value="3">Level 3</option>
+                        </select>
+                    </label>
+                </div>
+                <p class="field-hint" id="event-hint"></p>
+            </section>
+
+            <section class="panel" id="route-finder">
+                <h2>Find a route</h2>
+                <div class="tab-row">
+                    <button type="button" class="tab-btn active" data-mode="global">Global</button>
+                    <button type="button" class="tab-btn" data-mode="specific">Specific</button>
+                </div>
+
+                <div id="global-mode">
+                    <div class="route-form-row">
+                        <label class="form-field">
+                            City A
+                            <select id="city-a" class="city-select" required>
+                                <option value="">Select a city</option>
+                            </select>
+                        </label>
+                        <label class="form-field">
+                            City B
+                            <select id="city-b" class="city-select" required>
+                                <option value="">Select a city</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="route-form-row">
+                        <div class="stepper-field">
+                            <span class="field-label">Quantity</span>
+                            <div class="stepper">
+                                <button type="button" class="stepper-btn" data-action="decrement"
+                                    aria-label="Decrease quantity">−</button>
+                                <input type="number" id="quantity" value="10" min="1" max="999">
+                                <button type="button" class="stepper-btn" data-action="increment"
+                                    aria-label="Increase quantity">+</button>
+                            </div>
+                        </div>
+                        <button type="button" id="find-best-trade-btn" class="primary-btn">Find best trade</button>
+                    </div>
+                    <p class="field-hint">Quantity auto-fills from your caravan above, or set it manually.</p>
+                </div>
+
+                <div id="specific-mode" style="display:none">
+                    <p class="field-hint">Each process is its own City A to City B journey. Use "+" to start a new,
+                        unrelated process, or the ">" on the last leg to continue on to another city. The first leg of
+                        a process can also loop back to its start, or let you browse prices for that pair.</p>
+                    <div id="process-list"></div>
+                    <div class="all-complete-total-row">
+                        <span>All complete total</span>
+                        <strong id="all-complete-total-value">—</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel" id="result">
+                <h2>Best trade</h2>
+                <div id="result-card">
+                    <p class="empty-state">Pick two cities above to see the most profitable good to carry between them.
+                    </p>
+                </div>
+            </section>
+
+            <section class="panel" id="all-trades">
+                <h2>All profitable trades</h2>
+                <div class="tab-row">
+                    <button type="button" class="tab-btn active" data-tab="general-best">General Best</button>
+                    <button type="button" class="tab-btn" data-tab="global">Global</button>
+                    <button type="button" class="tab-btn" data-tab="per-leg">Per leg</button>
+                </div>
+                <p class="field-hint" id="general-best-hint">Every good's single best route anywhere in the game, ranked
+                    by profit. Uses the quantity from "Find a route" below.</p>
+                <div id="per-leg-mode" style="display:none">
+                    <div class="route-form-row">
+                        <label class="form-field">
+                            Process
+                            <select id="per-leg-process-select"></select>
+                        </label>
+                        <label class="form-field">
+                            Leg
+                            <select id="per-leg-leg-select"></select>
+                        </label>
+                    </div>
+                    <p class="field-hint">Every profitable good for this leg's city pair, from Find a Route →
+                        Specific.</p>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Good</th>
+                                <th>Buy in</th>
+                                <th>Sell in</th>
+                                <th class="num sortable" data-sort-key="buyPrice">Buy price<span
+                                        class="sort-indicator"></span></th>
+                                <th class="num sortable" data-sort-key="sellPrice">Sell price<span
+                                        class="sort-indicator"></span></th>
+                                <th class="num sortable" data-sort-key="profitPerUnit">Profit / unit<span
+                                        class="sort-indicator"></span></th>
+                                <th class="num sortable" data-sort-key="totalProfit">Profit / trip<span
+                                        class="sort-indicator"></span></th>
+                                <th class="num sortable" data-sort-key="travelTime">Travel time<span
+                                        class="sort-indicator"></span></th>
+                                <th class="num sortable" data-sort-key="profitPerMin">Profit / min<span
+                                        class="sort-indicator"></span></th>
+                                <th class="sortable" data-sort-key="returnCargo">Return cargo (best)<span
+                                        class="sort-indicator"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="trades-tbody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="funding-bar" id="funding-bar">
+                <div class="funding-fill" id="funding-fill"></div>
+                <span class="funding-label" id="funding-label">Server costs, <span id="funding-month"></span> (Manual
+                    estimate) (Optional and currently static)</span>
+                <span class="funding-percent" id="funding-percent"></span>
+            </div>
+            <details id="credits" class="credits"></details>
+        </footer>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

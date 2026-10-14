@@ -1,0 +1,343 @@
+{
+    "_source": "Silk Road Trading Simulator Fandom Wiki, Animals page tables (screenshots provided directly, crawler had been dropping wikitables — fixed for future crawls). Gamepasses section: names/existence from the Fandom Wiki's dedicated 'Gamepasses' page, but every price there turned out to be stale - corrected against, and effect descriptions confirmed via, screenshots of each gamepass's official Roblox store page (user-provided). Claude could not fetch these pages directly (all 8 returned 404 when attempted - they need JS rendering), so relies entirely on the provided screenshots rather than independent verification.",
+    "_mechanics": {
+        "maxAnimalsEquipped": 3,
+        "maxAnimalsEquippedWithExtraCaravanSlot": 4,
+        "maxAnimalsNote": "3 by default, 4 with the Extra Caravan Slot gamepass ('allows one additional pack animal to be spawned') - confirmed via its official Roblox game-pass page.",
+        "cargoFormula": "totalCargo = baseBagCargo + sum(equipped animal cargo, using the saddlebag value if that animal has a saddlebag equipped and supports one) + (1 if Extra Cargo Slot gamepass owned)",
+        "speedFormula": "autoWalkSpeed = baseWalkSpeed + average(equipped animals' speed bonus, e.g. (x + y + z) / 3 — per the wiki's own stated example)",
+        "baseWalkSpeed": 16,
+        "baseWalkSpeedNote": "Confirmed as Roblox's default Humanoid.WalkSpeed (16 studs/sec) - a very believable hard constant, corroborated independently by a player timing a known route and a support agent's own d=v*t calculation using 16 as the assumed default.",
+        "saddlebagBonus": 2,
+        "saddlebagPrice": 500,
+        "saddlebagPriceCurrency": "gold",
+        "saddlebagPriceSource": "Framer info hub 'Storage' page — not previously known from Fandom wiki.",
+        "saddlebagNote": "Confirmed consistent across every animal that supports one: cargo-with-saddlebag is always base cargo + 2."
+    },
+    "gamepasses": {
+        "_source": "Names from Fandom Wiki's 'Gamepasses' page; ALL prices below corrected against a live Roblox store screenshot (user-provided), since Fandom's prices were stale across the board. Effect descriptions are unconfirmed beyond what's noted per entry.",
+        "nobility": {
+            "name": "Nobility",
+            "price": 119,
+            "currency": "robux",
+            "effect": "Increases reputation earned and sale revenue by 20%.",
+            "note": "Confirmed via the official Roblox game-pass page description. Sale revenue (+20% sell price) is wired into the calculator; the reputation-earned half isn't, since the calculator has no reputation-gain-from-trading mechanic (same limitation as Mahayana Buddhism's Sanctuary Faith Level effect)."
+        },
+        "extra_caravan_slot": {
+            "name": "Extra Caravan Slot",
+            "price": 399,
+            "currency": "robux",
+            "effect": "Allows one additional pack animal to be spawned. Also increases the maximum number of animals and saddlebags available for purchase.",
+            "note": "Confirmed via the official Roblox game-pass page description - raises max equipped animals from 3 to 4. Wired into the calculator via the Gamepasses panel toggle, which reveals a 4th caravan slot."
+        },
+        "royal_indian_elephant": {
+            "name": "Royal Indian Elephant",
+            "price": 559,
+            "currency": "robux",
+            "effect": "Gives the Royal Indian Elephant mount. Slower than a horse, but with much higher cargo capacity.",
+            "note": "Price corrected from 1260 (prior source unclear) to 559, confirmed via the official Roblox game-pass page."
+        },
+        "starter_mule": {
+            "name": "Starter Mule",
+            "price": 55,
+            "currency": "robux",
+            "effect": "Gives the Saddle Mule to all characters.",
+            "note": "Price corrected from 149 (Fandom wiki, now stale) to 55 per a live store screenshot - the saddle_mule animal entry below is updated to match. Acquisition-only; stats already selectable in the animal dropdown regardless, so no separate calculation effect."
+        },
+        "extra_cargo_slot": {
+            "name": "Extra Cargo Slot",
+            "price": 79,
+            "currency": "robux",
+            "effect": "+1 flat cargo slot for all characters, in addition to cargo slots from backpacks or pack animals.",
+            "note": "Price corrected from 199 (Fandom wiki, now stale) to 79 per a live store screenshot. Wired into the calculator's cargo total via the Gamepasses panel toggle."
+        },
+        "starter_backpack": {
+            "name": "Starter Backpack",
+            "price": 119,
+            "currency": "robux",
+            "effect": "Immediate access to the 9-slot Basket Backpack for all current and future characters.",
+            "note": "Price corrected from 99 (Fandom wiki, now stale) to 119 per a live store screenshot. Acquisition-only; the Basket Backpack's stats are already selectable in the bag dropdown regardless, so no separate calculation effect."
+        },
+        "royal_white_nisean_horse": {
+            "name": "Royal White Nisean Horse",
+            "price": 279,
+            "currency": "robux",
+            "effect": "Adds a Royal White Nisean Horse to all characters. It carries 4 cargo with a speed increase of 6 - confirmed via the official Roblox game-pass page, resolving the earlier 5-vs-6 ambiguity from Fandom's changelog. Purchasing this gamepass also adds a discount to further purchases of it in-game at the Horse Merchant.",
+            "note": "Price corrected from 699 (Fandom wiki, now stale) to 279, confirmed via the official Roblox game-pass page."
+        },
+        "auto_walk_speed_boost": {
+            "name": "Auto-Walk Speed Boost",
+            "price": 59,
+            "currency": "robux",
+            "effect": "Increases auto-walk speed.",
+            "magnitudeNote": "Still unconfirmed by any wiki/store text - a player who owns it reports +4 (16 -> 20 base speed) firsthand; treated as reliable but not officially sourced.",
+            "note": "Price corrected from 99 (Fandom wiki, now stale) to 59 per a live store screenshot. Wired into the calculator's speed readout via the Gamepasses panel toggle."
+        }
+    },
+    "bags": {
+        "_source": "Prices reconciled between the Fandom wiki 'Backpacks' page and the Framer info hub's 'Storage' page. Where they conflicted, the Framer info hub was favored as the more actively maintained source (last updated Aug 22, 2026 vs. Fandom's staler/TBC-heavy pages).",
+        "_baseNote": "Base (no bag) cargo of 3 is still user-reported gameplay knowledge, not directly stated on either source, but consistent with the confirmed progression (5, 7, 9, 9).",
+        "types": [
+            {
+                "id": "base",
+                "name": "Base (no bag)",
+                "cargo": 3,
+                "price": 0,
+                "currency": "gold",
+                "confirmed": false
+            },
+            {
+                "id": "small_satchel",
+                "name": "Small Satchel",
+                "cargo": 5,
+                "price": 45,
+                "currency": "gold",
+                "note": "Fandom wiki said $50 — using Framer info hub's $45 (favored source)."
+            },
+            {
+                "id": "large_satchel",
+                "name": "Large Satchel",
+                "cargo": 7,
+                "price": 130,
+                "currency": "gold"
+            },
+            {
+                "id": "frame_pack",
+                "name": "Frame Pack",
+                "cargo": 9,
+                "price": 250,
+                "currency": "gold",
+                "note": "Replaces base cargo, not additive. Price and cargo agree across both sources."
+            },
+            {
+                "id": "basket_backpack",
+                "name": "Basket Backpack",
+                "cargo": 9,
+                "price": 119,
+                "currency": "robux",
+                "note": "Fandom wiki said R$299 — using Framer info hub's R$119 (favored source). Also obtainable via the 'Starter Backpack' gamepass (119 Robux, one-time, account-wide, per a live store screenshot) - see gamepasses above."
+            },
+            {
+                "id": "concealed_storage",
+                "name": "Concealed Storage",
+                "cargo": 9,
+                "price": 1000000,
+                "currency": "gold",
+                "note": "Info Hub Storage page; replaces base cargo like the Frame Pack."
+            }
+        ]
+    },
+    "animals": [
+        {
+            "id": "dromedary_camel",
+            "name": "Dromedary Camel",
+            "type": "camel",
+            "cargo": 2,
+            "cargoWithSaddlebag": 4,
+            "speedBonus": 2,
+            "priceScale": [
+                2000,
+                4000,
+                6000
+            ],
+            "currency": "gold"
+        },
+        {
+            "id": "majaheem_camel",
+            "name": "Majaheem Camel",
+            "type": "camel",
+            "cargo": 4,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 6,
+            "price": "699 Robux, 199 Robux each following",
+            "currency": "robux",
+            "note": "Limited sale event — expired."
+        },
+        {
+            "id": "black_bactrian_camel",
+            "name": "Black Bactrian Camel",
+            "type": "camel",
+            "cargo": 4,
+            "cargoWithSaddlebag": 6,
+            "speedBonus": 4,
+            "price": 599,
+            "currency": "robux"
+        },
+        {
+            "id": "royal_bactrian_camel",
+            "name": "Royal Bactrian Camel",
+            "type": "camel",
+            "cargo": 4,
+            "cargoWithSaddlebag": 6,
+            "speedBonus": 4,
+            "price": 699,
+            "currency": "robux",
+            "note": "Out-of-stock limited gamepass (Info Hub). Saddlebag support assumed like other Bactrians."
+        },
+        {
+            "id": "maroon_bactrian_camel",
+            "name": "Maroon Bactrian Camel",
+            "type": "camel",
+            "cargo": 4,
+            "cargoWithSaddlebag": 6,
+            "speedBonus": 4,
+            "priceScale": [
+                75000,
+                150000,
+                300000
+            ],
+            "currency": "gold"
+        },
+        {
+            "id": "bactrian_camel",
+            "name": "Tan Bactrian Camel",
+            "type": "camel",
+            "cargo": 4,
+            "cargoWithSaddlebag": 6,
+            "speedBonus": 4,
+            "priceScale": [
+                35000,
+                70000,
+                140000
+            ],
+            "currency": "gold",
+            "note": "Renamed per Info Hub; speed 4 per Info Hub (Fandom said +2)."
+        },
+        {
+            "id": "pack_mule",
+            "name": "Pack Mule",
+            "type": "mule",
+            "cargo": 1,
+            "cargoWithSaddlebag": 3,
+            "speedBonus": 1,
+            "priceScale": [
+                500,
+                1000,
+                1500,
+                2000,
+                2500
+            ],
+            "currency": "gold"
+        },
+        {
+            "id": "saddle_mule",
+            "name": "Saddle Mule",
+            "type": "mule",
+            "cargo": 2,
+            "cargoWithSaddlebag": 4,
+            "speedBonus": 2,
+            "price": 55,
+            "currency": "robux",
+            "isGamepass": true,
+            "note": "One-time purchase, added to every character. This IS the 'Starter Mule' gamepass - price corrected from 149 (Fandom wiki, now stale) to 55 per a live store screenshot."
+        },
+        {
+            "id": "dzungarian_horse",
+            "name": "Dzungarian Horse",
+            "type": "horse",
+            "cargo": 1,
+            "cargoWithSaddlebag": 3,
+            "speedBonus": 3,
+            "priceScale": [
+                1500,
+                3000,
+                4500,
+                6000,
+                7500
+            ],
+            "currency": "gold"
+        },
+        {
+            "id": "white_nisean_horse",
+            "name": "White Nisean Horse",
+            "type": "horse",
+            "cargo": 4,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 6,
+            "isGamepass": true,
+            "note": "Wiki lists two acquisition paths: in-game gold (scaling) OR a repeatable Robux purchase (699 first, 199 each following). ALSO obtainable via the 'Royal White Nisean Horse' gamepass (279 Robux, one-time, account-wide, includes a discount on future in-game purchases, per a live store screenshot - Fandom's wiki said 699, now confirmed stale) - same animal, gamepass just uses the 'Royal' name. Speed bonus was patched from 5 to 6 per Fandom's own changelog; 6 confirmed current. Cannot use a saddlebag.",
+            "acquisition": [
+                {
+                    "currency": "gold",
+                    "priceScale": [
+                        50000,
+                        100000,
+                        150000,
+                        200000,
+                        250000
+                    ]
+                },
+                {
+                    "currency": "robux",
+                    "price": "699 first, 199 each following"
+                }
+            ]
+        },
+        {
+            "id": "red_chestnut_nisean_horse",
+            "name": "Red Chestnut Nisean Horse",
+            "type": "horse",
+            "cargo": 4,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 6,
+            "price": 699,
+            "currency": "robux",
+            "note": "Limited supply. Sale ended Sept 17. Per a tester who owns one, this color is ALSO obtainable via a permanent gamepass (same pattern as White Nisean's 'Royal' gamepass) - not found on the live store screenshot's visible passes, so its existence/price stays unconfirmed beyond the tester's report."
+        },
+        {
+            "id": "black_nisean_horse",
+            "name": "Black Nisean Horse",
+            "type": "horse",
+            "cargo": 4,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 6,
+            "price": null,
+            "currency": "robux",
+            "note": "Price TBC on wiki — limited supply. Per a tester who owns one, this color is ALSO obtainable via a permanent gamepass (same pattern as White Nisean's 'Royal' gamepass) - not found on the live store screenshot's visible passes, so its existence/price stays unconfirmed beyond the tester's report."
+        },
+        {
+            "id": "storm_grey_nisean_horse",
+            "name": "Storm Grey Nisean Horse",
+            "type": "horse",
+            "cargo": 4,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 6,
+            "price": 599,
+            "currency": "robux",
+            "note": "Limited supply. Not mentioned by the tester as gamepass-obtainable like the other three colors - unconfirmed either way."
+        },
+        {
+            "id": "indian_elephant",
+            "name": "Indian Elephant",
+            "type": "elephant",
+            "cargo": 12,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 0,
+            "price": 250000,
+            "currency": "gold"
+        },
+        {
+            "id": "royal_indian_elephant",
+            "name": "Royal Indian Elephant",
+            "type": "elephant",
+            "cargo": 12,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 0,
+            "price": 559,
+            "currency": "robux",
+            "isGamepass": true,
+            "note": "Price corrected from 1260 (prior source unclear) to 559 per a live store screenshot, where it's listed as a Pass labeled 'PREMIUM ELEPHANT'."
+        },
+        {
+            "id": "sasanian_elephant",
+            "name": "Sasanian Elephant",
+            "type": "elephant",
+            "cargo": 12,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 0,
+            "price": 1399,
+            "currency": "robux",
+            "note": "Limited gamepass sold in Isfahan (Info Hub)."
+        }
+    ]
+}

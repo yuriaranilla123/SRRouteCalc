@@ -1,0 +1,84 @@
+{
+    "edges": [
+        {
+            "from": "damascus",
+            "to": "antioch",
+            "distance": 7340
+        },
+        {
+            "from": "tyre",
+            "to": "damascus",
+            "distance": 4352
+        },
+        {
+            "from": "antioch",
+            "to": "tyre",
+            "distance": 8480
+        },
+        {
+            "from": "damascus",
+            "to": "palmyra",
+            "distance": 5940
+        },
+        {
+            "from": "palmyra",
+            "to": "ctesiphon",
+            "distance": 5740
+        },
+        {
+            "from": "ctesiphon",
+            "to": "ecbatana",
+            "distance": 3920
+        },
+        {
+            "from": "ecbatana",
+            "to": "susa",
+            "distance": 6280
+        },
+        {
+            "from": "susa",
+            "to": "persepolis",
+            "distance": 4840
+        },
+        {
+            "from": "persepolis",
+            "to": "isfahan",
+            "distance": 5180
+        },
+        {
+            "from": "isfahan",
+            "to": "merv",
+            "distance": 7600
+        },
+        {
+            "from": "merv",
+            "to": "samarkand",
+            "distance": 7080
+        },
+        {
+            "from": "samarkand",
+            "to": "dunhuang",
+            "distance": 6460
+        },
+        {
+            "from": "dunhuang",
+            "to": "jiayuguan",
+            "distance": 3760
+        },
+        {
+            "from": "damascus",
+            "to": "bosra",
+            "distance": 5120
+        },
+        {
+            "from": "hyrcania",
+            "to": "hyrcania_pass",
+            "distance": 999999
+        },
+        {
+            "from": "hyrcania_pass",
+            "to": "susa",
+            "distance": 999999
+        }
+    ]
+}

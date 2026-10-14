@@ -1,0 +1,317 @@
+{
+    "_source": "Fandom Wiki crawl 2026-09, re-synced to the Info Hub 2026-10 (Bosra, Jiayuguan, local producers).",
+    "cities": [
+        {
+            "id": "antioch",
+            "name": "Antioch",
+            "region": "Coastal Phoenice",
+            "culture": "Byzantine",
+            "religion": "Christianity",
+            "language": "Greek",
+            "traits": [
+                "Pentarchy City",
+                "Earthquake Prone City",
+                "Capital City"
+            ],
+            "locallyProduced": [
+                "books",
+                "sea_salt",
+                "coriander",
+                "wool",
+                "hides",
+                "byzantine_silk"
+            ],
+            "empire": "Byzantine Empire"
+        },
+        {
+            "id": "bosra",
+            "name": "Bosra",
+            "region": "Levant Frontier",
+            "culture": "Byzantine",
+            "religion": "Christianity",
+            "language": "Greek",
+            "traits": [
+                "Pentarchy City",
+                "Fertile City",
+                "Capital City"
+            ],
+            "locallyProduced": [
+                "wheat",
+                "olive_oil",
+                "earthenware",
+                "leather",
+                "wool"
+            ],
+            "empire": "Byzantine Empire",
+            "note": "Added from Info Hub. Not in data/distances.json yet, so pricing falls back to the imported markup and Travel Time is blank until its road distance is measured. Region is a guess (Fandom lists Bosra without one)."
+        },
+        {
+            "id": "ctesiphon",
+            "name": "Ctesiphon",
+            "region": "Tigris River Valley",
+            "culture": "Persian",
+            "religion": "Zoroastrianism",
+            "language": "Persian",
+            "traits": [
+                "Capital City"
+            ],
+            "locallyProduced": [
+                "wheat",
+                "tools",
+                "earthenware",
+                "paper",
+                "glassware",
+                "iron_ingot",
+                "sesame",
+                "coriander",
+                "cotton_yarn",
+                "persian_carpets",
+                "olive_oil"
+            ],
+            "empire": "Sasanian Empire"
+        },
+        {
+            "id": "damascus",
+            "name": "Damascus",
+            "region": "Levant Frontier",
+            "culture": "Syriac",
+            "religion": "Christianity",
+            "language": "Aramaic",
+            "traits": [
+                "Desert City",
+                "Cosmopolitan City"
+            ],
+            "locallyProduced": [
+                "barley",
+                "tools",
+                "weapons",
+                "earthenware",
+                "paper",
+                "copper_ingot",
+                "iron_ingot",
+                "sesame"
+            ],
+            "empire": "Byzantine Empire"
+        },
+        {
+            "id": "dunhuang",
+            "name": "Dunhuang",
+            "region": "unspecified",
+            "culture": "Han Chinese",
+            "religion": "Mahayana Buddhism",
+            "religion_note": "Upgraded from UNCONFIRMED — originally only a single community member's tip (not on the Fandom wiki). Independently cross-confirmed by the Framer info hub's Religions page, which lists exactly 5 religions including 'Mahayana Buddhism' by name. Still not verified against an official source, but no longer resting on one person's word alone.",
+            "language": "Middle Chinese",
+            "traits": [
+                "Frontier City",
+                "Cosmopolitan City",
+                "Fine Tapestry City"
+            ],
+            "locallyProduced": [
+                "barley",
+                "wheat",
+                "honey",
+                "candles",
+                "sancai_dragon_ware",
+                "hides"
+            ],
+            "empire": "Tang Empire",
+            "cultureNote": "Corrected — earlier data had 'Tang' listed as the culture, but the Framer info hub's Cultures page clarifies Tang is the empire/faction, while the culture itself is Han Chinese (same pattern as e.g. 'Persian' culture under the 'Sasanian Empire' faction)."
+        },
+        {
+            "id": "ecbatana",
+            "name": "Ecbatana",
+            "region": "Zagros Mountains",
+            "culture": "Persian",
+            "religion": "Zoroastrianism",
+            "language": "Persian",
+            "traits": [
+                "Homogenous City"
+            ],
+            "locallyProduced": [
+                "barley",
+                "honey",
+                "weapons",
+                "candles",
+                "copper_ingot",
+                "saffron",
+                "leather",
+                "wool",
+                "hides"
+            ],
+            "empire": "Sasanian Empire"
+        },
+        {
+            "id": "isfahan",
+            "name": "Isfahan",
+            "region": "Central Spahan",
+            "culture": "Persian",
+            "religion": "Zoroastrianism",
+            "language": "Persian",
+            "traits": [
+                "Homogenous City",
+                "Fine Tapestry City",
+                "Earthquake Prone City"
+            ],
+            "locallyProduced": [
+                "honey",
+                "tools",
+                "paper",
+                "glassware",
+                "minakari_ware",
+                "candles",
+                "coriander",
+                "olive_oil"
+            ],
+            "empire": "Sasanian Empire",
+            "empireNote": "Inferred, not explicitly stated — the wiki's Reputation page only names Ctesiphon/Susa/Persepolis/Ecbatana under the Sasanian Empire, but this city shares the same Persian culture, so it's assumed to fall under the same faction.",
+            "locallyProducedNote": "Saffron removed and olive_oil added per Info Hub Goods table (Framer favored over Fandom)."
+        },
+        {
+            "id": "merv",
+            "name": "Merv",
+            "region": "unspecified",
+            "culture": "Persian",
+            "religion": "Zoroastrianism",
+            "language": "Persian",
+            "traits": [
+                "Cosmopolitan City",
+                "Frontier City",
+                "Capital City",
+                "Desert City"
+            ],
+            "locallyProduced": [
+                "clay",
+                "earthenware",
+                "copper_ingot",
+                "iron_ingot",
+                "sesame",
+                "linen"
+            ],
+            "empire": "Sasanian Empire",
+            "empireNote": "Inferred, not explicitly stated — the wiki's Reputation page only names Ctesiphon/Susa/Persepolis/Ecbatana under the Sasanian Empire, but this city shares the same Persian culture, so it's assumed to fall under the same faction."
+        },
+        {
+            "id": "palmyra",
+            "name": "Palmyra",
+            "region": "Tigris River Valley",
+            "culture": "Syriac",
+            "religion": "Christianity",
+            "language": "Aramaic",
+            "traits": [
+                "Frontier City",
+                "Cosmopolitan City"
+            ],
+            "locallyProduced": [
+                "wheat",
+                "leather",
+                "linen",
+                "wool",
+                "cotton_yarn"
+            ],
+            "empire": "Byzantine Empire"
+        },
+        {
+            "id": "persepolis",
+            "name": "Persepolis",
+            "region": "Marvdasht Plains",
+            "culture": "Persian",
+            "religion": "Zoroastrianism",
+            "language": "Persian",
+            "traits": [
+                "Ruined City"
+            ],
+            "locallyProduced": [],
+            "note": "Ruined City — no goods traded here per wiki.",
+            "empire": "Sasanian Empire",
+            "locallyProducedNote": "Not covered by the info hub's Goods master table (Persepolis is a Ruined City with no trading, as expected)."
+        },
+        {
+            "id": "samarkand",
+            "name": "Samarkand",
+            "region": "Sogdian Desert",
+            "culture": "Sogdian",
+            "religion": "Manichaeism",
+            "language": "Sogdian",
+            "traits": [
+                "Cosmopolitan City",
+                "Capital City",
+                "Fine Tapestry City",
+                "Fertile City"
+            ],
+            "locallyProduced": [
+                "weapons",
+                "books",
+                "sogdian_ewer",
+                "sesame",
+                "saffron",
+                "leather",
+                "wool",
+                "cotton_yarn"
+            ],
+            "empire": "Sogdia"
+        },
+        {
+            "id": "susa",
+            "name": "Susa",
+            "region": "Zagros Foothills",
+            "culture": "Persian",
+            "religion": "Zoroastrianism",
+            "language": "Persian",
+            "traits": [
+                "Homogenous City",
+                "Fine Tapestry City"
+            ],
+            "locallyProduced": [
+                "clay",
+                "books",
+                "sesame",
+                "saffron",
+                "linen",
+                "wool"
+            ],
+            "empire": "Sasanian Empire"
+        },
+        {
+            "id": "tyre",
+            "name": "Tyre",
+            "region": "Coastal Phoenice",
+            "culture": "Byzantine",
+            "religion": "Christianity",
+            "language": "Greek",
+            "traits": [
+                "Port City"
+            ],
+            "locallyProduced": [
+                "dried_fish",
+                "honey",
+                "olive_oil",
+                "clay",
+                "glassware",
+                "candles",
+                "sea_salt",
+                "linen"
+            ],
+            "empire": "Byzantine Empire"
+        },
+        {
+            "id": "jiayuguan",
+            "name": "Jiayuguan",
+            "region": "unspecified",
+            "culture": "Han Chinese",
+            "religion": "Mahayana Buddhism",
+            "language": "Middle Chinese",
+            "traits": [
+                "Frontier City",
+                "Homogenous City"
+            ],
+            "locallyProduced": [
+                "tools",
+                "weapons",
+                "paper",
+                "iron_ingot",
+                "wool"
+            ],
+            "empire": "Tang Empire"
+        }
+    ]
+}

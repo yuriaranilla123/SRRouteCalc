@@ -1,0 +1,355 @@
+/* Stepper - quantity input with +/- buttons. Used in Route Finder and Specific mode item rows. */
+.stepper-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1 1 140px;
+}
+
+.stepper-field .field-label {
+    font-size: 0.85rem;
+    color: var(--parchment-dim);
+}
+
+.stepper {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--ink-surface-raised);
+    width: fit-content;
+}
+
+.stepper input[type="number"] {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    width: 56px;
+    text-align: center;
+    padding: 0.55rem 0.25rem;
+    -moz-appearance: textfield;
+}
+
+.stepper input[type="number"]::-webkit-inner-spin-button,
+.stepper input[type="number"]::-webkit-outer-spin-button {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.stepper-btn {
+    background: transparent;
+    border: none;
+    color: var(--saffron);
+    font-size: 1rem;
+    font-weight: 600;
+    width: 2rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.stepper-btn:hover {
+    background: var(--ink-surface);
+}
+
+.stepper-btn:first-child {
+    border-right: 1px solid var(--hairline);
+}
+
+.stepper-btn:last-child {
+    border-left: 1px solid var(--hairline);
+}
+
+/* Toggle switch - saddlebag checkboxes. Used in Caravan panel. */
+.toggle-placeholder {
+    visibility: hidden;
+}
+
+.toggle-switch {
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    font-size: 0.78rem;
+    color: var(--parchment-dim);
+    user-select: none;
+    white-space: nowrap;
+}
+
+.toggle-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-track {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    flex-shrink: 0;
+    background: var(--ink-surface-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.toggle-thumb {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--parchment-dim);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.toggle-switch input:checked+.toggle-track {
+    background: var(--saffron-dim);
+    border-color: var(--saffron);
+}
+
+.toggle-switch input:checked+.toggle-track .toggle-thumb {
+    transform: translateX(14px);
+    background: var(--saffron);
+}
+
+.toggle-switch input:focus-visible+.toggle-track {
+    outline: 2px solid var(--saffron);
+    outline-offset: 2px;
+}
+
+/* Header toggles - "Round to whole numbers" and "Show detailed breakdown" sit side by side, wrapping on narrow screens. */
+.header-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+}
+
+/* Tabs - used by Find a Route (Global/Specific) and All Profitable Trades (General Best/Global). */
+.tab-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--parchment-dim);
+    padding: 0.5rem 0.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: -1px;
+}
+
+.tab-btn:hover {
+    color: var(--parchment);
+}
+
+.tab-btn.active {
+    color: var(--saffron);
+    border-bottom-color: var(--saffron);
+}
+
+/* Results table - shared by tradesTable.js (All Profitable Trades + Find a Route Global) */
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+thead th {
+    text-align: left;
+    color: var(--parchment-dim);
+    font-weight: 500;
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+thead th.sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+thead th.sortable:hover {
+    color: var(--parchment);
+}
+
+.sort-indicator {
+    color: var(--saffron);
+    font-size: 0.7rem;
+}
+
+thead th.num,
+td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+tbody td {
+    padding: 0.55rem 0.6rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+tbody tr:hover {
+    background: var(--ink-surface-raised);
+}
+
+td.profit {
+    color: var(--sage);
+    font-weight: 600;
+}
+
+td.placeholder-col {
+    color: var(--hairline);
+}
+
+.return-cargo-cell {
+    white-space: nowrap;
+}
+
+.return-cargo-profit {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--parchment-dim);
+}
+
+td.loss {
+    color: var(--clay);
+    font-weight: 600;
+}
+
+.locked-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    color: var(--clay);
+    border: 1px solid var(--clay);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+    margin-left: 0.4rem;
+}
+
+/*
+  Shared status-color text spans. Previously these were scoped as
+  ".leg-result .locked-msg" / ".leg-result .profit" (Loop Planner only),
+  which silently left Good Explorer's locked message and Specific mode's
+  profit span unstyled since they use the same class names outside that
+  scope. Made global so every panel gets the same colors.
+*/
+.locked-msg {
+    color: var(--clay);
+}
+
+.profit {
+    color: var(--sage);
+    font-weight: 600;
+}
+
+/* Detailed breakdown row - inserted under a trade row by tradesTable.js when the header toggle is on. */
+.breakdown-row td {
+    background: var(--ink-surface-raised);
+    padding: 0.6rem 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.breakdown-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 1.5rem;
+}
+
+.breakdown-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.8rem;
+}
+
+.breakdown-col-title {
+    font-weight: 600;
+    color: var(--parchment-dim);
+    margin-bottom: 0.15rem;
+}
+
+.breakdown-line {
+    color: var(--sage);
+    font-variant-numeric: tabular-nums;
+}
+
+.breakdown-line.breakdown-negative {
+    color: var(--clay);
+}
+
+@media (max-width: 560px) {
+    .breakdown-cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Funding bar - footer widget */
+.funding-bar {
+    position: relative;
+    height: 2.25rem;
+    border-radius: 4px;
+    background: var(--ink-surface-raised);
+    border: 1px solid var(--hairline);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.funding-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    background: linear-gradient(90deg, var(--saffron-dim), var(--saffron));
+    transition: width 0.6s ease;
+}
+
+.funding-label,
+.funding-percent {
+    position: relative;
+    z-index: 1;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink);
+    padding: 0 0.85rem;
+}
+
+.funding-percent {
+    margin-left: auto;
+}
+
+/* Credits - collapsible footer block */
+.credits {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+}
+
+.credits summary {
+    cursor: pointer;
+    color: var(--saffron);
+}
+
+.credits a {
+    color: var(--saffron);
+}
+
+.credits ul {
+    padding-left: 1.1rem;
+}

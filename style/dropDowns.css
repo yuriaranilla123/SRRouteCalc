@@ -1,0 +1,111 @@
+/*
+  Dropdown styles.
+  Style 1 (native): selects keep the browser's own list; the goods search box (typeable) uses a flat .combo-menu that imitates it.
+  Style 2 (themed): same closed look, popup replaced by the themed .combo-menu
+    (js/themedSelect.js for selects, js/goodsCombobox.js for the goods search box).
+*/
+
+/* Closed select - used by both styles */
+select {
+    background: var(--ink-surface-raised);
+    border: 1px solid var(--hairline);
+    color: var(--parchment);
+    padding: 0.55rem 0.65rem;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2.1rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath d='M3 5.5L7 9.5L11 5.5' stroke='%23D4A017' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.65rem center;
+    background-size: 14px;
+}
+
+/* Popup menu - used by the goods search (both styles) and, in Style 2, every select */
+.combo-menu {
+    position: absolute;
+    z-index: 50;
+    margin: 0;
+    padding: 0.25rem 0;
+    list-style: none;
+    max-height: 15rem;
+    overflow-y: auto;
+    background: var(--ink-surface-raised);
+    border: 1px solid var(--hairline);
+    font-size: 0.9rem;
+}
+
+.combo-menu[hidden] {
+    display: none;
+}
+
+.combo-menu li {
+    padding: 0.45rem 0.75rem;
+    color: var(--parchment);
+    cursor: pointer;
+}
+
+.combo-menu .combo-empty {
+    color: var(--parchment-dim);
+    cursor: default;
+}
+
+.combo-menu li.disabled {
+    color: var(--parchment-dim);
+    cursor: default;
+    opacity: 0.6;
+}
+
+/* Style 1: imitates the browser's plain select list (flat, neutral highlight, native dark scrollbar) */
+html[data-dropdown-style="native"] .combo-menu {
+    color-scheme: dark;
+}
+
+html[data-dropdown-style="native"] .combo-menu li:hover,
+html[data-dropdown-style="native"] .combo-menu li.active {
+    background: var(--hairline);
+}
+
+html[data-dropdown-style="native"] .combo-menu li.selected {
+    background: var(--hairline);
+}
+
+/* Style 2: themed */
+html[data-dropdown-style="themed"] .combo-menu {
+    border-radius: 4px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    scrollbar-width: thin;
+    scrollbar-color: var(--saffron-dim) var(--ink-surface-raised);
+}
+
+html[data-dropdown-style="themed"] .combo-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+html[data-dropdown-style="themed"] .combo-menu::-webkit-scrollbar-track {
+    background: var(--ink-surface-raised);
+}
+
+html[data-dropdown-style="themed"] .combo-menu::-webkit-scrollbar-thumb {
+    background: var(--saffron-dim);
+    border-radius: 4px;
+}
+
+html[data-dropdown-style="themed"] .combo-menu::-webkit-scrollbar-thumb:hover {
+    background: var(--saffron);
+}
+
+html[data-dropdown-style="themed"] .combo-menu li:hover,
+html[data-dropdown-style="themed"] .combo-menu li.active {
+    background: var(--ink-surface);
+    color: var(--saffron);
+}
+
+html[data-dropdown-style="themed"] .combo-menu li.selected {
+    color: var(--saffron);
+    font-weight: 600;
+}
