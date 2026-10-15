@@ -148,3 +148,28 @@ test('rank cargo bonus adds one slot per animal', async () => {
     assert.equal(computeTotalCargo('base', animals, state.getCargoData(), false, 3, 0, 1).total, base + 2);
     assert.equal(computeTotalCargo('base', animals, state.getCargoData(), false, 3, 1, 0).total, base + 1);
 });
+
+test('gathered goods cost nothing at their source, processed goods cost the fee, nowhere else', () => {
+    assert.equal(calc.computeBuyPrice('cotton', 'ctesiphon', syriac, opts()), 0);
+    assert.equal(calc.computeBuyPrice('cotton', 'tyre', syriac, opts()), null);
+    assert.equal(calc.computeBuyPrice('milled_grain', 'palmyra', syriac, opts()), 10);
+    assert.equal(calc.computeBuyPrice('milled_grain', 'tyre', syriac, opts()), null);
+    assert.equal(calc.computePriceBreakdown('milled_grain', 'palmyra', syriac, opts(), false).total, 10);
+    assert.ok(calc.computeSellPrice('milled_grain', 'damascus', syriac, opts()) > 10);
+});
+
+test('General Best ranks by profit per minute and only buys where goods are obtainable', () => {
+    const speed = 16;
+    const results = calc.bestRoutePerGood(10, syriac, opts(), speed);
+    const rate = r => r.totalProfit / (travel.computeDistance(r.buyCityId, r.sellCityId) / speed / 60);
+    for (let i = 1; i < results.length; i++) assert.ok(rate(results[i - 1]) >= rate(results[i]) - 1e-9);
+    const cityOf = id => results.find(r => r.goodId === id);
+    for (const id of ['sancai_dragon_ware', 'sogdian_ewer', 'byzantine_silk', 'persian_carpets', 'minakari_ware']) {
+        const r = cityOf(id);
+        if (r) assert.ok(state.getCitiesData().cities.find(c => c.id === r.buyCityId).locallyProduced.includes(id), id);
+    }
+    const grain = cityOf('milled_grain');
+    assert.ok(!grain || (grain.buyPrice === 10 && state.getGoodsData().goods.find(g => g.id === 'milled_grain').sources.cities.includes(grain.buyCityId)));
+    const raw = cityOf('cotton');
+    assert.ok(!raw || raw.buyPrice === 0);
+});
