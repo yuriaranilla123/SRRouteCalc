@@ -1,4 +1,4 @@
-import { getCalcOpts, getReputationData } from '../core/state.js';
+import { getCalcOpts, getReputationData, getGoodsData, getCitiesData } from '../core/state.js';
 import { bestRoutePerGood, allTradesBetween } from '../core/calc.js';
 import { isGoodUnlocked } from '../core/reputationCalc.js';
 import { getContext } from './traderPanel.js';
@@ -20,8 +20,17 @@ export function renderGeneralBest() {
   const playerRanks = getPlayerRanks();
   const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
 
-  const results = bestRoutePerGood(quantity, context, opts)
+  const results = bestRoutePerGood(quantity, context, opts, getCurrentSpeed())
     .filter(r => isGoodUnlocked(r.goodId, playerRanks, reputationData));
+
+  const goods = getGoodsData().goods;
+  const cities = getCitiesData().cities;
+  results.forEach(r => {
+    const good = goods.find(g => g.id === r.goodId);
+    if (good.sources && good.sources.type === 'process') {
+      r.buyLabel = `Any (${cities.find(c => c.id === r.buyCityId).name})`;
+    }
+  });
 
   attachReturnCargo(results, context, opts, playerRanks, reputationData);
   attachTravelStats(results, getCurrentSpeed());

@@ -9,6 +9,16 @@
         },
         {
             "id": "beeswax",
+            "sources": {
+                "type": "gather",
+                "cities": [
+                    "tyre",
+                    "ecbatana",
+                    "isfahan",
+                    "dunhuang"
+                ],
+                "price": 0
+            },
             "name": "Beeswax",
             "basePrice": 11,
             "category": "craft",
@@ -43,6 +53,13 @@
         },
         {
             "id": "copper_ore",
+            "sources": {
+                "type": "gather",
+                "cities": [
+                    "ecbatana"
+                ],
+                "price": 0
+            },
             "name": "Copper Ore",
             "basePrice": 3,
             "category": "metal",
@@ -57,6 +74,16 @@
         },
         {
             "id": "cotton",
+            "sources": {
+                "type": "gather",
+                "cities": [
+                    "ctesiphon",
+                    "palmyra",
+                    "ecbatana",
+                    "isfahan"
+                ],
+                "price": 0
+            },
             "name": "Cotton",
             "basePrice": 3,
             "category": "textile",
@@ -107,6 +134,14 @@
         },
         {
             "id": "iron_ore",
+            "sources": {
+                "type": "gather",
+                "cities": [
+                    "damascus",
+                    "tyre"
+                ],
+                "price": 0
+            },
             "name": "Iron Ore",
             "basePrice": 3,
             "category": "metal",
@@ -127,6 +162,14 @@
         },
         {
             "id": "marble_statues",
+            "sources": {
+                "type": "process",
+                "station": "Stonemason",
+                "cities": [
+                    "susa"
+                ],
+                "price": 75
+            },
             "name": "Marble Statues",
             "basePrice": 100,
             "category": "luxury",
@@ -136,6 +179,22 @@
         },
         {
             "id": "milled_grain",
+            "sources": {
+                "type": "process",
+                "station": "Mill",
+                "cities": [
+                    "antioch",
+                    "bosra",
+                    "palmyra",
+                    "ctesiphon",
+                    "ecbatana",
+                    "susa",
+                    "samarkand",
+                    "dunhuang",
+                    "jiayuguan"
+                ],
+                "price": 10
+            },
             "name": "Milled Grain",
             "basePrice": 10,
             "category": "food",
@@ -164,6 +223,14 @@
         },
         {
             "id": "picked_olives",
+            "sources": {
+                "type": "gather",
+                "cities": [
+                    "tyre",
+                    "antioch"
+                ],
+                "price": 0
+            },
             "name": "Picked Olives",
             "basePrice": 3,
             "category": "food",
@@ -212,6 +279,16 @@
         },
         {
             "id": "unhulled_barley",
+            "sources": {
+                "type": "gather",
+                "cities": [
+                    "damascus",
+                    "bosra",
+                    "ecbatana",
+                    "dunhuang"
+                ],
+                "price": 0
+            },
             "name": "Unhulled Barley",
             "basePrice": 3,
             "category": "food",
@@ -220,6 +297,16 @@
         },
         {
             "id": "unhulled_wheat",
+            "sources": {
+                "type": "gather",
+                "cities": [
+                    "damascus",
+                    "bosra",
+                    "tyre",
+                    "antioch"
+                ],
+                "price": 0
+            },
             "name": "Unhulled Wheat",
             "basePrice": 3,
             "category": "food",

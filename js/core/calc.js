@@ -1,8 +1,8 @@
-import { computeHopCount } from './travelCalc.js';
+import { computeHopCount, computeDistance } from './travelCalc.js';
 
 function interpolateByBase(values, bases, base) {
     const last = bases.length - 1;
-    if (base <= bases[0]) return values[0];
+    if (base <= bases[0]) return values[0] * base / bases[0];
     if (base >= bases[last]) return values[last];
     let i = 0;
     while (bases[i + 1] < base) i++;
@@ -33,13 +33,17 @@ function findCity(citiesData, cityId) {
     return city;
 }
 
-export function isLocallyProduced(city, goodId) {
-    return city.locallyProduced.includes(goodId);
+export function isLocallyProduced(city, goodId, good = null) {
+    return city.locallyProduced.includes(goodId) || !!(good && good.sources && good.sources.cities.includes(city.id));
 }
 
-function nearestProducerHops(goodId, cityId, citiesData, modifiersData) {
-    const real = citiesData.cities.filter(c => c.id !== cityId && c.locallyProduced.includes(goodId)).map(c => c.id);
-    const virtual = modifiersData.distanceBonus.virtualProducers[goodId] || [];
+function sourcedBuyPrice(good, cityId) {
+    return good.sources && good.sources.cities.includes(cityId) ? good.sources.price : null;
+}
+
+function nearestProducerHops(good, cityId, citiesData, modifiersData) {
+    const real = citiesData.cities.filter(c => c.id !== cityId && isLocallyProduced(c, good.id, good)).map(c => c.id);
+    const virtual = modifiersData.distanceBonus.virtualProducers[good.id] || [];
     let min = null;
     for (const id of [...real, ...virtual]) {
         const h = computeHopCount(cityId, id);
@@ -49,10 +53,10 @@ function nearestProducerHops(goodId, cityId, citiesData, modifiersData) {
 }
 
 function supplyDemandDollar(base, city, good, cityId, modifiersData, citiesData) {
-    if (isLocallyProduced(city, good.id)) {
+    if (isLocallyProduced(city, good.id, good)) {
         return 0;
     }
-    const hops = nearestProducerHops(good.id, cityId, citiesData, modifiersData);
+    const hops = nearestProducerHops(good, cityId, citiesData, modifiersData);
     if (hops !== null) {
         return distanceBonus(hops, good, modifiersData);
     }
@@ -249,6 +253,7 @@ export function computeBuyPrice(goodId, cityId, context, opts) {
     const base = good.basePrice;
     if (base === null) return null;
     if (good.originOnly && !isLocallyProduced(city, good.id)) return null;
+    if (good.buyable === false) return sourcedBuyPrice(good, cityId);
 
     let total = base;
     total += supplyDemandDollar(base, city, good, cityId, modifiersData, citiesData);
@@ -290,14 +295,18 @@ export function computePriceBreakdown(goodId, cityId, context, opts, isSell) {
     const city = findCity(citiesData, cityId);
     if (city.traits.includes('Ruined City') || good.basePrice === null) return null;
     if (!isSell && good.originOnly && !isLocallyProduced(city, good.id)) return null;
+    if (!isSell && good.buyable === false) {
+        const price = sourcedBuyPrice(good, cityId);
+        return price === null ? null : { base: price, lines: [], total: price };
+    }
 
     const base = good.basePrice;
     const lines = [];
     let total = base;
     const favSign = isSell ? 1 : -1;
 
-    if (!isLocallyProduced(city, good.id)) {
-        const hops = nearestProducerHops(good.id, cityId, citiesData, modifiersData);
+    if (!isLocallyProduced(city, good.id, good)) {
+        const hops = nearestProducerHops(good, cityId, citiesData, modifiersData);
         const amt = hops !== null
             ? distanceBonus(hops, good, modifiersData)
             : Math.floor(modifiersData.supplyDemand.importedMarkup * base);
@@ -459,8 +468,29 @@ export function allTradesBetween(cityAId, cityBId, quantity, context, opts) {
     return results.sort((a, b) => b.totalProfit - a.totalProfit);
 }
 
-export function bestRoutePerGood(quantity, context, opts) {
+export function bestRoutePerGood(quantity, context, opts, speed = 0) {
     const { goodsData, citiesData } = opts;
+    const seconds = new Map();
+    const minutes = (a, b) => {
+        const key = `${a}|${b}`;
+        if (!seconds.has(key)) {
+            const d = computeDistance(a, b);
+            seconds.set(key, d === null || !speed ? null : d / speed / 60);
+        }
+        return seconds.get(key);
+    };
+    const score = r => {
+        const m = minutes(r.buyCityId, r.sellCityId);
+        return m ? r.totalProfit / m : null;
+    };
+    const better = (a, b) => {
+        if (!b) return true;
+        const sa = a.rankScore;
+        const sb = b.rankScore;
+        if (sa !== null && sb !== null) return sa > sb;
+        if (sa !== null || sb !== null) return sa !== null;
+        return a.totalProfit > b.totalProfit;
+    };
     const results = [];
 
     for (const good of goodsData.goods) {
@@ -469,15 +499,15 @@ export function bestRoutePerGood(quantity, context, opts) {
             for (const sellCity of citiesData.cities) {
                 if (buyCity.id === sellCity.id) continue;
                 const result = computeTripProfit(good.id, buyCity.id, sellCity.id, quantity, context, opts);
-                if (result.possible && (!best || result.totalProfit > best.totalProfit)) {
-                    best = result;
-                }
+                if (!result.possible || result.totalProfit <= 0) continue;
+                result.rankScore = score(result);
+                if (better(result, best)) best = result;
             }
         }
-        if (best && best.totalProfit > 0) results.push(best);
+        if (best) results.push(best);
     }
 
-    return results.sort((a, b) => b.totalProfit - a.totalProfit);
+    return results.sort((a, b) => (better(a, b) ? -1 : 1));
 }
 
 export function bestTradeForDirection(buyCityId, sellCityId, quantity, context, opts) {
