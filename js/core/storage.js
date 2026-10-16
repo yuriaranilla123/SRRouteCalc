@@ -14,6 +14,7 @@ const GROUPS = [
     ['.saddlebag-check', 'slot'],
     ['.guild-perk-check', 'perk'],
 ];
+const SNAPSHOT_KEY = /^[#.A-Za-z0-9_:\- ]{1,64}$/;
 
 function controls(pass) {
     const map = new Map();
@@ -57,15 +58,51 @@ function readStore() {
     }
 }
 
+export function cleanSnapshot(raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    const keys = Object.keys(raw);
+    if (keys.length === 0 || keys.length > 200) return null;
+    const out = {};
+    for (const k of keys) {
+        if (k === '__proto__' || !SNAPSHOT_KEY.test(k)) continue;
+        const v = raw[k];
+        if (typeof v === 'boolean' || (typeof v === 'string' && v.length <= 64)) out[k] = v;
+    }
+    return Object.keys(out).length ? out : null;
+}
+
+export function collectSnapshot() {
+    const snapshot = {};
+    for (const pass of ['ids', 'groups']) {
+        controls(pass).forEach((el, key) => {
+            if (!el.disabled) snapshot[key] = readValue(el);
+        });
+    }
+    return snapshot;
+}
+
+export function applySnapshot(stored, afterCulture) {
+    const touched = [];
+    if (!stored) return touched;
+    controls('ids').forEach((el, key) => {
+        if (Object.prototype.hasOwnProperty.call(stored, key)) {
+            applyValue(el, stored[key]);
+            touched.push(el);
+        }
+    });
+    afterCulture();
+    controls('groups').forEach((el, key) => {
+        if (!el.disabled && Object.prototype.hasOwnProperty.call(stored, key)) {
+            applyValue(el, stored[key]);
+            touched.push(el);
+        }
+    });
+    return touched;
+}
+
 export function saveSettings() {
     try {
-        const snapshot = {};
-        for (const pass of ['ids', 'groups']) {
-            controls(pass).forEach((el, key) => {
-                if (!el.disabled) snapshot[key] = readValue(el);
-            });
-        }
-        window.localStorage.setItem(KEY, JSON.stringify({ v: 1, s: snapshot }));
+        window.localStorage.setItem(KEY, JSON.stringify({ v: 1, s: collectSnapshot() }));
     } catch {
         return;
     }
@@ -82,13 +119,7 @@ export function clearSettings() {
 export function restoreSettings(afterCulture) {
     const stored = readStore();
     if (!stored) return;
-    controls('ids').forEach((el, key) => {
-        if (Object.prototype.hasOwnProperty.call(stored, key)) applyValue(el, stored[key]);
-    });
-    afterCulture();
-    controls('groups').forEach((el, key) => {
-        if (!el.disabled && Object.prototype.hasOwnProperty.call(stored, key)) applyValue(el, stored[key]);
-    });
+    applySnapshot(stored, afterCulture);
     HEADER_TOGGLES.forEach(id => {
         document.getElementById(id).dispatchEvent(new Event('change', { bubbles: true }));
     });

@@ -19,6 +19,8 @@ import { renderCredits } from './panels/creditsPanel.js';
 import { wireGoodsCombobox } from './ui/goodsComboBox.js';
 import { wireThemedSelects } from './ui/themedSelect.js';
 import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
+import { wireLoadouts } from './panels/loadoutPanel.js';
+import { wireMenu } from './ui/menu.js';
 import { restoreSettings, wireAutoSave, clearSettings } from './core/storage.js';
 
 function populateCitySelects() {
@@ -77,6 +79,9 @@ async function init() {
 
     initLegChain();
     wireLegChainReactivity();
+
+    wireMenu();
+    wireLoadouts();
 
     recomputeCaravan();
     renderFaithHint();

@@ -7,9 +7,9 @@ import path from 'node:path';
 const root = path.dirname(fileURLToPath(import.meta.url));
 globalThis.fetch = async url => ({ json: async () => JSON.parse(await readFile(path.join(root, url), 'utf8')) });
 
-const state = await import('./js/core/state.js');
-const calc = await import('./js/core/calc.js');
-const travel = await import('./js/core/travelCalc.js');
+const state = await import('../js/core/state.js');
+const calc = await import('../js/core/calc.js');
+const travel = await import('../js/core/travelCalc.js');
 await state.loadData();
 
 const opts = () => state.getCalcOpts();
@@ -142,7 +142,7 @@ test('origin-only goods can only be bought at their origin but sell anywhere', (
 });
 
 test('rank cargo bonus adds one slot per animal', async () => {
-    const { computeTotalCargo } = await import('./js/core/cargoCalc.js');
+    const { computeTotalCargo } = await import('../js/core/cargoCalc.js');
     const animals = [{ animalId: 'dromedary_camel', saddlebag: false }, { animalId: 'pack_mule', saddlebag: true }];
     const base = computeTotalCargo('base', animals, state.getCargoData(), false, 3, 0, 0).total;
     assert.equal(computeTotalCargo('base', animals, state.getCargoData(), false, 3, 0, 1).total, base + 2);
