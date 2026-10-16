@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="style/routeFinderPanel.css">
     <link rel="stylesheet" href="style/legChainPanel.css">
     <link rel="stylesheet" href="style/menu.css">
+    <link rel="stylesheet" href="style/dialog.css">
     <link rel="stylesheet" href="style/theme-infohub.css">
 </head>
 
@@ -357,9 +358,11 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Good</th>
-                                <th>Buy in</th>
-                                <th>Sell in</th>
+                                <th class="sortable" data-sort-key="good">Good<span class="sort-indicator"></span></th>
+                                <th class="sortable" data-sort-key="buyCity">Buy in<span class="sort-indicator"></span>
+                                </th>
+                                <th class="sortable" data-sort-key="sellCity">Sell in<span
+                                        class="sort-indicator"></span></th>
                                 <th class="num sortable" data-sort-key="buyPrice">Buy price<span
                                         class="sort-indicator"></span></th>
                                 <th class="num sortable" data-sort-key="sellPrice">Sell price<span
@@ -419,6 +422,19 @@
                             <span class="toggle-track"><span class="toggle-thumb"></span></span>
                             <span class="toggle-text">Show detailed breakdown</span>
                         </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="menu-sticky" checked>
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Sticky menu</span>
+                        </label>
+                        <p class="field-hint">Keeps the menu button on screen while you scroll. Turn it off to leave the
+                            button at the top right of the page.</p>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="quick-action">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Quick action</span>
+                        </label>
+                        <p class="field-hint">Skips the confirmation prompt when you update or delete a loadout.</p>
                     </div>
                 </div>
                 <div data-menu-section="style" hidden>

@@ -2,11 +2,18 @@ html.menu-open {
     overflow: hidden;
 }
 
+#app {
+    position: relative;
+}
+
 .menu-btn {
+    position: fixed;
+    top: calc(0.75rem + env(safe-area-inset-top, 0px));
+    right: calc(0.75rem + env(safe-area-inset-right, 0px));
+    z-index: 80;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    align-self: center;
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
@@ -14,7 +21,20 @@ html.menu-open {
     border: 1px solid var(--hairline);
     border-radius: 4px;
     color: var(--saffron);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
     cursor: pointer;
+}
+
+html[data-menu-sticky="off"] .menu-btn {
+    position: absolute;
+    box-shadow: none;
+}
+
+@media (pointer: coarse) {
+    .menu-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+    }
 }
 
 .menu-btn:hover {

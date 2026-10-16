@@ -1,5 +1,9 @@
 const FOCUSABLE = 'button:not([disabled]), input:not([disabled]):not([type="file"]), [href], select:not([disabled])';
 
+export function setMenuSticky(value) {
+    document.documentElement.dataset.menuSticky = value ? 'on' : 'off';
+}
+
 export function wireMenu() {
     const button = document.getElementById('menu-btn');
     const panel = document.getElementById('menu-panel');

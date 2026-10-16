@@ -20,7 +20,7 @@ import { wireGoodsCombobox } from './ui/goodsComboBox.js';
 import { wireThemedSelects } from './ui/themedSelect.js';
 import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
 import { wireLoadouts } from './panels/loadoutPanel.js';
-import { wireMenu } from './ui/menu.js';
+import { wireMenu, setMenuSticky } from './ui/menu.js';
 import { restoreSettings, wireAutoSave, clearSettings } from './core/storage.js';
 
 function populateCitySelects() {
@@ -45,6 +45,10 @@ async function init() {
     document.getElementById('detailed-mode').addEventListener('change', (e) => {
         setDetailedMode(e.target.checked);
         refreshTable();
+    });
+
+    document.getElementById('menu-sticky').addEventListener('change', (e) => {
+        setMenuSticky(e.target.checked);
     });
 
     document.getElementById('infohub-style').addEventListener('change', (e) => {

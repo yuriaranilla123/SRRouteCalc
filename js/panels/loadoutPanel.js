@@ -1,5 +1,6 @@
 import { collectSnapshot, applySnapshot, cleanSnapshot } from '../core/storage.js';
 import { updateNativeLanguageLock } from './traderPanel.js';
+import { confirmAction } from '../ui/confirmDialog.js';
 
 const KEY = 'srrc:loadouts:v1';
 const MAX_LOADOUTS = 20;
@@ -172,7 +173,7 @@ async function importFile(file) {
     setStatus(`Imported ${item.name}. Choose Load to use it.`);
 }
 
-function onListClick(e) {
+async function onListClick(e) {
     const button = e.target.closest('button[data-action]');
     if (!button) return;
     const row = button.closest('.loadout-row');
@@ -183,14 +184,14 @@ function onListClick(e) {
     if (action === 'load') {
         applyLoadout(item);
     } else if (action === 'update') {
-        if (!window.confirm(`Overwrite "${item.name}" with your current settings?`)) return;
+        if (!(await confirmAction(`Overwrite "${item.name}" with your current settings?`))) return;
         item.s = collectSnapshot();
         write();
         setStatus(`Updated ${item.name}.`);
     } else if (action === 'export') {
         exportLoadout(item);
     } else if (action === 'delete') {
-        if (!window.confirm(`Delete "${item.name}"?`)) return;
+        if (!(await confirmAction(`Delete "${item.name}"?`))) return;
         list = list.filter(l => l.id !== item.id);
         if (activeId === item.id) activeId = null;
         write();

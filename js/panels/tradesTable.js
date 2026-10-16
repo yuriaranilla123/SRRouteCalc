@@ -9,8 +9,21 @@ let emptyMessage = 'No profitable trades found.';
 let sortKey = null;
 let sortDir = null; // 'asc' | 'desc' | null (null = the view's own natural order)
 
+function goodName(id) {
+    const good = getGoodsData().goods.find(g => g.id === id);
+    return good ? good.name : '';
+}
+
+function cityName(id) {
+    const city = getCitiesData().cities.find(c => c.id === id);
+    return city ? city.name : '';
+}
+
 function getSortValue(trade, key) {
     switch (key) {
+        case 'good': return goodName(trade.goodId);
+        case 'buyCity': return trade.buyLabel || cityName(trade.buyCityId);
+        case 'sellCity': return cityName(trade.sellCityId);
         case 'buyPrice': return trade.buyPrice;
         case 'sellPrice': return trade.sellPrice;
         case 'profitPerUnit': return trade.profitPerUnit;
@@ -29,6 +42,10 @@ function compareTrades(a, b) {
     if (av == null && bv == null) return 0;
     if (av == null) return 1;
     if (bv == null) return -1;
+    if (typeof av === 'string' && typeof bv === 'string') {
+        const order = av.localeCompare(bv, undefined, { sensitivity: 'base' });
+        return sortDir === 'asc' ? order : -order;
+    }
     return sortDir === 'asc' ? av - bv : bv - av;
 }
 
