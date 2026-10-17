@@ -124,7 +124,7 @@ export function wireTabControls() {
     refreshIfPerLegActive();
   });
 
-  ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility'].forEach(id => {
+  ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility', 'match-game-bugs'].forEach(id => {
     document.getElementById(id).addEventListener('change', () => {
       refreshIfGeneralBestActive();
       refreshIfPerLegActive();

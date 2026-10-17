@@ -334,7 +334,7 @@ export function wireLegChainReactivity() {
     });
     document.getElementById('round-to-int').addEventListener('change', recomputeAll);
 
-    ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility'].forEach(id => {
+    ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility', 'match-game-bugs'].forEach(id => {
         document.getElementById(id).addEventListener('change', recomputeAll);
     });
     document.querySelectorAll('.language-select, .guild-perk-check').forEach(select => {

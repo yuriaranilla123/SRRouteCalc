@@ -307,6 +307,18 @@
             "note": "Limited supply. Not mentioned by the tester as gamepass-obtainable like the other three colors - unconfirmed either way."
         },
         {
+            "id": "han_heavenly_horse",
+            "name": "Han Heavenly Horse",
+            "type": "horse",
+            "cargo": 4,
+            "cargoWithSaddlebag": null,
+            "speedBonus": 6,
+            "price": 599,
+            "currency": "robux",
+            "note": "Info Hub, animal 7 of 7. Limited gamepass, no sale city. Cannot use a saddlebag, like the Nisean horses (confirmed by a contributor).",
+            "isGamepass": true
+        },
+        {
             "id": "indian_elephant",
             "name": "Indian Elephant",
             "type": "elephant",

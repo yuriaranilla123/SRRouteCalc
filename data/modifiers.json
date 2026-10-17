@@ -23,10 +23,10 @@
             "description": "+5% price bonus on all goods"
         },
         "Capital City": {
-            "appliesTo": "category:craft_textile",
+            "appliesTo": "luxury",
             "modifier": 0.1,
             "description": "+10% price increase for luxury goods (\"Capital Luxury Trade\" in-game)",
-            "note": "Corrected from 'category:luxury' - no good in goods.json ever had category 'luxury', so this modifier was permanently dead code. Screenshots confirm it fires on craft-category goods (Byzantine Silk, Sogdian Ewer, Minakari Ware, Sancai Dragon Ware) and textile-category goods (Persian Carpets) in Capital cities, and does NOT fire on a spice-category good (Sesame) bought/sold in Merv (a Capital city) - so the gate is category:craft_textile, not a blanket luxury-price-tier flag."
+            "note": "Re-gated to luxury goods (goods with originOnly, or category 'luxury'). Earlier gate was category craft or textile, but two Bosra (a Capital city) screenshots show NO Capital line on Earthenware or Books, both craft. All earlier confirmed hits (Byzantine Silk, Persian Carpets, Sancai Dragon Ware, Sogdian Ewer, Minakari Ware) are originOnly goods, and Sesame still gets none. Inferred from the Info Hub wording 'luxury goods' plus those screenshots."
         },
         "Frontier City": {
             "appliesTo": "goods:tools,weapons",
@@ -65,13 +65,19 @@
             "modifier": -0.1,
             "description": "10% price decrease for food items (Info Hub).",
             "note": "Sign is a guess: treated as a penalty-style trait like Homogenous. Unconfirmed by any itemized screenshot."
+        },
+        "Oasis City": {
+            "appliesTo": "none",
+            "modifier": 0,
+            "description": "Recent conflict has limited the goods available for purchase here.",
+            "note": "Info Hub. Used by Thantia and Mephaat, which are not in the calculator."
         }
     },
     "religionModifiers": {
         "_source": "SR:TS Information Hub 'Religions' page, captured via a headless-browser crawl that clicks through every carousel slide (a plain HTTP fetch only ever saw the first/active slide - confirmed via DevTools that the '>' button is a live JS-driven element, not a static list merely hidden by CSS).",
         "_faithMechanic": "Faith [points] are earned by praying at one's own religion's site, capped at 500 total / 100 per prayer session. Level 1 at 5 Faith, Level 2 at 120 Faith, Level 3 at 300 Faith. Each religion's effects below are gated behind reaching that level - they do NOT apply at Faith Level 0, unlike the previous (incorrect) version of this file which applied everything unconditionally the moment a religion was selected.",
         "_buildingCities": "Each religion's 'buildingCities' list traces to that religion's 'Location' field on the Religions page - i.e. which cities have that religion's building present. This is NOT the same as a city's own dominant religion in cities.json - e.g. Samarkand's dominant religion is Manichaeism, but it still appears in Christianity's buildingCities, meaning a Church exists there too (cosmopolitan cities host multiple faiths' buildings). Used for Christianity Level 1 (Church Hospitality) only - see christianBrothersGating note below for Level 2.",
-        "christianBrothersGating": "IMPORTANT: Christianity's Level 2 effect ('Brothers in Christ') is NOT gated on buildingCities, despite what its name suggests and despite earlier versions of this file assuming so. ~17 screenshot trades across 8 cities show it firing in every city EXCEPT the 4 Sasanian Empire cities (Ctesiphon, Susa, Ecbatana, Isfahan) - including firing in Samarkand, Dunhuang, and Jiayuguan, none of which are Christian-dominant or on the old buildingCities list's core set. The real gate, wired in calc.js's religionOwnModifiersDollar, is city.empire !== 'Sasanian Empire'. Kept as a plain empire check rather than a data list since it matches the in-game text ('Brothers in Christ' implying solidarity against a specific rival empire, not literal church presence).",
+        "christianBrothersGating": "IMPORTANT: Christianity's Level 2 effect ('Brothers in Christ') is NOT gated on buildingCities, despite what its name suggests and despite earlier versions of this file assuming so. ~17 screenshot trades across 8 cities show it firing in every city EXCEPT the 4 Sasanian Empire cities (Ctesiphon, Susa, Ecbatana, Isfahan) - including firing in Samarkand, Dunhuang, and Jiayuguan, none of which are Christian-dominant or on the old buildingCities list's core set. The real gate, wired in calc.js's religionOwnModifiersDollar, is the city's empire not being in levels['2'].excludedEmpires (Sasanian Empire; Rashidun Caliphate was added after a Petra sale showed no Brothers in Christ line). Kept as a plain empire check rather than a data list since it matches the in-game text ('Brothers in Christ' implying solidarity against a specific rival empire, not literal church presence).",
         "Christianity": {
             "buildingCities": [
                 "bosra",
@@ -97,7 +103,11 @@
                 "2": {
                     "name": "Brothers In Christ",
                     "christianCityBonus": 0.1,
-                    "gatingNote": "See top-level christianBrothersGating note - gates on city.empire !== 'Sasanian Empire', not buildingCities."
+                    "gatingNote": "See top-level christianBrothersGating note - gates on city.empire !== 'Sasanian Empire', not buildingCities.",
+                    "excludedEmpires": [
+                        "Sasanian Empire",
+                        "Rashidun Caliphate"
+                    ]
                 },
                 "3": {
                     "name": "Ecclesiastical Influence",
@@ -234,6 +244,34 @@
                 }
             }
         },
+        "Islam": {
+            "buildingCities": [
+                "petra"
+            ],
+            "note": "Info Hub Religions page. Its description is still '?' there and its only location is Petra.",
+            "levels": {
+                "1": {
+                    "name": "Fellowship of the Ummah",
+                    "status": "Not wired: food and housing purchases are shop purchases, not trade goods."
+                },
+                "2": {
+                    "name": "Trusted Caravan",
+                    "sellBonus": 0.1,
+                    "note": "Wired as sell-only, all goods, in cities with a Mosque. UNCONFIRMED by a screenshot."
+                },
+                "3": {
+                    "name": "House of Knowledge",
+                    "goodsBonus": {
+                        "goods": [
+                            "books",
+                            "paper"
+                        ],
+                        "modifier": 0.2
+                    },
+                    "note": "Scientific Instruments is not in goods.json. Buy and sell both treated as more valuable like Manichaeism, UNCONFIRMED."
+                }
+            }
+        },
         "_jiayuguanNote": "Jiayuguan added to Christianity/Zoroastrianism/Manichaeism/Mahayana Buddhism buildingCities per the infohub Religions page (Aug 2026 update); confirmed for Christianity by a Church Hospitality line firing there in screenshots."
     },
     "languageProficiency": {
@@ -259,14 +297,16 @@
         "Aramaic",
         "Persian",
         "Sogdian",
-        "Middle Chinese"
+        "Middle Chinese",
+        "Arabic"
     ],
     "nativeLanguageByCulture": {
         "Byzantine": "Greek",
         "Syriac": "Aramaic",
         "Persian": "Persian",
         "Sogdian": "Sogdian",
-        "Han Chinese": "Middle Chinese"
+        "Han Chinese": "Middle Chinese",
+        "Arab": "Arabic"
     },
     "reputationDiscount": {
         "_status": "WIRED. Rank 6 gives a 10% buy-only discount on goods: inside the empire for Byzantine/Sasanian, outside it for Sogdia/Tang (Info Hub). Confirmed by 5 Sasanian screenshots only; the outside variants and stacking across factions are unconfirmed. Rank 3's discount covers shops (cosmetics/animals), not goods, so it is not applied.",
@@ -490,8 +530,12 @@
                 "description": "Common goods sell for 20% more",
                 "effect": "sellBonus",
                 "rate": 0.2,
-                "rarity": "any",
-                "status": "UNCONFIRMED: fired on an Exotic good in screenshots"
+                "rarity": "common",
+                "status": "Common only, per the Info Hub and a contributor. In game it is currently bugged and also boosts Rare and Exotic goods; that is modelled by bugRarities and only applies when 'Match game bugs' is on.",
+                "bugRarities": [
+                    "rare",
+                    "exotic"
+                ]
             },
             {
                 "id": "merchant_favors",

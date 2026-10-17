@@ -312,6 +312,27 @@
                 "wool"
             ],
             "empire": "Tang Empire"
+        },
+        {
+            "id": "petra",
+            "name": "Petra",
+            "region": "unspecified",
+            "culture": "Arab",
+            "religion": "Islam",
+            "language": "Arabic",
+            "traits": [
+                "Cosmopolitan City",
+                "Frontier City"
+            ],
+            "locallyProduced": [
+                "wheat",
+                "copper_ingot",
+                "clay",
+                "frankincense",
+                "myrrh"
+            ],
+            "empire": "Rashidun Caliphate",
+            "note": "Added from the Info Hub (culture, religion, traits, Frankincense and Myrrh) plus in-game store screenshots (Wheat, Copper Ingot and Clay marked Locally Produced). The producing list may be incomplete. Region is unknown. Thantia and Mephaat (Oasis cities with limited goods) are intentionally not added."
         }
     ]
 }

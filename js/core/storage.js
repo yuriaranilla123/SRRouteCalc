@@ -1,7 +1,7 @@
 const KEY = 'srrc:settings:v1';
 const HEADER_TOGGLES = ['round-to-int', 'detailed-mode', 'menu-sticky', 'dropdown-style', 'infohub-style'];
 const IDS = [
-    'round-to-int', 'detailed-mode', 'menu-sticky', 'quick-action', 'dropdown-style', 'infohub-style',
+    'round-to-int', 'detailed-mode', 'menu-sticky', 'quick-action', 'match-game-bugs', 'dropdown-style', 'infohub-style',
     'culture', 'religion', 'faith-level',
     'gamepass-extra-cargo', 'gamepass-speed-boost', 'gamepass-extra-caravan-slot', 'gamepass-nobility',
     'gamepass-royal-indian-elephant', 'gamepass-royal-white-nisean', 'gamepass-starter-mule', 'gamepass-starter-backpack',

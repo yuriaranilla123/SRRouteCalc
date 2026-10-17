@@ -7,16 +7,16 @@ import path from 'node:path';
 const root = path.dirname(fileURLToPath(import.meta.url));
 globalThis.fetch = async url => ({ json: async () => JSON.parse(await readFile(path.join(root, url), 'utf8')) });
 
-const state = await import('../js/core/state.js');
-const calc = await import('../js/core/calc.js');
-const travel = await import('../js/core/travelCalc.js');
+const state = await import('./js/core/state.js');
+const calc = await import('./js/core/calc.js');
+const travel = await import('./js/core/travelCalc.js');
 await state.loadData();
 
 const opts = () => state.getCalcOpts();
 const syriac = {
     culture: 'Syriac', religion: 'Christianity', faithLevel: 3, playerRanks: {}, hasNobility: false,
     languages: { Greek: 'Broken', Aramaic: 'Native', Persian: 'Fluent', Sogdian: 'Fluent', 'Middle Chinese': 'Fluent' },
-    guildPerks: { junk_hoarding: true },
+    guildPerks: { junk_hoarding: true }, matchGameBugs: true,
 };
 const plain = { culture: 'Byzantine', religion: 'Mahayana Buddhism', faithLevel: 0, playerRanks: {}, hasNobility: false, languages: {} };
 
@@ -66,7 +66,7 @@ test('Brothers in Christ fires everywhere except Sasanian cities', () => {
     for (const c of state.getCitiesData().cities) {
         if (c.traits.includes('Ruined City')) continue;
         const has = calc.computePriceBreakdown('wheat', c.id, syriac, opts(), false).lines.some(l => l.label === 'Brothers in Christ');
-        assert.equal(has, c.empire !== 'Sasanian Empire', c.id);
+        assert.equal(has, !['Sasanian Empire', 'Rashidun Caliphate'].includes(c.empire), c.id);
     }
 });
 
@@ -120,11 +120,19 @@ test('tester screenshots: buys and sells match the game', () => {
 
 test('guild perks are sell only and rarity perks need a rarity', () => {
     assert.equal(calc.computeBuyPrice('sogdian_ewer', 'samarkand', { ...syriac, guildPerks: {} }, opts()), 855);
-    const rare = { ...syriac, guildPerks: { artisan_connections: true } };
-    assert.equal(calc.computeSellPrice('sogdian_ewer', 'dunhuang', rare, opts()), 2025);
-    const o = JSON.parse(JSON.stringify(opts()));
-    o.goodsData.goods.find(g => g.id === 'sogdian_ewer').rarity = 'exotic';
-    assert.equal(calc.computeSellPrice('sogdian_ewer', 'dunhuang', rare, o), 2025 + 75);
+    const artisan = { ...syriac, guildPerks: { artisan_connections: true } };
+    const noRarity = JSON.parse(JSON.stringify(opts()));
+    delete noRarity.goodsData.goods.find(g => g.id === 'sogdian_ewer').rarity;
+    assert.equal(calc.computeSellPrice('sogdian_ewer', 'dunhuang', artisan, noRarity), 2025);
+    assert.equal(calc.computeSellPrice('sogdian_ewer', 'dunhuang', artisan, opts()), 2025 + 75);
+});
+
+test('Junk Hoarding is common only unless Match game bugs is on', () => {
+    const junk = { ...syriac, guildPerks: { junk_hoarding: true } };
+    assert.equal(calc.computeSellPrice('sogdian_ewer', 'dunhuang', { ...junk, matchGameBugs: false }, opts()), 2025);
+    assert.equal(calc.computeSellPrice('sogdian_ewer', 'dunhuang', { ...junk, matchGameBugs: true }, opts()), 2325);
+    const common = calc.computePriceBreakdown('earthenware', 'bosra', { ...junk, matchGameBugs: false }, opts(), true);
+    assert.ok(common.lines.some(l => l.label === 'Junk Hoarding'));
 });
 
 test('extrapolated grid is increasing in hops', () => {
@@ -142,7 +150,7 @@ test('origin-only goods can only be bought at their origin but sell anywhere', (
 });
 
 test('rank cargo bonus adds one slot per animal', async () => {
-    const { computeTotalCargo } = await import('../js/core/cargoCalc.js');
+    const { computeTotalCargo } = await import('./js/core/cargoCalc.js');
     const animals = [{ animalId: 'dromedary_camel', saddlebag: false }, { animalId: 'pack_mule', saddlebag: true }];
     const base = computeTotalCargo('base', animals, state.getCargoData(), false, 3, 0, 0).total;
     assert.equal(computeTotalCargo('base', animals, state.getCargoData(), false, 3, 0, 1).total, base + 2);

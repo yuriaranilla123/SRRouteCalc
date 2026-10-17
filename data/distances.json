@@ -71,6 +71,12 @@
             "distance": 5120
         },
         {
+            "from": "bosra",
+            "to": "petra",
+            "distance": 5420,
+            "note": "Derived from a travel-time table: 4m 31s at walk speed 20 is 271 s x 20 studs/s. Accurate to about 20 studs."
+        },
+        {
             "from": "hyrcania",
             "to": "hyrcania_pass",
             "distance": 999999

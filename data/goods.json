@@ -31,7 +31,9 @@
             "name": "Byzantine Silk",
             "basePrice": 1000,
             "category": "textile",
-            "requirement": "Level 4 'Mathetes Guild Apprentice' reputation with the Byzantine Empire"
+            "requirement": "Level 4 'Mathetes Guild Apprentice' reputation with the Byzantine Empire",
+            "rarity": "exotic",
+            "rarityNote": "UNCONFIRMED: assumed exotic like the other goods that need a reputation rank."
         },
         {
             "id": "candles",
@@ -43,13 +45,15 @@
             "id": "clay",
             "name": "Clay",
             "basePrice": 10,
-            "category": "craft"
+            "category": "craft",
+            "rarity": "common"
         },
         {
             "id": "copper_ingot",
             "name": "Copper Ingot",
             "basePrice": 35,
-            "category": "metal"
+            "category": "metal",
+            "rarity": "common"
         },
         {
             "id": "copper_ore",
@@ -106,7 +110,8 @@
             "id": "earthenware",
             "name": "Earthenware",
             "basePrice": 20,
-            "category": "craft"
+            "category": "craft",
+            "rarity": "common"
         },
         {
             "id": "glassware",
@@ -219,7 +224,9 @@
             "name": "Persian Carpets",
             "basePrice": 1000,
             "category": "textile",
-            "requirement": "Level 4 'Sagerd Guild Apprentice' reputation with the Sasanian Empire"
+            "requirement": "Level 4 'Sagerd Guild Apprentice' reputation with the Sasanian Empire",
+            "rarity": "exotic",
+            "rarityNote": "UNCONFIRMED: assumed exotic like the other goods that need a reputation rank."
         },
         {
             "id": "picked_olives",
@@ -249,7 +256,8 @@
             "name": "Sancai Dragon Ware",
             "basePrice": 1500,
             "category": "craft",
-            "requirement": "Level 4 'Licensed Merchant' reputation with the Tang Empire"
+            "requirement": "Level 4 'Licensed Merchant' reputation with the Tang Empire",
+            "rarity": "exotic"
         },
         {
             "id": "sea_salt",
@@ -269,7 +277,8 @@
             "name": "Sogdian Ewer",
             "basePrice": 1500,
             "category": "craft",
-            "requirement": "Level 4 'Chakar Guild Apprentice' reputation with Sogdia"
+            "requirement": "Level 4 'Chakar Guild Apprentice' reputation with Sogdia",
+            "rarity": "exotic"
         },
         {
             "id": "tools",
@@ -323,7 +332,8 @@
             "id": "wheat",
             "name": "Wheat",
             "basePrice": 10,
-            "category": "agriculture"
+            "category": "agriculture",
+            "rarity": "common"
         },
         {
             "id": "wool",
@@ -343,6 +353,20 @@
             "name": "Minakari Ware",
             "basePrice": 300,
             "category": "craft"
+        },
+        {
+            "id": "frankincense",
+            "name": "Frankincense",
+            "basePrice": 250,
+            "category": "spice",
+            "note": "Info Hub: produced in Petra. Category UNCONFIRMED (spice is a guess)."
+        },
+        {
+            "id": "myrrh",
+            "name": "Myrrh",
+            "basePrice": 1000,
+            "category": "spice",
+            "note": "Info Hub: produced in Petra. Category UNCONFIRMED (spice is a guess)."
         }
     ],
     "_priceHistory": [

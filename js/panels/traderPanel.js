@@ -68,6 +68,7 @@ export function getContext() {
         faithLevel: parseInt(document.getElementById('faith-level').value, 10) || 0,
         playerRanks: getPlayerRanks(),
         hasNobility: document.getElementById('gamepass-nobility').checked,
+        matchGameBugs: document.getElementById('match-game-bugs').checked,
         guildPerks: getGuildPerks(),
         languages,
     };
