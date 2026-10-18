@@ -94,7 +94,8 @@ export function wireThemedSelects() {
             if (e.key === 'ArrowDown') { e.preventDefault(); highlight(index + 1); }
             else if (e.key === 'ArrowUp') { e.preventDefault(); highlight(index - 1); }
             else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(index); }
-            else if (e.key === 'Escape' || e.key === 'Tab') close();
+            else if (e.key === 'Escape') { e.stopPropagation(); close(); }
+            else if (e.key === 'Tab') close();
         } else if (!sel.disabled && (e.key === 'Enter' || e.key === ' ' || e.key === 'F4' || (e.altKey && e.key === 'ArrowDown'))) {
             e.preventDefault();
             open(sel);

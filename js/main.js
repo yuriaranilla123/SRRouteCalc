@@ -21,6 +21,7 @@ import { wireThemedSelects } from './ui/themedSelect.js';
 import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
 import { wireLoadouts } from './panels/loadoutPanel.js';
 import { wireMenu, setMenuSticky } from './ui/menu.js';
+import { applySavedStyle, wireStylePanel } from './panels/stylePanel.js';
 import { restoreSettings, wireAutoSave, clearSettings } from './core/storage.js';
 
 function populateCitySelects() {
@@ -36,6 +37,7 @@ function populateCitySelects() {
 }
 
 async function init() {
+    applySavedStyle();
     await loadData();
 
     document.getElementById('round-to-int').addEventListener('change', (e) => {
@@ -86,6 +88,7 @@ async function init() {
 
     wireMenu();
     wireLoadouts();
+    wireStylePanel();
 
     recomputeCaravan();
     renderFaithHint();
