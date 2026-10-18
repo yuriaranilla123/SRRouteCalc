@@ -118,7 +118,7 @@ export function wireRouteFinderReactivity() {
 
   document.getElementById('round-to-int').addEventListener('change', recalculateIfGlobalActive);
 
-  ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility', 'match-game-bugs'].forEach(id => {
+  ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility', 'match-game-bugs', 'allow-imports'].forEach(id => {
     document.getElementById(id).addEventListener('change', recalculateIfGlobalActive);
   });
   document.querySelectorAll('.language-select, .guild-perk-check').forEach(select => {

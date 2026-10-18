@@ -1,5 +1,12 @@
 import { computeDistance } from './travelCalc.js';
 import { computeBuyPrice, computeSellPrice } from './pricing.js';
+import { isLocallyProduced } from './lookup.js';
+
+function canBuy(good, cityId, context, opts) {
+    if (context.allowImports) return true;
+    const city = opts.citiesData.cities.find(c => c.id === cityId);
+    return !!city && isLocallyProduced(city, good.id, good);
+}
 
 export function computeTripProfit(goodId, buyCityId, sellCityId, quantity, context, opts) {
     const buyPrice = computeBuyPrice(goodId, buyCityId, context, opts);
@@ -35,6 +42,7 @@ export function allTradesBetween(cityAId, cityBId, quantity, context, opts) {
 
     for (const good of goodsData.goods) {
         for (const [buyCity, sellCity] of [[cityAId, cityBId], [cityBId, cityAId]]) {
+            if (!canBuy(good, buyCity, context, opts)) continue;
             const result = computeTripProfit(good.id, buyCity, sellCity, quantity, context, opts);
             if (result.possible && result.totalProfit > 0) {
                 results.push(result);
@@ -72,6 +80,7 @@ export function bestRoutePerGood(quantity, context, opts, speed = 0) {
     for (const good of goodsData.goods) {
         let best = null;
         for (const buyCity of citiesData.cities) {
+            if (!canBuy(good, buyCity.id, context, opts)) continue;
             for (const sellCity of citiesData.cities) {
                 if (buyCity.id === sellCity.id) continue;
                 const result = computeTripProfit(good.id, buyCity.id, sellCity.id, quantity, context, opts);
@@ -89,6 +98,7 @@ export function bestRoutePerGood(quantity, context, opts, speed = 0) {
 export function bestTradeForDirection(buyCityId, sellCityId, quantity, context, opts) {
     let best = null;
     for (const good of opts.goodsData.goods) {
+        if (!canBuy(good, buyCityId, context, opts)) continue;
         const result = computeTripProfit(good.id, buyCityId, sellCityId, quantity, context, opts);
         if (result.possible && (!best || result.totalProfit > best.totalProfit)) {
             best = result;

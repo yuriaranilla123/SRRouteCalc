@@ -69,6 +69,7 @@ export function getContext() {
         playerRanks: getPlayerRanks(),
         hasNobility: document.getElementById('gamepass-nobility').checked,
         matchGameBugs: document.getElementById('match-game-bugs').checked,
+        allowImports: document.getElementById('allow-imports').checked,
         guildPerks: getGuildPerks(),
         languages,
     };

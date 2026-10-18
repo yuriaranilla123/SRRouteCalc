@@ -181,3 +181,19 @@ test('General Best ranks by profit per minute and only buys where goods are obta
     const raw = cityOf('cotton');
     assert.ok(!raw || raw.buyPrice === 0);
 });
+
+test('route searches buy only where the good is produced unless imports are allowed', () => {
+    const goods = state.getGoodsData().goods;
+    const producesIn = (goodId, cityId) => {
+        const good = goods.find(g => g.id === goodId);
+        const city = state.getCitiesData().cities.find(c => c.id === cityId);
+        return city.locallyProduced.includes(goodId) || !!(good.sources && good.sources.cities.includes(cityId));
+    };
+    for (const r of calc.bestRoutePerGood(10, syriac, opts(), 16)) {
+        assert.ok(producesIn(r.goodId, r.buyCityId), `${r.goodId} bought in ${r.buyCityId}`);
+    }
+    const closed = calc.allTradesBetween('damascus', 'bosra', 10, syriac, opts());
+    for (const t of closed) assert.ok(producesIn(t.goodId, t.buyCityId), `${t.goodId} bought in ${t.buyCityId}`);
+    const open = calc.allTradesBetween('damascus', 'bosra', 10, { ...syriac, allowImports: true }, opts());
+    assert.ok(open.length > closed.length);
+});
