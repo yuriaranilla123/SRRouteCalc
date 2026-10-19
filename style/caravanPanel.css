@@ -19,12 +19,12 @@
 
 .caravan-total {
     margin: 1rem 0 0;
-    font-size: 0.9rem;
+    font-size: calc(0.9rem * var(--ts-body, 1));
     color: var(--parchment-dim);
 }
 
 .caravan-total strong {
-    color: var(--saffron);
+    color: var(--accent-text);
     font-variant-numeric: tabular-nums;
 }
 

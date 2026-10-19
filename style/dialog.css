@@ -21,7 +21,7 @@
 .confirm-message {
     margin: 0 0 1.1rem;
     font-family: var(--font-serif);
-    font-size: 1rem;
+    font-size: calc(1rem * var(--ts-body, 1));
     line-height: 1.45;
     color: var(--parchment);
     overflow-wrap: anywhere;

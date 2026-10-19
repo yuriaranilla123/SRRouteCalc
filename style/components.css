@@ -7,7 +7,7 @@
 }
 
 .stepper-field .field-label {
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--ts-small, 1));
     color: var(--parchment-dim);
 }
 
@@ -42,7 +42,7 @@
     background: transparent;
     border: none;
     color: var(--saffron);
-    font-size: 1rem;
+    font-size: calc(1rem * var(--ts-control, 1));
     font-weight: 600;
     width: 2rem;
     cursor: pointer;
@@ -73,7 +73,7 @@
     align-items: center;
     gap: 0.4rem;
     cursor: pointer;
-    font-size: 0.78rem;
+    font-size: calc(0.78rem * var(--ts-control, 1));
     color: var(--parchment-dim);
     user-select: none;
     white-space: nowrap;
@@ -145,7 +145,7 @@
     color: var(--parchment-dim);
     padding: 0.5rem 0.25rem;
     font-family: var(--font-sans);
-    font-size: 0.9rem;
+    font-size: calc(0.9rem * var(--ts-control, 1));
     font-weight: 500;
     cursor: pointer;
     margin-bottom: -1px;
@@ -168,7 +168,7 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.88rem;
+    font-size: calc(0.88rem * var(--ts-table, 1));
 }
 
 thead th {
@@ -190,8 +190,8 @@ thead th.sortable:hover {
 }
 
 .sort-indicator {
-    color: var(--saffron);
-    font-size: 0.7rem;
+    color: var(--accent-text);
+    font-size: calc(0.7rem * var(--ts-table, 1));
 }
 
 thead th.num,
@@ -224,7 +224,7 @@ td.placeholder-col {
 
 .return-cargo-profit {
     display: block;
-    font-size: 0.75rem;
+    font-size: calc(0.75rem * var(--ts-table, 1));
     color: var(--parchment-dim);
 }
 
@@ -235,7 +235,7 @@ td.loss {
 
 .locked-badge {
     display: inline-block;
-    font-size: 0.7rem;
+    font-size: calc(0.7rem * var(--ts-table, 1));
     color: var(--clay);
     border: 1px solid var(--clay);
     border-radius: 999px;
@@ -276,7 +276,7 @@ td.loss {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--ts-table, 1));
 }
 
 .breakdown-col-title {
@@ -325,7 +325,7 @@ td.loss {
 .funding-percent {
     position: relative;
     z-index: 1;
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--ts-small, 1));
     font-weight: 600;
     color: var(--ink);
     padding: 0 0.85rem;
@@ -338,26 +338,27 @@ td.loss {
 /* Credits - collapsible footer block */
 .credits {
     margin-bottom: 1rem;
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--ts-small, 1));
 }
 
 .credits summary {
     cursor: pointer;
-    color: var(--saffron);
+    color: var(--accent-text);
 }
 
 .credits a {
-    color: var(--saffron);
+    color: var(--accent-text);
 }
 
 .credits ul {
     padding-left: 1.1rem;
 }
+
 .link-btn {
     background: none;
     border: none;
     padding: 0;
-    color: var(--saffron);
+    color: var(--accent-text);
     font: inherit;
     text-decoration: underline;
     cursor: pointer;

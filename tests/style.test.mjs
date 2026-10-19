@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanStyle, emptyStyle, isDefaultStyle, COLOR_VARS, SIZE } from './js/ui/styleStore.js';
+import { cleanStyle, emptyStyle, isDefaultStyle, COLOR_VARS, TEXT_SIZES, SIZE } from './js/ui/styleStore.js';
 import { contrastRatio } from './js/ui/contrast.js';
 
 test('contrast ratio of black on white is 21', () => {
@@ -10,20 +10,27 @@ test('contrast ratio of black on white is 21', () => {
 
 test('cleanStyle keeps only valid colors, fonts and sizes', () => {
     const style = cleanStyle({
-        colors: { ink: '#ABCDEF', saffron: 'red', parchment: '#12345', __proto__: '#000000', bogus: '#000000' },
+        colors: { ink: '#ABCDEF', saffron: 'red', parchment: '#12345', __proto__: '#000000', bogus: '#000000', title: '#102030' },
         fonts: { heading: 'caudex', body: 'comic-sans' },
-        size: 117,
+        sizes: { title: 117, heading: 100, body: 999, small: 'big', table: 70.4, control: 150 },
     });
-    assert.deepEqual(style.colors, { ink: '#abcdef' });
+    assert.deepEqual(style.colors, { ink: '#abcdef', title: '#102030' });
     assert.deepEqual(style.fonts, { heading: 'caudex' });
-    assert.equal(style.size, 115);
+    assert.deepEqual(style.sizes, { title: 117, table: 70, control: 150 });
     assert.equal(Object.keys(style.colors).every(k => COLOR_VARS.some(v => v.id === k)), true);
+    assert.equal(Object.keys(style.sizes).every(k => TEXT_SIZES.some(t => t.id === k)), true);
 });
 
-test('cleanStyle rejects junk and out of range sizes', () => {
+test('title and highlighted text are separate from the accent', () => {
+    const ids = COLOR_VARS.map(v => v.id);
+    assert.ok(ids.includes('title') && ids.includes('accent-text') && ids.includes('saffron'));
+    assert.equal(COLOR_VARS.find(v => v.id === 'saffron').group, 'controls');
+});
+
+test('cleanStyle rejects junk and ignores the old single text size', () => {
     assert.equal(cleanStyle(null), null);
     assert.equal(cleanStyle([]), null);
-    assert.equal(cleanStyle({ size: 500 }).size, SIZE.default);
-    assert.ok(isDefaultStyle(cleanStyle({ size: 'x' })));
+    assert.ok(isDefaultStyle(cleanStyle({ size: 130, sizes: { title: 500 } })));
     assert.ok(isDefaultStyle(emptyStyle()));
+    assert.equal(SIZE.default, 100);
 });

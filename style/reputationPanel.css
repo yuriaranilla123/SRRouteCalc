@@ -6,7 +6,7 @@
 
 .quest-money h3 {
     font-family: var(--font-serif);
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts-heading, 1));
     font-weight: 600;
     margin: 0 0 0.75rem;
     color: var(--parchment);
@@ -14,11 +14,11 @@
 
 .quest-money-result {
     margin: 0.75rem 0 0.25rem;
-    font-size: 0.9rem;
+    font-size: calc(0.9rem * var(--ts-body, 1));
     color: var(--parchment-dim);
 }
 
 .quest-money-result strong {
-    color: var(--saffron);
+    color: var(--accent-text);
     font-variant-numeric: tabular-nums;
 }

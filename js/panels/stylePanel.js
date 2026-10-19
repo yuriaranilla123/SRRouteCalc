@@ -1,4 +1,4 @@
-import { COLOR_VARS, FONT_SLOTS, FONTS, SIZE, emptyStyle, cleanStyle, isDefaultStyle, readStoredStyle, storeStyle, clearStoredStyle, applyStyle } from '../ui/styleStore.js';
+import { COLOR_VARS, FONT_SLOTS, FONTS, TEXT_SIZES, SIZE, emptyStyle, cleanStyle, isDefaultStyle, readStoredStyle, storeStyle, clearStoredStyle, applyStyle } from '../ui/styleStore.js';
 import { contrastRatio } from '../ui/contrast.js';
 import { onThemeChange } from '../ui/themeStyle.js';
 import { confirmAction } from '../ui/confirmDialog.js';
@@ -8,8 +8,11 @@ const CONTRAST_CHECKS = [
     ['parchment', 'ink', 'Text on the page', 4.5],
     ['parchment', 'ink-surface', 'Text on panels', 4.5],
     ['parchment-dim', 'ink-surface', 'Secondary text on panels', 4.5],
+    ['title', 'ink', 'Site title on the page', 3],
+    ['accent-text', 'ink-surface', 'Highlighted text on panels', 3],
     ['saffron', 'ink-surface', 'Accent on panels', 3],
 ];
+let sectionCount = 0;
 
 let style = emptyStyle();
 let saveTimer = null;
@@ -59,8 +62,12 @@ function refreshControls() {
     FONT_SLOTS.forEach(slot => {
         document.getElementById(`style-font-${slot.id}`).value = style.fonts[slot.id] || '';
     });
-    document.getElementById('style-size').value = String(style.size);
-    document.getElementById('style-size-value').textContent = `${style.size}%`;
+    TEXT_SIZES.forEach(t => {
+        const value = style.sizes[t.id] || SIZE.default;
+        document.getElementById(`style-size-${t.id}`).value = String(value);
+        document.getElementById(`style-size-num-${t.id}`).value = String(value);
+        document.getElementById(`style-reset-size-${t.id}`).classList.toggle('is-default', !style.sizes[t.id]);
+    });
     refreshContrast();
 }
 
@@ -116,29 +123,94 @@ function fontRow(slot) {
     return row;
 }
 
-function sizeRow() {
+function sizeRow(item) {
     const row = el('div', 'size-row');
-    const label = el('label', 'color-label', 'Text size');
-    label.htmlFor = 'style-size';
-    const input = el('input', 'style-size');
-    input.type = 'range';
-    input.id = 'style-size';
-    input.min = String(SIZE.min);
-    input.max = String(SIZE.max);
-    input.step = String(SIZE.step);
-    const value = el('span', 'size-value');
-    value.id = 'style-size-value';
-    input.addEventListener('input', () => {
-        style.size = Number(input.value);
-        value.textContent = `${style.size}%`;
+    const label = el('label', 'color-label', item.label);
+    label.htmlFor = `style-size-${item.id}`;
+
+    const range = el('input', 'style-size');
+    range.type = 'range';
+    range.id = `style-size-${item.id}`;
+    range.min = String(SIZE.min);
+    range.max = String(SIZE.max);
+    range.step = String(SIZE.step);
+
+    const number = el('input', 'style-size-number');
+    number.type = 'number';
+    number.id = `style-size-num-${item.id}`;
+    number.min = String(SIZE.min);
+    number.max = String(SIZE.max);
+    number.step = '1';
+    number.setAttribute('aria-label', `${item.label} size in percent`);
+
+    const unit = el('span', 'size-unit', '%');
+    const reset = el('button', 'menu-action color-reset', '\u21BA');
+    reset.type = 'button';
+    reset.id = `style-reset-size-${item.id}`;
+    reset.title = `Reset ${item.label} size to ${SIZE.default}%`;
+    reset.setAttribute('aria-label', reset.title);
+
+    function setSize(value) {
+        if (value === SIZE.default) delete style.sizes[item.id];
+        else style.sizes[item.id] = value;
+        reset.classList.toggle('is-default', !style.sizes[item.id]);
         change();
+    }
+
+    range.addEventListener('input', () => {
+        const value = Number(range.value);
+        number.value = String(value);
+        setSize(value);
     });
-    row.append(label, input, value);
+    number.addEventListener('input', () => {
+        const value = Number(number.value);
+        if (number.value.trim() !== '' && Number.isInteger(value) && value >= SIZE.min && value <= SIZE.max) {
+            range.value = String(value);
+            setSize(value);
+        }
+    });
+    number.addEventListener('change', () => {
+        const typed = number.value.trim() === '' ? NaN : Number(number.value);
+        const value = Number.isFinite(typed)
+            ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(typed)))
+            : style.sizes[item.id] || SIZE.default;
+        number.value = String(value);
+        range.value = String(value);
+        setSize(value);
+    });
+    reset.addEventListener('click', () => {
+        number.value = String(SIZE.default);
+        range.value = String(SIZE.default);
+        setSize(SIZE.default);
+    });
+
+    row.append(label, range, number, unit, reset);
     return row;
 }
 
+function section(title, ...children) {
+    sectionCount += 1;
+    const wrap = el('div', 'style-section');
+    const bodyId = `style-section-${sectionCount}`;
+    const head = el('button', 'style-section-head');
+    head.type = 'button';
+    head.setAttribute('aria-expanded', 'false');
+    head.setAttribute('aria-controls', bodyId);
+    head.append(el('span', 'style-section-title', title), el('span', 'style-section-chevron', '\u25BE'));
+    const body = el('div', 'style-section-body');
+    body.id = bodyId;
+    const inner = el('div', 'style-section-inner');
+    inner.append(...children);
+    body.appendChild(inner);
+    head.addEventListener('click', () => {
+        head.setAttribute('aria-expanded', String(wrap.classList.toggle('open')));
+    });
+    wrap.append(head, body);
+    return wrap;
+}
+
 async function resetStyle() {
-    if (!(await confirmAction('Reset all style changes? Colors, fonts, text size and the two style toggles go back to default.'))) return;
+    if (!(await confirmAction('Reset all style changes? Colors, fonts, text sizes and the two style toggles go back to default.'))) return;
     style = emptyStyle();
     clearStoredStyle();
     applyStyle(style);
@@ -154,7 +226,7 @@ async function resetStyle() {
 }
 
 function exportStyle() {
-    const payload = { v: 1, kind: 'srrc-style', ...style };
+    const payload = { v: 1, kind: 'srrc-style', colors: style.colors, fonts: style.fonts, sizes: style.sizes };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -223,13 +295,25 @@ function buildUI() {
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
 
+    const colorRows = group => COLOR_VARS.filter(v => v.group === group).map(colorRow);
+    const note = text => el('p', 'field-hint', text);
+
     root.append(
-        el('h3', 'menu-subtitle', 'Colors'),
-        ...COLOR_VARS.map(colorRow),
-        el('h3', 'menu-subtitle', 'Fonts'),
-        ...FONT_SLOTS.map(fontRow),
-        el('h3', 'menu-subtitle', 'Text'),
-        sizeRow(),
+        section('Surfaces', ...colorRows('surfaces')),
+        section(
+            'Text',
+            el('h3', 'menu-subtitle', 'Colors'),
+            ...colorRows('text'),
+            el('h3', 'menu-subtitle', 'Sizes'),
+            note('Only the text changes size. The layout and spacing stay the same.'),
+            ...TEXT_SIZES.map(sizeRow)
+        ),
+        section(
+            'Controls',
+            note('Buttons, toggles, tabs, focus rings and the dropdown arrow. This does not change the title or other text.'),
+            ...colorRows('controls')
+        ),
+        section('Fonts', ...FONT_SLOTS.map(fontRow)),
         contrast,
         toolbar,
         status

@@ -3,11 +3,71 @@
 }
 
 .menu-subtitle {
-    margin: 1.4rem 0 0.6rem;
+    margin: 1rem 0 0.6rem;
     font-family: var(--font-serif);
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts-heading, 1));
     font-weight: 600;
     color: var(--parchment);
+}
+
+.style-section {
+    margin-bottom: 0.6rem;
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    background: var(--ink-surface-raised);
+}
+
+.style-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    background: transparent;
+    border: none;
+    color: var(--parchment);
+    font-family: var(--font-sans);
+    font-size: calc(0.95rem * var(--ts-control, 1));
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.style-section-head:hover {
+    color: var(--saffron);
+}
+
+.style-section-chevron {
+    color: var(--saffron);
+    transition: transform 0.25s ease;
+}
+
+.style-section.open .style-section-chevron {
+    transform: rotate(180deg);
+}
+
+.style-section-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+}
+
+.style-section.open .style-section-body {
+    grid-template-rows: 1fr;
+}
+
+.style-section-inner {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 0.85rem;
+    visibility: hidden;
+    transition: visibility 0s linear 0.25s;
+}
+
+.style-section.open .style-section-inner {
+    padding-bottom: 0.75rem;
+    visibility: visible;
+    transition: visibility 0s;
 }
 
 .color-row,
@@ -19,9 +79,18 @@
     margin-bottom: 0.55rem;
 }
 
+.size-row {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.6rem;
+}
+
+.size-row .color-label {
+    flex-basis: 100%;
+}
+
 .color-label {
     flex: 1;
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--ts-small, 1));
     color: var(--parchment-dim);
 }
 
@@ -51,19 +120,32 @@
 }
 
 .style-size {
-    flex: 1.4;
+    flex: 1;
     min-width: 0;
     accent-color: var(--saffron);
 }
 
-.size-value {
-    min-width: 2.6rem;
+.style-size-number {
+    width: 4.2rem;
+    padding: 0.35rem 0.4rem;
     text-align: right;
-    font-size: 0.85rem;
-    color: var(--parchment);
-    font-variant-numeric: tabular-nums;
+}
+
+.size-unit {
+    margin-left: -0.35rem;
+    font-size: calc(0.85rem * var(--ts-small, 1));
+    color: var(--parchment-dim);
 }
 
 .style-contrast:not(:empty) {
     color: var(--clay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .style-section-body,
+    .style-section-chevron,
+    .style-section-inner {
+        transition: none;
+    }
 }

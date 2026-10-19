@@ -91,7 +91,7 @@ html[data-menu-sticky="off"] .menu-btn {
 .menu-head h2 {
     margin: 0;
     font-family: var(--font-serif);
-    font-size: 1.1rem;
+    font-size: calc(1.1rem * var(--ts-heading, 1));
     font-weight: 600;
     color: var(--parchment);
 }
@@ -104,7 +104,7 @@ html[data-menu-sticky="off"] .menu-btn {
     border: 1px solid var(--hairline);
     border-radius: 4px;
     color: var(--parchment-dim);
-    font-size: 1.1rem;
+    font-size: calc(1.1rem * var(--ts-control, 1));
     line-height: 1;
     cursor: pointer;
 }
@@ -132,7 +132,7 @@ html[data-menu-sticky="off"] .menu-btn {
 }
 
 .menu-toggles .toggle-switch {
-    font-size: 0.88rem;
+    font-size: calc(0.88rem * var(--ts-control, 1));
     white-space: normal;
 }
 
@@ -154,7 +154,7 @@ html[data-menu-sticky="off"] .menu-btn {
     padding: 0.4rem 0.75rem;
     border-radius: 4px;
     font-family: var(--font-sans);
-    font-size: 0.82rem;
+    font-size: calc(0.82rem * var(--ts-control, 1));
     cursor: pointer;
 }
 
@@ -200,7 +200,7 @@ html[data-menu-sticky="off"] .menu-btn {
     padding: 0.45rem 0.6rem;
     border-radius: 4px;
     font-family: var(--font-sans);
-    font-size: 0.92rem;
+    font-size: calc(0.92rem * var(--ts-control, 1));
 }
 
 .loadout-actions {

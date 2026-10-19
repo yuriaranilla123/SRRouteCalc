@@ -15,9 +15,9 @@
 
 .process-label {
     font-family: var(--font-serif);
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts-heading, 1));
     font-weight: 600;
-    color: var(--saffron);
+    color: var(--accent-text);
 }
 
 .remove-process-btn {
@@ -32,7 +32,7 @@
     width: 1.8rem;
     height: 1.8rem;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: calc(0.9rem * var(--ts-control, 1));
 }
 
 .remove-process-btn:hover {
@@ -45,7 +45,7 @@
     color: var(--saffron);
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--ts-control, 1));
     cursor: pointer;
     margin-top: 0.25rem;
 }
@@ -114,7 +114,7 @@
     color: var(--saffron);
     padding: 0.4rem 0.8rem;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--ts-control, 1));
     cursor: pointer;
     margin-bottom: 0.5rem;
 }
@@ -134,25 +134,25 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--ts-table, 1));
     color: var(--parchment-dim);
     padding-top: 0.5rem;
     border-top: 1px solid var(--hairline);
 }
 
 .process-total-row {
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts-table, 1));
     margin-top: 0.5rem;
 }
 
 .all-complete-total-row {
-    font-size: 1.05rem;
+    font-size: calc(1.05rem * var(--ts-table, 1));
     margin-top: 0.5rem;
 }
 
 .leg-total-value,
 .process-total-value,
 .all-complete-total-row strong {
-    color: var(--saffron);
+    color: var(--accent-text);
     font-variant-numeric: tabular-nums;
 }
