@@ -191,6 +191,7 @@
                     "antioch",
                     "bosra",
                     "palmyra",
+                    "petra",
                     "ctesiphon",
                     "ecbatana",
                     "susa",
@@ -366,7 +367,11 @@
             "name": "Myrrh",
             "basePrice": 1000,
             "category": "spice",
-            "note": "Info Hub: produced in Petra. Category UNCONFIRMED (spice is a guess)."
+            "note": "Info Hub: produced in Petra. Category UNCONFIRMED (spice is a guess).",
+            "originOnly": true,
+            "requirement": "Level 4 'Mutararrib Guild Apprentice' reputation with the Rashidun Caliphate",
+            "rarity": "exotic",
+            "rarityNote": "UNCONFIRMED: assumed exotic like the other goods that need a reputation rank."
         }
     ],
     "_priceHistory": [

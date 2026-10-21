@@ -49,13 +49,13 @@ html[data-menu-sticky="off"] .menu-btn {
     background: rgba(0, 0, 0, 0.55);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+    transition: opacity calc(0.2s / var(--motion-speed, 1)) var(--ease, ease), visibility 0s linear calc(0.2s / var(--motion-speed, 1));
 }
 
 .menu-backdrop.open {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.2s ease;
+    transition: opacity calc(0.2s / var(--motion-speed, 1)) var(--ease, ease);
 }
 
 .menu-panel {
@@ -72,13 +72,13 @@ html[data-menu-sticky="off"] .menu-btn {
     box-shadow: -8px 0 24px rgba(0, 0, 0, 0.4);
     transform: translateX(100%);
     visibility: hidden;
-    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+    transition: transform calc(0.25s / var(--motion-speed, 1)) var(--ease, ease), visibility 0s linear calc(0.25s / var(--motion-speed, 1));
 }
 
 .menu-panel.open {
     transform: translateX(0);
     visibility: visible;
-    transition: transform 0.25s ease;
+    transition: transform calc(0.25s / var(--motion-speed, 1)) var(--ease, ease);
 }
 
 .menu-head {
@@ -212,14 +212,4 @@ html[data-menu-sticky="off"] .menu-btn {
 .loadout-actions .menu-action[data-action="delete"] {
     margin-left: auto;
     color: var(--clay);
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .menu-panel,
-    .menu-panel.open,
-    .menu-backdrop,
-    .menu-backdrop.open {
-        transition: none;
-    }
 }

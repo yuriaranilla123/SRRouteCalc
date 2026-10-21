@@ -4,11 +4,11 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-const root = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 globalThis.fetch = async url => ({ json: async () => JSON.parse(await readFile(path.join(root, url), 'utf8')) });
 
-const state = await import('./js/core/state.js');
-const calc = await import('./js/core/calc.js');
+const state = await import('../js/core/state.js');
+const calc = await import('../js/core/calc.js');
 await state.loadData();
 
 const opts = () => state.getCalcOpts();

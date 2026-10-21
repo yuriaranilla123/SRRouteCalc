@@ -355,6 +355,85 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "rashidun",
+            "name": "Rashidun Caliphate",
+            "cities": [
+                "petra"
+            ],
+            "ranks": [
+                {
+                    "rank": 1,
+                    "title": "Mutajawil Peddler",
+                    "reputation": 30,
+                    "fee": 500,
+                    "unlocks": [
+                        "Long-Distance Quest"
+                    ]
+                },
+                {
+                    "rank": 2,
+                    "title": "Tajir Freelance Trader",
+                    "reputation": 100,
+                    "fee": 2500,
+                    "unlocks": []
+                },
+                {
+                    "rank": 3,
+                    "title": "Za'im Al-Qafila Caravan Leader",
+                    "reputation": 200,
+                    "fee": 5000,
+                    "unlocks": [
+                        "10% Discount at Shops inside Rashidun Caliphate"
+                    ]
+                },
+                {
+                    "rank": 4,
+                    "title": "Mutararrib Guild Apprentice",
+                    "reputation": 500,
+                    "fee": 10000,
+                    "unlocks": [
+                        "myrrh"
+                    ]
+                },
+                {
+                    "rank": 5,
+                    "title": "Tajir Al-Niqaba Guild Merchant",
+                    "reputation": 750,
+                    "fee": 25000,
+                    "unlocks": []
+                },
+                {
+                    "rank": 6,
+                    "title": "Mab'uth Maliki Royal Envoy",
+                    "reputation": 1250,
+                    "fee": 50000,
+                    "unlocks": [
+                        "10% Discount for Goods Bought inside Rashidun Markets",
+                        "Golden Robes (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 7,
+                    "title": "Mushrif Al-Suq Market Overseer",
+                    "reputation": 1500,
+                    "fee": 100000,
+                    "unlocks": [
+                        "Baidah Cap (cosmetic)"
+                    ]
+                },
+                {
+                    "rank": 8,
+                    "title": "Za'im Al-Niqaba Guild Master",
+                    "reputation": 2500,
+                    "fee": 200000,
+                    "unlocks": [
+                        "+5% Bonus Value to Crafted Goods (not modelled)",
+                        "Gilded Robes (cosmetic)"
+                    ]
+                }
+            ]
         }
     ]
 }

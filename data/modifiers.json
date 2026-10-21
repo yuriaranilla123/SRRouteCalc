@@ -316,7 +316,8 @@
             "byzantine": "inside",
             "sasanian": "inside",
             "sogdia": "outside",
-            "tang": "outside"
+            "tang": "outside",
+            "rashidun": "inside"
         }
     },
     "events": {

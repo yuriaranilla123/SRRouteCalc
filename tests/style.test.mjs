@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanStyle, emptyStyle, isDefaultStyle, COLOR_VARS, TEXT_SIZES, SIZE } from './js/ui/styleStore.js';
-import { contrastRatio } from './js/ui/contrast.js';
+import { cleanStyle, emptyStyle, isDefaultStyle, COLOR_VARS, TEXT_SIZES, SIZE, SPEED, LAYOUT } from '../js/ui/styleStore.js';
+import { contrastRatio } from '../js/ui/contrast.js';
 
 test('contrast ratio of black on white is 21', () => {
     assert.equal(Math.round(contrastRatio('#000000', '#ffffff')), 21);
@@ -33,4 +33,19 @@ test('cleanStyle rejects junk and ignores the old single text size', () => {
     assert.ok(isDefaultStyle(cleanStyle({ size: 130, sizes: { title: 500 } })));
     assert.ok(isDefaultStyle(emptyStyle()));
     assert.equal(SIZE.default, 100);
+});
+
+test('cleanStyle keeps only valid motion options', () => {
+    const style = cleanStyle({ motion: { speed: 150, easing: 'bouncy', panels: false, hover: true, popups: 'no', bogus: false } });
+    assert.deepEqual(style.motion, { speed: 150, easing: 'bouncy', panels: false });
+    assert.ok(isDefaultStyle(cleanStyle({ motion: { speed: 100, easing: 'smooth', results: true } })));
+    assert.ok(isDefaultStyle(cleanStyle({ motion: { speed: 9999, easing: 'wobble' } })));
+    assert.equal(SPEED.default, 100);
+});
+
+test('cleanStyle keeps only valid layout options', () => {
+    const style = cleanStyle({ layout: { gap: 40, minWidth: 100, bogus: 30 } });
+    assert.deepEqual(style.layout, { gap: 40 });
+    assert.ok(isDefaultStyle(cleanStyle({ layout: { gap: 24, minWidth: 380 } })));
+    assert.equal(LAYOUT.length, 2);
 });

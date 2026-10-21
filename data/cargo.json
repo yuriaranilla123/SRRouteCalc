@@ -32,17 +32,17 @@
         },
         "royal_indian_elephant": {
             "name": "Royal Indian Elephant",
-            "price": 559,
+            "price": 1399,
             "currency": "robux",
             "effect": "Gives the Royal Indian Elephant mount. Slower than a horse, but with much higher cargo capacity.",
-            "note": "Price corrected from 1260 (prior source unclear) to 559, confirmed via the official Roblox game-pass page."
+            "note": "Price R$1,399 per the Info Hub, replacing 559 from an earlier store screenshot."
         },
         "starter_mule": {
             "name": "Starter Mule",
-            "price": 55,
+            "price": 149,
             "currency": "robux",
             "effect": "Gives the Saddle Mule to all characters.",
-            "note": "Price corrected from 149 (Fandom wiki, now stale) to 55 per a live store screenshot - the saddle_mule animal entry below is updated to match. Acquisition-only; stats already selectable in the animal dropdown regardless, so no separate calculation effect."
+            "note": "Price R$149 per the Info Hub, replacing 55 from an earlier store screenshot."
         },
         "extra_cargo_slot": {
             "name": "Extra Cargo Slot",
@@ -113,9 +113,9 @@
                 "id": "basket_backpack",
                 "name": "Basket Backpack",
                 "cargo": 9,
-                "price": 119,
+                "price": 299,
                 "currency": "robux",
-                "note": "Fandom wiki said R$299 — using Framer info hub's R$119 (favored source). Also obtainable via the 'Starter Backpack' gamepass (119 Robux, one-time, account-wide, per a live store screenshot) - see gamepasses above."
+                "note": "Price R$299 per the Info Hub Storage page (earlier data had 119). The 'Starter Backpack' gamepass (119 Robux) still grants it."
             },
             {
                 "id": "concealed_storage",
@@ -226,10 +226,10 @@
             "cargo": 2,
             "cargoWithSaddlebag": 4,
             "speedBonus": 2,
-            "price": 55,
+            "price": 149,
             "currency": "robux",
             "isGamepass": true,
-            "note": "One-time purchase, added to every character. This IS the 'Starter Mule' gamepass - price corrected from 149 (Fandom wiki, now stale) to 55 per a live store screenshot."
+            "note": "One-time purchase, added to every character. This IS the 'Starter Mule' gamepass. Price R$149 per the Info Hub (Animals and Storage pages), replacing 55 from an earlier store screenshot."
         },
         {
             "id": "dzungarian_horse",
@@ -335,10 +335,10 @@
             "cargo": 12,
             "cargoWithSaddlebag": null,
             "speedBonus": 0,
-            "price": 559,
+            "price": 1399,
             "currency": "robux",
             "isGamepass": true,
-            "note": "Price corrected from 1260 (prior source unclear) to 559 per a live store screenshot, where it's listed as a Pass labeled 'PREMIUM ELEPHANT'."
+            "note": "Price R$1,399 per the Info Hub, replacing 559 from an earlier store screenshot (where it was labeled 'PREMIUM ELEPHANT')."
         },
         {
             "id": "sasanian_elephant",

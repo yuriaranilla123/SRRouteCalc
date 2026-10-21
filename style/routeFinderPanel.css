@@ -128,3 +128,13 @@
         grid-template-columns: 1fr;
     }
 }
+
+.best-trade {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--hairline);
+}
+
+.best-trade .menu-subtitle {
+    margin-top: 0;
+}

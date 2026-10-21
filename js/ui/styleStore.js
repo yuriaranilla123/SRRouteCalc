@@ -41,8 +41,30 @@ export const FONTS = [
 
 export const SIZE = { min: 70, max: 150, step: 5, default: 100 };
 
+export const SPEED = { min: 25, max: 300, step: 25, default: 100 };
+
+export const LAYOUT = [
+    { id: 'gap', css: '--frame-gap', label: 'Space between frames', unit: 'px', min: 8, max: 64, step: 4, default: 24 },
+    { id: 'minWidth', css: '--frame-min', label: 'Minimum frame width (Dynamic frames)', unit: 'px', min: 280, max: 560, step: 20, default: 380 },
+];
+
+export const EASINGS = [
+    { id: 'smooth', label: 'Smooth', css: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+    { id: 'snappy', label: 'Snappy', css: 'cubic-bezier(0.2, 0.9, 0.3, 1)' },
+    { id: 'bouncy', label: 'Bouncy', css: 'cubic-bezier(0.34, 1.56, 0.64, 1)' },
+    { id: 'gentle', label: 'Gentle', css: 'ease-in-out' },
+    { id: 'linear', label: 'Linear', css: 'linear' },
+];
+
+export const EFFECTS = [
+    { id: 'panels', label: 'Panels slide in on load' },
+    { id: 'results', label: 'Results fade in' },
+    { id: 'hover', label: 'Button hover and press effects' },
+    { id: 'popups', label: 'Dropdowns, dialogs and menu tabs' },
+];
+
 export function emptyStyle() {
-    return { colors: {}, fonts: {}, sizes: {} };
+    return { colors: {}, fonts: {}, sizes: {}, motion: {}, layout: {} };
 }
 
 export function cleanStyle(raw) {
@@ -68,11 +90,28 @@ export function cleanStyle(raw) {
             }
         }
     }
+    if (raw.motion && typeof raw.motion === 'object') {
+        const speed = Number(raw.motion.speed);
+        if (Number.isFinite(speed) && speed >= SPEED.min && speed <= SPEED.max && Math.round(speed) !== SPEED.default) {
+            style.motion.speed = Math.round(speed);
+        }
+        const easing = raw.motion.easing;
+        if (typeof easing === 'string' && easing !== 'smooth' && EASINGS.some(e => e.id === easing)) style.motion.easing = easing;
+        for (const fx of EFFECTS) {
+            if (raw.motion[fx.id] === false) style.motion[fx.id] = false;
+        }
+    }
+    if (raw.layout && typeof raw.layout === 'object') {
+        for (const l of LAYOUT) {
+            const value = Number(raw.layout[l.id]);
+            if (Number.isFinite(value) && value >= l.min && value <= l.max && Math.round(value) !== l.default) style.layout[l.id] = Math.round(value);
+        }
+    }
     return style;
 }
 
 export function isDefaultStyle(style) {
-    return Object.keys(style.colors).length === 0 && Object.keys(style.fonts).length === 0 && Object.keys(style.sizes).length === 0;
+    return Object.keys(style.colors).length === 0 && Object.keys(style.fonts).length === 0 && Object.keys(style.sizes).length === 0 && Object.keys(style.motion).length === 0 && Object.keys(style.layout).length === 0;
 }
 
 export function readStoredStyle() {
@@ -119,4 +158,25 @@ export function applyStyle(style) {
         if (style.sizes[t.id]) root.style.setProperty(t.css, String(style.sizes[t.id] / 100));
         else root.style.removeProperty(t.css);
     }
+    for (const l of LAYOUT) {
+        if (style.layout[l.id]) root.style.setProperty(l.css, `${style.layout[l.id]}px`);
+        else root.style.removeProperty(l.css);
+    }
+    if (style.motion.speed) root.style.setProperty('--motion-speed', String(style.motion.speed / 100));
+    else root.style.removeProperty('--motion-speed');
+    const easing = EASINGS.find(e => e.id === style.motion.easing);
+    if (easing) root.style.setProperty('--ease', easing.css);
+    else root.style.removeProperty('--ease');
+    for (const fx of EFFECTS) {
+        if (style.motion[fx.id] === false) root.dataset[`fx${fx.id[0].toUpperCase()}${fx.id.slice(1)}`] = 'off';
+        else delete root.dataset[`fx${fx.id[0].toUpperCase()}${fx.id.slice(1)}`];
+    }
+}
+
+export function setDynamicFrames(on) {
+    document.documentElement.dataset.dynamicFrames = on ? 'on' : 'off';
+}
+
+export function setAnimations(on) {
+    document.documentElement.dataset.animations = on ? 'on' : 'off';
 }

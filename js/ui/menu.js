@@ -17,6 +17,7 @@ export function wireMenu() {
     }
 
     function open() {
+        panel.getBoundingClientRect();
         panel.classList.add('open');
         backdrop.classList.add('open');
         document.documentElement.classList.add('menu-open');

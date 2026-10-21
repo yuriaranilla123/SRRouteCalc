@@ -1,0 +1,160 @@
+:root {
+    --motion-speed: 1;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --dur: calc(0.25s / var(--motion-speed));
+    --dur-slow: calc(0.5s / var(--motion-speed));
+    --dur-fast: calc(0.15s / var(--motion-speed));
+}
+
+@keyframes fx-rise {
+    from {
+        opacity: 0;
+        translate: 0 14px;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+@keyframes fx-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fx-pop {
+    from {
+        opacity: 0;
+        scale: 0.94;
+        translate: 0 -6px;
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+        translate: 0 0;
+    }
+}
+
+@keyframes fx-slide-in {
+    from {
+        opacity: 0;
+        translate: 12px 0;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+html:not([data-fx-panels="off"]) .site-header {
+    animation: fx-rise var(--dur-slow) var(--ease) backwards;
+}
+
+html:not([data-fx-panels="off"]) main>.panel {
+    animation: fx-rise var(--dur-slow) var(--ease) backwards;
+}
+
+html:not([data-fx-panels="off"]) main>.panel:nth-child(2) {
+    animation-delay: calc(0.06s / var(--motion-speed));
+}
+
+html:not([data-fx-panels="off"]) main>.panel:nth-child(3) {
+    animation-delay: calc(0.12s / var(--motion-speed));
+}
+
+html:not([data-fx-panels="off"]) main>.panel:nth-child(4) {
+    animation-delay: calc(0.18s / var(--motion-speed));
+}
+
+html:not([data-fx-panels="off"]) main>.panel:nth-child(5) {
+    animation-delay: calc(0.24s / var(--motion-speed));
+}
+
+html:not([data-fx-panels="off"]) main>.panel:nth-child(n+6) {
+    animation-delay: calc(0.3s / var(--motion-speed));
+}
+
+html:not([data-fx-results="off"]) #result-card>* {
+    animation: fx-fade var(--dur) var(--ease) backwards;
+}
+
+html:not([data-fx-results="off"]) #trades-tbody tr {
+    animation: fx-fade var(--dur) var(--ease) backwards;
+}
+
+html:not([data-fx-results="off"]) .leg-results>*,
+html:not([data-fx-results="off"]) .browse-results>* {
+    animation: fx-fade var(--dur-fast) var(--ease) backwards;
+}
+
+html:not([data-fx-results="off"]) .process-card,
+html:not([data-fx-results="off"]) .leg-row,
+html:not([data-fx-results="off"]) .specific-item-row,
+html:not([data-fx-results="off"]) .loadout-row {
+    animation: fx-rise var(--dur) var(--ease) backwards;
+}
+
+html:not([data-fx-hover="off"]) :is(.primary-btn, .menu-action, .browse-btn, .add-item-btn, .add-process-btn, .stepper-btn, .tab-btn, .chain-btn, .remove-leg-btn, .remove-item-btn, .remove-process-btn, .confirm-btn, .menu-btn, .menu-close, .link-btn, .style-section-head) {
+    transition: translate var(--dur-fast) var(--ease), scale var(--dur-fast) var(--ease), background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+html:not([data-fx-hover="off"]) :is(.primary-btn, .menu-action:not(:disabled), .browse-btn, .add-item-btn, .add-process-btn, .chain-btn, .confirm-btn, .menu-btn):hover {
+    translate: 0 -2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+html:not([data-fx-hover="off"]) :is(.primary-btn, .menu-action:not(:disabled), .browse-btn, .add-item-btn, .add-process-btn, .stepper-btn, .tab-btn, .chain-btn, .remove-leg-btn, .remove-item-btn, .remove-process-btn, .confirm-btn, .menu-btn, .menu-close):active {
+    translate: 0 0;
+    scale: 0.95;
+    box-shadow: none;
+}
+
+html:not([data-fx-hover="off"]) tbody tr {
+    transition: background-color var(--dur-fast) var(--ease);
+}
+
+html:not([data-fx-hover="off"]) .loadout-row {
+    transition: border-color var(--dur) var(--ease), translate var(--dur-fast) var(--ease);
+}
+
+html:not([data-fx-hover="off"]) .loadout-row:hover {
+    translate: 2px 0;
+}
+
+html:not([data-fx-popups="off"]) .combo-menu:not([hidden]) {
+    transform-origin: top center;
+    animation: fx-pop var(--dur-fast) var(--ease) backwards;
+}
+
+html:not([data-fx-popups="off"]) .confirm-backdrop {
+    animation: fx-fade var(--dur) var(--ease) backwards;
+}
+
+html:not([data-fx-popups="off"]) .confirm-box {
+    animation: fx-pop var(--dur) var(--ease) backwards;
+}
+
+html:not([data-fx-popups="off"]) [data-menu-section]:not([hidden]) {
+    animation: fx-slide-in var(--dur) var(--ease) backwards;
+}
+
+html:not([data-fx-popups="off"]) .menu-panel.open .menu-head,
+html:not([data-fx-popups="off"]) .menu-panel.open .tab-row {
+    animation: fx-fade var(--dur-slow) var(--ease) backwards;
+}
+
+html[data-animations="off"] *,
+html[data-animations="off"] *::before,
+html[data-animations="off"] *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+}

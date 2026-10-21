@@ -29,6 +29,7 @@
     text-align: center;
     padding: 0.55rem 0.25rem;
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .stepper input[type="number"]::-webkit-inner-spin-button,
@@ -94,7 +95,7 @@
     background: var(--ink-surface-raised);
     border: 1px solid var(--hairline);
     border-radius: 999px;
-    transition: background 0.2s, border-color 0.2s;
+    transition: background calc(0.2s / var(--motion-speed, 1)) var(--ease, ease), border-color calc(0.2s / var(--motion-speed, 1)) var(--ease, ease);
 }
 
 .toggle-thumb {
@@ -105,7 +106,7 @@
     height: 14px;
     border-radius: 50%;
     background: var(--parchment-dim);
-    transition: transform 0.2s, background 0.2s;
+    transition: transform calc(0.2s / var(--motion-speed, 1)) var(--ease, ease), background calc(0.2s / var(--motion-speed, 1)) var(--ease, ease);
 }
 
 .toggle-switch input:checked+.toggle-track {
@@ -318,7 +319,7 @@ td.loss {
     inset: 0;
     width: 0%;
     background: linear-gradient(90deg, var(--saffron-dim), var(--saffron));
-    transition: width 0.6s ease;
+    transition: width calc(0.6s / var(--motion-speed, 1)) var(--ease, ease);
 }
 
 .funding-label,

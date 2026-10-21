@@ -14,7 +14,9 @@ The main data source of this project is the [SR:TS Information Hub](https://srts
 - **AdiSunrise** (@Island_buttercream) - Guild Perk Pricing
 - **Chausson** (@mamifafik) - Eastern Orthodox Headdress Photo
 - **El** - Game Iconography & Information (Development Team)
+- **Harry** (@0harrisonn) - Game Information (Development Team)
 - **Nocty** (@noxtilune) - Bandit Names & Wanted Values; Mysterious Merchant Name
-- **Sancho** (@Windjdjdjsjiao) - Mysterious Merchant Name
+- **Sancho** (@Windjdjdjsjiao) - Mysterious Merchant Name; Islam Perks, Rashidun Perks & Myrrh Description
+- **Walu** (@Walubot) - Han Heavenly Horse Cost
 
 To be added, changed or removed from this list, open an issue.

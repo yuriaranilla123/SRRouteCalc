@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="style/dialog.css">
     <link rel="stylesheet" href="style/styleEditor.css">
     <link rel="stylesheet" href="style/theme-infohub.css">
+    <link rel="stylesheet" href="style/layout.css">
+    <link rel="stylesheet" href="style/motion.css">
 </head>
 
 <body>
@@ -189,7 +191,7 @@
                     <label class="toggle-switch">
                         <input type="checkbox" id="gamepass-royal-indian-elephant">
                         <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                        <span class="toggle-text">Royal Indian Elephant (acquisition only) - 559 R$</span>
+                        <span class="toggle-text">Royal Indian Elephant (acquisition only) - 1,399 R$</span>
                     </label>
                     <label class="toggle-switch">
                         <input type="checkbox" id="gamepass-royal-white-nisean">
@@ -199,7 +201,7 @@
                     <label class="toggle-switch">
                         <input type="checkbox" id="gamepass-starter-mule">
                         <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                        <span class="toggle-text">Starter Mule (acquisition only) - 55 R$</span>
+                        <span class="toggle-text">Starter Mule (acquisition only) - 149 R$</span>
                     </label>
                     <label class="toggle-switch">
                         <input type="checkbox" id="gamepass-starter-backpack">
@@ -312,6 +314,13 @@
                         <button type="button" id="find-best-trade-btn" class="primary-btn">Find best trade</button>
                     </div>
                     <p class="field-hint">Quantity auto-fills from your caravan above, or set it manually.</p>
+                    <div class="best-trade">
+                        <h3 class="menu-subtitle">Best trade</h3>
+                        <div id="result-card">
+                            <p class="empty-state">Pick two cities above to see the most profitable good to carry
+                                between them.</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="specific-mode" style="display:none">
@@ -323,14 +332,6 @@
                         <span>All complete total</span>
                         <strong id="all-complete-total-value">—</strong>
                     </div>
-                </div>
-            </section>
-
-            <section class="panel" id="result">
-                <h2>Best trade</h2>
-                <div id="result-card">
-                    <p class="empty-state">Pick two cities above to see the most profitable good to carry between them.
-                    </p>
                 </div>
             </section>
 
@@ -432,6 +433,20 @@
                         </label>
                         <p class="field-hint">Keeps the menu button on screen while you scroll. Turn it off to leave the
                             button at the top right of the page.</p>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="animations" checked>
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Animations</span>
+                        </label>
+                        <p class="field-hint">Turn off every transition and animation. Speed and effects can be tuned
+                            in the Style tab.</p>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dynamic-frames">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Dynamic frames</span>
+                        </label>
+                        <p class="field-hint">Lets the frames flow into as many columns as fit your screen, keeping an
+                            even gap between them. Frame spacing and minimum width are in the Style tab.</p>
                         <label class="toggle-switch">
                             <input type="checkbox" id="quick-action">
                             <span class="toggle-track"><span class="toggle-thumb"></span></span>

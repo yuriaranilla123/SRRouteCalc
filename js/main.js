@@ -22,6 +22,8 @@ import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
 import { wireLoadouts } from './panels/loadoutPanel.js';
 import { wireMenu, setMenuSticky } from './ui/menu.js';
 import { applySavedStyle, wireStylePanel } from './panels/stylePanel.js';
+import { setAnimations, setDynamicFrames } from './ui/styleStore.js';
+import { wireDynamicFrames } from './ui/dynamicFrames.js';
 import { restoreSettings, wireAutoSave, clearSettings } from './core/storage.js';
 
 function populateCitySelects() {
@@ -61,6 +63,14 @@ async function init() {
         setDropdownStyle(e.target.checked ? 'themed' : 'native');
     });
 
+    document.getElementById('dynamic-frames').addEventListener('change', (e) => {
+        setDynamicFrames(e.target.checked);
+    });
+
+    document.getElementById('animations').addEventListener('change', (e) => {
+        setAnimations(e.target.checked);
+    });
+
     populateCitySelects();
     populateCaravanSelects();
     populateReputationFields();
@@ -89,6 +99,7 @@ async function init() {
     wireMenu();
     wireLoadouts();
     wireStylePanel();
+    wireDynamicFrames();
 
     recomputeCaravan();
     renderFaithHint();
