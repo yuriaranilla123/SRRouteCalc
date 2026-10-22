@@ -1,0 +1,52 @@
+:root {
+    --icon-size: 24px;
+}
+
+.icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    object-fit: contain;
+    flex: 0 0 auto;
+}
+
+.icon[hidden] {
+    display: none;
+}
+
+.with-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+html[data-icon-pos="right"] .with-icon {
+    flex-direction: row-reverse;
+}
+
+html[data-icon-pos="top"] .with-icon {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+html[data-icon-pos="bottom"] .with-icon {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+.combo-menu li.with-icon {
+    display: flex;
+}
+
+html[data-icon-pos="right"] .combo-menu li.with-icon {
+    justify-content: flex-end;
+}
+
+.breakdown-line .with-icon {
+    display: flex;
+}
+
+html[data-icons="off"] .icon {
+    display: none;
+}

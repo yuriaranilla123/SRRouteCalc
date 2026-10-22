@@ -1,6 +1,7 @@
 import { getGoodsData, getCitiesData, isDetailedMode } from '../core/state.js';
 import { computePriceBreakdown } from '../core/calc.js';
 import { money } from '../core/money.js';
+import { lineIconHtml, withGoodIcon } from '../ui/icons.js';
 
 let lastTrades = [];
 let lastContext = null;
@@ -59,7 +60,12 @@ function updateSortIndicators() {
 function formatBreakdown(breakdown) {
     if (!breakdown) return '<span class="empty-state">—</span>';
     return breakdown.lines
-        .map(l => `<span class="breakdown-line ${l.amount < 0 ? 'breakdown-negative' : ''}">${l.amount >= 0 ? '+' : ''}${money(l.amount)} ${l.label}</span>`)
+        .map(l => {
+            const icon = lineIconHtml(l.label);
+            const text = `${l.amount >= 0 ? '+' : ''}${money(l.amount)} ${l.label}`;
+            const body = icon ? `<span class="with-icon">${icon}<span class="icon-text">${text}</span></span>` : text;
+            return `<span class="breakdown-line ${l.amount < 0 ? 'breakdown-negative' : ''}">${body}</span>`;
+        })
         .join('');
 }
 
@@ -108,7 +114,7 @@ function renderRows() {
         const sellCity = citiesData.cities.find(c => c.id === trade.sellCityId);
 
         const returnCargoHtml = trade.returnCargo
-            ? `${trade.returnCargo.name} <span class="return-cargo-profit">Profit/unit: ${money(trade.returnCargo.profitPerUnit)}</span>`
+            ? `${withGoodIcon(trade.returnCargo.goodId, trade.returnCargo.name)} <span class="return-cargo-profit">Profit/unit: ${money(trade.returnCargo.profitPerUnit)}</span>`
             : '<span class="empty-state">None profitable</span>';
 
         const travelTimeHtml = trade.travelTimeLabel || '—';
@@ -116,7 +122,7 @@ function renderRows() {
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-      <td>${good.name}</td>
+      <td>${withGoodIcon(good.id, good.name)}</td>
       <td>${trade.buyLabel || buyCity.name}</td>
       <td>${sellCity.name}</td>
       <td class="num">${money(trade.buyPrice)}</td>

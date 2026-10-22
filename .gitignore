@@ -1,7 +1,5 @@
 node_modules/
 
-/assets/
-
 .env
 .env.*
 !.env.example

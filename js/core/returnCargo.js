@@ -23,7 +23,7 @@ export function attachReturnCargo(trades, context, opts, playerRanks, reputation
     trades.forEach(trade => {
         const best = bestUnlockedTradeForDirection(trade.sellCityId, trade.buyCityId, trade.quantity, context, opts, playerRanks, reputationData);
         trade.returnCargo = best
-            ? { name: goodsData.goods.find(g => g.id === best.goodId).name, profitPerUnit: best.profitPerUnit }
+            ? { goodId: best.goodId, name: goodsData.goods.find(g => g.id === best.goodId).name, profitPerUnit: best.profitPerUnit }
             : null;
     });
 }

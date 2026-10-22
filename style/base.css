@@ -78,7 +78,7 @@ main {
 
 .panel {
     background: var(--ink-surface);
-    border: 1px solid var(--hairline);
+    border: var(--frame-border, 1px) solid var(--hairline);
     border-radius: 6px;
     padding: 1.5rem;
 }
@@ -186,4 +186,13 @@ button[type="submit"]:hover,
     padding: 1.5rem 1.5rem 3rem;
     color: var(--parchment-dim);
     font-size: calc(0.8rem * var(--ts-small, 1));
+}
+
+html[data-click-highlight="off"] {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html[data-click-highlight="off"] :is(select, button):focus:not(:focus-visible),
+html[data-click-highlight="off"] input:is([type="text"], [type="number"]):focus {
+    outline: none;
 }

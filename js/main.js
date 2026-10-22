@@ -8,7 +8,7 @@ import { populateGuildPerks, wireGuildControls } from './panels/guildPanel.js';
 import { populateGoodsDatalist, wireGoodsDatalistReactivity } from './ui/goodsDatalist.js';
 import { renderGeneralBest, wireTabControls } from './panels/allTradesPanel.js';
 import { wireSortControls, refreshTable } from './panels/tradesTable.js';
-import { initLegChain, wireLegChainReactivity } from './panels/legChainPanel.js';
+import { initLegChain, wireLegChainReactivity, recomputeAll } from './panels/legChainPanel.js';
 import {
     wireRouteModeTabs,
     wireQuantityStepper,
@@ -22,8 +22,9 @@ import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
 import { wireLoadouts } from './panels/loadoutPanel.js';
 import { wireMenu, setMenuSticky } from './ui/menu.js';
 import { applySavedStyle, wireStylePanel } from './panels/stylePanel.js';
-import { setAnimations, setDynamicFrames } from './ui/styleStore.js';
+import { setAnimations, setDynamicFrames, setClickHighlight } from './ui/styleStore.js';
 import { wireDynamicFrames } from './ui/dynamicFrames.js';
+import { wireIcons, applyIcons } from './ui/icons.js';
 import { restoreSettings, wireAutoSave, clearSettings } from './core/storage.js';
 
 function populateCitySelects() {
@@ -67,6 +68,18 @@ async function init() {
         setDynamicFrames(e.target.checked);
     });
 
+    document.getElementById('click-highlight').addEventListener('change', (e) => {
+        setClickHighlight(e.target.checked);
+    });
+
+    ['show-icons', 'icon-position'].forEach(id => {
+        document.getElementById(id).addEventListener('change', () => {
+            applyIcons();
+            refreshTable();
+            recomputeAll();
+        });
+    });
+
     document.getElementById('animations').addEventListener('change', (e) => {
         setAnimations(e.target.checked);
     });
@@ -100,6 +113,7 @@ async function init() {
     wireLoadouts();
     wireStylePanel();
     wireDynamicFrames();
+    wireIcons();
 
     recomputeCaravan();
     renderFaithHint();

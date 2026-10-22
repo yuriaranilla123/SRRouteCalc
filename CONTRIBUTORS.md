@@ -4,7 +4,7 @@ Thanks to everyone who helped with data and information. Usernames are Discord h
 
 ## Project contributors
 
-- **Mushikachi** (@Shadow_EXE1928alt) - Owner of the SR:TS Information Hub and the SR:TS Fandom wiki; credited for both and for more accurate info than the Fandom wiki. Gave permission to use the Information Hub's colors and Caudex Serif font for the SR:TS Information Hub Style.
+- **Mushikachi** (@Shadow_EXE1928alt) - Owner of the SR:TS Information Hub and the SR:TS Fandom wiki; credited for both and for more accurate info than the Fandom wiki. Gave permission to use the Information Hub's colors and Caudex Serif font for the SR:TS Information Hub Style. Gave the files for the assets/icons being used currently.
 - **Regret** (@Rainingstream) - Contributor, for giving info.
 
 ## SR:TS Information Hub contributors

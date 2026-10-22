@@ -12,9 +12,15 @@ A fan-made trade route calculator for the Roblox game **Silk Road: Trading Simul
 - Caravan: bags, animals, saddlebags, cargo and auto-walk speed
 - Travel time and profit per minute
 - Optional itemized price breakdown
-- Display options: whole-number rounding, themed dropdowns, and an SR:TS Information Hub colour theme
+- Route searches buy goods only where they are produced, with a switch to include imports
+- Five reputation tracks, including the Rashidun Caliphate, and a quest money calculator
+- Menu with settings, loadouts and a style editor
+- Loadouts: save your whole setup (up to 20), then export or import it as a file
+- Style editor: colors, text sizes, fonts (including your own uploaded fonts, by button or drag and drop), frame spacing and border thickness, animation speed and effects
+- Display options: whole-number rounding, themed dropdowns, an SR:TS Information Hub colour theme, Dynamic frames (a packed multi-column layout), animations and click highlight switches
+- Optional game icons next to cultures, religions, events, bags, animals and city traits, placed left, right, above or below the text
 
-No accounts, no tracking, no backend. The site only loads its own data files and the fonts.
+No accounts, no tracking, no backend. The site only loads its own data files and the fonts. Settings, loadouts, styles and uploaded fonts stay in your browser (localStorage and IndexedDB) and are never sent anywhere.
 
 ## Run it locally
 
@@ -34,7 +40,7 @@ Node 18+ is enough, with no dependencies:
 npm test
 ```
 
-The tests run the real `calc.js` against the real data files. Run them before and after any change to `calc.js` or `data/`.
+The tests live in `tests/`. They run the real calculator against the real data files and also cover the style, font, icon and layout helpers. Run them before and after any change to `js/core/` or `data/`.
 
 ## Where the numbers come from
 
@@ -51,16 +57,20 @@ index.html
 data/        goods, cities, distances, modifiers, reputation, cargo (JSON)
 js/
   main.js    startup and wiring
-  core/      calc.js (pricing engine), travelCalc, cargoCalc, reputationCalc, returnCargo, money, state
-  panels/    one file per page section (trader, caravan, reputation, events, route finder, trades table, credits, funding bar)
-  ui/        dropdown style, themed select, goods search box, theme setting
-style/       base, components, per-panel CSS, dropdowns.css, theme-infohub.css
-tests/       calc.test.mjs
+  core/      pricing and route engine (calc.js re-exports lookup, distanceBonus, religionLines, modifierLines, pricing, routes), travelCalc, cargoCalc, reputationCalc, returnCargo, money, state, storage
+  panels/    one file per page section, plus loadoutPanel and stylePanel for the menu
+  ui/        menu, confirm dialog, dropdown and theme settings, style store, font store, icons, dynamic frames
+style/       base, components, layout, motion, icons, menu, dialog, style editor, per-panel CSS, dropdown CSS, theme-infohub.css
+tests/       calc, petra, style, fonts, frames and icons tests
 ```
+
+## Game icons
+
+Icons are optional and off by default (Menu, Settings, Show icons). The site looks for them in `assets/icons/`, which is not part of this repository. If you want them locally, place the icon folders there. A second host can be set as a fallback with `REMOTE_ICON_BASE` in `js/ui/icons.js`. Missing icons simply stay hidden.
 
 ## Roadmap
 
-Hamburger menu and settings panel, saving and loading loadouts as a local file, and guild perks (waiting on the game to fix them).
+Rarity for the remaining goods, the Rashidun Caliphate quest and sale reputation, saving the Specific mode routes, and resolving the Petra Distance Bonus mismatches (marked as todo tests). Guild perks are wired but depend on goods rarity, and the game's Junk Hoarding bug is behind a switch.
 
 ## Support
 

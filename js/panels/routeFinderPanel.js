@@ -8,6 +8,7 @@ import { money } from '../core/money.js';
 import { attachReturnCargo } from '../core/returnCargo.js';
 import { attachTravelStats } from '../core/travelCalc.js';
 import { getCurrentSpeed } from './caravanPanel.js';
+import { withGoodIcon } from '../ui/icons.js';
 
 function renderResultCard(best) {
   const el = document.getElementById('result-card');
@@ -22,7 +23,7 @@ function renderResultCard(best) {
   const sellCity = citiesData.cities.find(c => c.id === best.sellCityId);
 
   el.innerHTML = `
-    <div class="result-good">${good.name}</div>
+    <div class="result-good">${withGoodIcon(good.id, good.name)}</div>
     <div class="result-route">
       <span class="route-city">${buyCity.name}</span>
       <span class="route-arrow">buy → sell</span>

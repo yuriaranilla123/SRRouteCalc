@@ -19,10 +19,10 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     padding-right: 2.1rem;
-    background-image: linear-gradient(45deg, transparent 50%, var(--saffron) 50%), linear-gradient(135deg, var(--saffron) 50%, transparent 50%);
+    background-image: conic-gradient(from -45deg at 50% 100%, var(--saffron) 88deg, transparent 92deg);
     background-repeat: no-repeat;
-    background-position: calc(100% - 1.25rem) 50%, calc(100% - 0.9rem) 50%;
-    background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+    background-position: calc(100% - 0.9rem) 50%;
+    background-size: 0.7rem 0.35rem;
 }
 
 /* Popup menu - used by the goods search (both styles) and, in Style 2, every select */

@@ -1,5 +1,6 @@
 const KEY = 'srrc:style:v1';
 const HEX = /^#[0-9a-fA-F]{6}$/;
+const CUSTOM_FONT = /^custom:[a-z0-9]{1,24}$/;
 
 export const COLOR_VARS = [
     { id: 'ink', css: '--ink', label: 'Page background', group: 'surfaces' },
@@ -46,6 +47,8 @@ export const SPEED = { min: 25, max: 300, step: 25, default: 100 };
 export const LAYOUT = [
     { id: 'gap', css: '--frame-gap', label: 'Space between frames', unit: 'px', min: 8, max: 64, step: 4, default: 24 },
     { id: 'minWidth', css: '--frame-min', label: 'Minimum frame width (Dynamic frames)', unit: 'px', min: 280, max: 560, step: 20, default: 380 },
+    { id: 'borderWidth', css: '--frame-border', label: 'Frame border thickness', unit: 'px', min: 0, max: 6, step: 1, default: 1 },
+    { id: 'iconSize', css: '--icon-size', label: 'Icon size', unit: 'px', min: 16, max: 64, step: 4, default: 24 },
 ];
 
 export const EASINGS = [
@@ -63,6 +66,15 @@ export const EFFECTS = [
     { id: 'popups', label: 'Dropdowns, dialogs and menu tabs' },
 ];
 
+export function fontStack(id, slotId) {
+    const builtin = FONTS.find(f => f.id === id);
+    if (builtin) return builtin.stack;
+    if (typeof id === 'string' && CUSTOM_FONT.test(id)) {
+        return `'srrc-custom-${id.slice(7)}', ${slotId === 'heading' ? "Georgia, serif" : "system-ui, sans-serif"}`;
+    }
+    return null;
+}
+
 export function emptyStyle() {
     return { colors: {}, fonts: {}, sizes: {}, motion: {}, layout: {} };
 }
@@ -79,7 +91,7 @@ export function cleanStyle(raw) {
     if (raw.fonts && typeof raw.fonts === 'object') {
         for (const slot of FONT_SLOTS) {
             const value = raw.fonts[slot.id];
-            if (typeof value === 'string' && FONTS.some(f => f.id === value)) style.fonts[slot.id] = value;
+            if (typeof value === 'string' && (FONTS.some(f => f.id === value) || CUSTOM_FONT.test(value))) style.fonts[slot.id] = value;
         }
     }
     if (raw.sizes && typeof raw.sizes === 'object') {
@@ -149,8 +161,8 @@ export function applyStyle(style) {
         else root.style.removeProperty(v.css);
     }
     for (const slot of FONT_SLOTS) {
-        const font = FONTS.find(f => f.id === style.fonts[slot.id]);
-        if (font) root.style.setProperty(slot.css, font.stack);
+        const stack = fontStack(style.fonts[slot.id], slot.id);
+        if (stack) root.style.setProperty(slot.css, stack);
         else root.style.removeProperty(slot.css);
     }
     root.style.fontSize = '';
@@ -159,7 +171,7 @@ export function applyStyle(style) {
         else root.style.removeProperty(t.css);
     }
     for (const l of LAYOUT) {
-        if (style.layout[l.id]) root.style.setProperty(l.css, `${style.layout[l.id]}px`);
+        if (style.layout[l.id] !== undefined) root.style.setProperty(l.css, `${style.layout[l.id]}px`);
         else root.style.removeProperty(l.css);
     }
     if (style.motion.speed) root.style.setProperty('--motion-speed', String(style.motion.speed / 100));
@@ -175,6 +187,10 @@ export function applyStyle(style) {
 
 export function setDynamicFrames(on) {
     document.documentElement.dataset.dynamicFrames = on ? 'on' : 'off';
+}
+
+export function setClickHighlight(on) {
+    document.documentElement.dataset.clickHighlight = on ? 'on' : 'off';
 }
 
 export function setAnimations(on) {

@@ -6,6 +6,7 @@ import { getPlayerRanks } from './reputationPanel.js';
 import { resolveGoodSelection } from '../ui/goodsDatalist.js';
 import { money } from '../core/money.js';
 import { bestUnlockedTradeForDirection } from '../core/returnCargo.js';
+import { withGoodIcon } from '../ui/icons.js';
 
 function escapeHtml(str) {
     return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -192,7 +193,7 @@ function toggleBrowse(legRow) {
     } else {
         results.innerHTML = trades.slice(0, 10).map(t => {
             const good = goodsData.goods.find(g => g.id === t.goodId);
-            return `<div class="specific-item-line"><span class="item-name">${good.name}</span><span class="profit">${money(t.profitPerUnit)} / unit</span></div>`;
+            return `<div class="specific-item-line"><span class="item-name">${withGoodIcon(good.id, good.name)}</span><span class="profit">${money(t.profitPerUnit)} / unit</span></div>`;
         }).join('');
     }
     results.style.display = 'block';
@@ -216,19 +217,19 @@ function computeItemsTotal(cityA, cityB, itemRows, context, opts, reputationData
         }
         if (!isGoodUnlocked(goodId, playerRanks, reputationData)) {
             const good = goodsData.goods.find(g => g.id === goodId);
-            lines.push(`<div class="specific-item-line"><span class="item-name">${good.name}</span><span class="locked-msg">Not unlocked at your rank</span></div>`);
+            lines.push(`<div class="specific-item-line"><span class="item-name">${withGoodIcon(good.id, good.name)}</span><span class="locked-msg">Not unlocked at your rank</span></div>`);
             return;
         }
         const result = computeTripProfit(goodId, cityA, cityB, quantity, context, opts);
         const good = goodsData.goods.find(g => g.id === goodId);
         if (!result.possible) {
-            lines.push(`<div class="specific-item-line"><span class="item-name">${good.name}</span><span class="empty-state">Not tradeable on this route</span></div>`);
+            lines.push(`<div class="specific-item-line"><span class="item-name">${withGoodIcon(good.id, good.name)}</span><span class="empty-state">Not tradeable on this route</span></div>`);
             return;
         }
         total += result.totalProfit;
         lines.push(`
       <div class="specific-item-line">
-        <span class="item-name">${good.name} ×${quantity}</span>
+        <span class="item-name">${withGoodIcon(good.id, good.name)} ×${quantity}</span>
         <span>${money(result.buyPrice)} → ${money(result.sellPrice)}, <span class="profit">${money(result.totalProfit)}</span></span>
       </div>`);
     });
@@ -295,7 +296,7 @@ export function recomputeAll() {
                                 const bestGood = goodsData.goods.find(g => g.id === best.goodId);
                                 html += `
                   <div class="specific-item-line">
-                    <span class="item-name">Best Loop: ${bestGood.name} ×${loopQty}</span>
+                    <span class="item-name">Best Loop: ${withGoodIcon(bestGood.id, bestGood.name)} ×${loopQty}</span>
                     <span>${money(best.buyPrice)} → ${money(best.sellPrice)}, <span class="profit">${money(best.totalProfit)}</span></span>
                   </div>`;
                             } else {

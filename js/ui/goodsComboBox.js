@@ -1,3 +1,4 @@
+import { iconsOn, iconUrl, goodIconPathByName, makeIcon } from './icons.js';
 // Themed replacement for the native <datalist> popup. #goods-datalist stays as the data source.
 const INPUT = 'input.specific-item-search';
 let menu = null;
@@ -52,7 +53,15 @@ function open() {
     menu.replaceChildren(...(items.length ? items.map(n => {
         const li = document.createElement('li');
         li.dataset.value = n;
-        li.textContent = n;
+        const iconPath = iconsOn() ? goodIconPathByName(n) : null;
+        if (iconPath) {
+            const text = document.createElement('span');
+            text.textContent = n;
+            li.classList.add('with-icon');
+            li.append(makeIcon(iconUrl(iconPath)), text);
+        } else {
+            li.textContent = n;
+        }
         li.setAttribute('role', 'option');
         return li;
     }) : [Object.assign(document.createElement('li'), { className: 'combo-empty', textContent: 'No match' })]));

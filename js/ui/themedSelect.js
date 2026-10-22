@@ -1,6 +1,7 @@
 // Style 2 popup for every <select>. The select stays in place, keeps its value, events and look; only its popup is replaced.
 // Touch devices keep the native picker, which is better on phones.
 import { getDropdownStyle, onDropdownStyleChange } from './dropDownStyle.js';
+import { iconsOn, iconUrl, selectIconPath, makeIcon } from './icons.js';
 
 let menu = null;
 let select = null;
@@ -65,7 +66,15 @@ function open(sel) {
     menu.replaceChildren(...options.map((o, i) => {
         const li = document.createElement('li');
         li.dataset.i = i;
-        li.textContent = o.textContent.trim();
+        const iconPath = iconsOn() ? selectIconPath(sel, o.value) : null;
+        if (iconPath) {
+            const text = document.createElement('span');
+            text.textContent = o.textContent.trim();
+            li.classList.add('with-icon');
+            li.append(makeIcon(iconUrl(iconPath)), text);
+        } else {
+            li.textContent = o.textContent.trim();
+        }
         li.setAttribute('role', 'option');
         li.classList.toggle('selected', o.value === sel.value);
         li.classList.toggle('disabled', o.disabled);

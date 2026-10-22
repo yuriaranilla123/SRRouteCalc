@@ -47,5 +47,8 @@ test('cleanStyle keeps only valid layout options', () => {
     const style = cleanStyle({ layout: { gap: 40, minWidth: 100, bogus: 30 } });
     assert.deepEqual(style.layout, { gap: 40 });
     assert.ok(isDefaultStyle(cleanStyle({ layout: { gap: 24, minWidth: 380 } })));
-    assert.equal(LAYOUT.length, 2);
+    assert.equal(LAYOUT.length, 4);
+    assert.deepEqual(cleanStyle({ layout: { borderWidth: 0 } }).layout, { borderWidth: 0 });
+    assert.ok(isDefaultStyle(cleanStyle({ layout: { borderWidth: 1 } })));
+    assert.deepEqual(cleanStyle({ layout: { borderWidth: 9 } }).layout, {});
 });

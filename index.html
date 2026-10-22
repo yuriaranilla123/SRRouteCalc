@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="style/styleEditor.css">
     <link rel="stylesheet" href="style/theme-infohub.css">
     <link rel="stylesheet" href="style/layout.css">
+    <link rel="stylesheet" href="style/icons.css">
     <link rel="stylesheet" href="style/motion.css">
 </head>
 
@@ -448,6 +449,13 @@
                         <p class="field-hint">Lets the frames flow into as many columns as fit your screen, keeping an
                             even gap between them. Frame spacing and minimum width are in the Style tab.</p>
                         <label class="toggle-switch">
+                            <input type="checkbox" id="click-highlight" checked>
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Click highlight</span>
+                        </label>
+                        <p class="field-hint">The outline that appears around a button, dropdown or box when you click
+                            it. Turning it off keeps the outline for keyboard navigation on buttons and dropdowns.</p>
+                        <label class="toggle-switch">
                             <input type="checkbox" id="quick-action">
                             <span class="toggle-track"><span class="toggle-thumb"></span></span>
                             <span class="toggle-text">Quick action</span>
@@ -469,6 +477,22 @@
                         <p class="field-hint">Route searches normally buy a good only in a city that produces it. Turn
                             this on
                             to also consider buying imports, which a store may not actually stock.</p>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="show-icons">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Show icons</span>
+                        </label>
+                        <p class="field-hint">Shows the game icons next to goods, cultures, religions, events, bags,
+                            animals and city traits. Icon size is in the Style tab.</p>
+                        <label class="form-field">
+                            Icon position
+                            <select id="icon-position">
+                                <option value="left">Left of the text</option>
+                                <option value="right">Right of the text</option>
+                                <option value="top">Above the text</option>
+                                <option value="bottom">Below the text</option>
+                            </select>
+                        </label>
                     </div>
                 </div>
                 <div data-menu-section="style" hidden>
