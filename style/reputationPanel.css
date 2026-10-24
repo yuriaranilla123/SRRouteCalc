@@ -22,3 +22,49 @@
     color: var(--accent-text);
     font-variant-numeric: tabular-nums;
 }
+
+.quest-giver-list {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.quest-giver {
+    padding: 0.75rem 0.9rem;
+    background: var(--ink-surface-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+}
+
+.quest-giver-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 0.75rem;
+}
+
+.quest-giver-name {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--parchment);
+}
+
+.quest-giver-reward {
+    color: var(--accent-text);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.quest-giver .field-hint {
+    margin: 0.2rem 0 0.4rem;
+}
+
+.quest-giver-tasks {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: calc(0.85rem * var(--ts-small, 1));
+    color: var(--parchment-dim);
+}

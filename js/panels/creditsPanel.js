@@ -10,7 +10,7 @@ const CREDITS = {
         { label: 'SR:TS Fandom wiki', url: 'https://srtsimulator.fandom.com/wiki/Silk_Road_Trading_Simulator_Wiki' },
     ],
     people: [
-        { name: 'Mushikachi (@Shadow_EXE1928alt)', role: 'Owner of the SR:TS Information Hub and the SR:TS Fandom wiki; credited for both and for more accurate info than the Fandom wiki. Gave permission to use the Information Hub\'s colors and Caudex Serif font for the SR:TS Information Hub Style.' },
+        { name: 'Mushikachi (@Shadow_EXE1928alt)', role: 'Owner of the SR:TS Information Hub and the SR:TS Fandom wiki; credited for both and for more accurate info than the Fandom wiki. Gave permission to use the Information Hub\'s colors and Caudex Serif font for the SR:TS Information Hub Style. Gave the files for the game icons used by the optional icons feature.' },
         { name: 'Regret (@Rainingstream)', role: 'Contributor, for giving info.' },
     ],
 };

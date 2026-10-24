@@ -9,7 +9,7 @@
     "_questMoneyFormula": {
         "formula": "floor(baseReward * 1.5^rank)",
         "verifiedAgainst": "A third-party 'Quest Money by Rank' table (Short Distance Delivery, $30 base) matched this formula exactly for all 8 ranks: 45, 67, 101, 151, 227, 341, 512, 768.",
-        "caveat": "Only the Short Distance Delivery ($30 base) progression was independently verified number-for-number. Long Distance Delivery ($50 base) is assumed to follow the same formula since it's the same '+50% Money from Reputation Quests' reward, but that specific progression hasn't been cross-checked against a second source."
+        "caveat": "Short Distance Delivery ($30 base) was verified number-for-number against a third-party table, and Long Distance Delivery ($100 base, corrected from 50) against the Info Hub Couriers page: 150, 225, 337, 506, 759, 1139, 1708, 2562."
     },
     "baseQuestRewards": {
         "short_distance_delivery": {
@@ -17,7 +17,7 @@
             "baseReputation": 30
         },
         "long_distance_delivery": {
-            "baseMoney": 50,
+            "baseMoney": 100,
             "baseReputation": 50,
             "unlockedAtRank": 1
         }

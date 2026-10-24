@@ -66,7 +66,7 @@ tests/       calc, petra, style, fonts, frames and icons tests
 
 ## Game icons
 
-Icons are optional and off by default (Menu, Settings, Show icons). The site looks for them in `assets/icons/`, which is not part of this repository. If you want them locally, place the icon folders there. A second host can be set as a fallback with `REMOTE_ICON_BASE` in `js/ui/icons.js`. Missing icons simply stay hidden.
+Icons are optional and off by default (Menu, Settings, Show icons). They live in `assets/icons/` and are used with the permission of Mushikachi, the owner of the SR:TS Information Hub, who supplied the files. The artwork remains the property of its creators and the game's developers, and is not covered by the AGPL license below. Missing icons simply stay hidden. A second host can be set as a fallback with `REMOTE_ICON_BASE` in `js/ui/icons.js`.
 
 ## Roadmap
 
@@ -88,4 +88,4 @@ See [CONTRIBUTORS.md](CONTRIBUTORS.md).
 
 AGPL-3.0-or-later, see [LICENSE](LICENSE). If you run a modified version as a website, AGPLv3 requires you to offer its source code to your users.
 
-Copyright (C) 2026-present Yuri123_YT. No game assets are included in this repository.
+Copyright (C) 2026-present Yuri123_YT. The code is AGPL-3.0-or-later. The game icons in `assets/icons/` are not part of that license (see Game icons above).

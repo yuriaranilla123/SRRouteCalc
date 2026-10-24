@@ -15,7 +15,7 @@ export const ICONS = {
         Persian: 'Culture/Persian.png',
         Sogdian: 'Culture/Sogdian.png',
         'Han Chinese': 'Culture/Han Chinese.png',
-        Arab: 'Culture/Arabic.webp',
+        Arab: 'Culture/Arabic.png',
     },
     religion: {
         Christianity: `${R}Church.png`,
@@ -23,7 +23,7 @@ export const ICONS = {
         Zoroastrianism: `${R}Fire Temple.png`,
         Manichaeism: `${R}Temple of Light.png`,
         'Mahayana Buddhism': `${R}Mahayana Monastery.png`,
-        Islam: `${R}Mosque.webp`,
+        Islam: `${R}Mosque.png`,
     },
     event: {
         drought: 'Event/Drought.png',
@@ -53,9 +53,9 @@ export const ICONS = {
         red_chestnut_nisean_horse: `${AR}Red Chestnut Nisean Horse.png`,
         black_nisean_horse: `${AR}Black Nisean Horse.png`,
         storm_grey_nisean_horse: `${AR}Storm Grey Nisean Horse.png`,
-        han_heavenly_horse: `${AR}Heavenly Horse.webp`,
+        han_heavenly_horse: `${AR}Heavenly Horse.png`,
         royal_indian_elephant: `${AR}Royal Indian Elephant.png`,
-        sasanian_elephant: `${AR}Sasanian Elephant.webp`,
+        sasanian_elephant: `${AR}Sasanian Elephant.png`,
     },
     trait: {
         'Capital City': `${T}Capital City.png`,
@@ -84,12 +84,11 @@ const GOOD_FOLDERS = {
     Spices: ['coriander', 'frankincense', 'myrrh', 'saffron', 'sea_salt', 'sesame'],
     Textile: ['byzantine_silk', 'cotton_yarn', 'cotton', 'hides', 'leather', 'linen', 'persian_carpets', 'wool'],
 };
-const WEBP_GOODS = ['frankincense', 'myrrh'];
 
 for (const [folder, ids] of Object.entries(GOOD_FOLDERS)) {
     for (const id of ids) {
         const name = id.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
-        ICONS.good[id] = `Goods/${folder}/${name}.${WEBP_GOODS.includes(id) ? 'webp' : 'png'}`;
+        ICONS.good[id] = `Goods/${folder}/${name}.png`;
     }
 }
 
@@ -219,6 +218,14 @@ export function applyIcons() {
     refreshLabelIcons();
 }
 
+function swapExtension(img) {
+    const src = img.getAttribute('src') || '';
+    if (img.dataset.alt || !/\.(png|webp)$/.test(src)) return false;
+    img.dataset.alt = '1';
+    img.src = src.endsWith('.png') ? src.replace(/\.png$/, '.webp') : src.replace(/\.webp$/, '.png');
+    return true;
+}
+
 function useRemote(img) {
     const src = img.getAttribute('src') || '';
     if (!REMOTE_ICON_BASE || img.dataset.retried || !src.startsWith(LOCAL_ICON_BASE)) return false;
@@ -232,7 +239,8 @@ export function wireIcons() {
     document.addEventListener('error', e => {
         const img = e.target;
         if (!img || !img.classList || !img.classList.contains('icon')) return;
-        if (!useRemote(img)) img.hidden = true;
+        if (swapExtension(img) || useRemote(img)) return;
+        img.hidden = true;
     }, true);
     document.addEventListener('change', applyIcons);
     applyIcons();

@@ -16,7 +16,7 @@ A chat message ("someone said X") is a useful lead but is not enough on its own 
 
 - The SR:TS Information Hub wins over the Fandom wiki. Keep the discarded value in a `note` field rather than overwriting it silently.
 - Never invent a number that can't be traced to a source or a direct in-game measurement. Mark unsure values `UNCONFIRMED`.
-- Don't add real game assets (icons, images) to the repository.
+- Don't add game assets (icons, images) to the repository without permission from their owners. The icons in `assets/icons/` are used with permission from Mushikachi.
 
 ## Code
 

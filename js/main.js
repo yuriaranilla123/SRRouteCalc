@@ -2,7 +2,7 @@ import { loadData, setRoundToInt, setDetailedMode, getCitiesData } from './core/
 import { setDropdownStyle } from './ui/dropDownStyle.js';
 import { setTheme } from './ui/themeStyle.js';
 import { populateCaravanSelects, recomputeCaravan, wireCaravanControls } from './panels/caravanPanel.js';
-import { populateReputationFields, renderLockedGoodsHint, renderQuestMoney, wireReputationControls } from './panels/reputationPanel.js';
+import { populateReputationFields, renderLockedGoodsHint, renderQuestMoney, renderQuestGivers, wireReputationControls } from './panels/reputationPanel.js';
 import { populateLanguageFields, wireTraderControls, renderFaithHint, updateNativeLanguageLock } from './panels/traderPanel.js';
 import { populateGuildPerks, wireGuildControls } from './panels/guildPanel.js';
 import { populateGoodsDatalist, wireGoodsDatalistReactivity } from './ui/goodsDatalist.js';
@@ -120,6 +120,7 @@ async function init() {
     renderEventHint();
     renderLockedGoodsHint();
     renderQuestMoney();
+    renderQuestGivers();
     populateGoodsDatalist();
     renderGeneralBest();
     renderFundingBar();

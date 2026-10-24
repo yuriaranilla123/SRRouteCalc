@@ -27,7 +27,7 @@ test('every good has an icon mapping and names resolve', async () => {
         assert.ok(ICONS.good[g.id], g.id);
         assert.equal(goodIconPathByName(g.name), ICONS.good[g.id], g.name);
     }
-    assert.equal(ICONS.good.myrrh, 'Goods/Spices/Myrrh.webp');
+    assert.equal(ICONS.good.myrrh, 'Goods/Spices/Myrrh.png');
     assert.equal(ICONS.good.sancai_dragon_ware, 'Goods/Household/Sancai Dragon Ware.png');
 });
 
@@ -42,6 +42,6 @@ test('breakdown labels map to icons', () => {
 test('icon urls are encoded and select lookups ignore other selects', () => {
     assert.equal(iconUrl('Culture/Han Chinese.png'), 'assets/icons/Culture/Han%20Chinese.png');
     assert.equal(iconUrl(null), null);
-    assert.equal(selectIconPath({ id: 'culture' }, 'Arab'), 'Culture/Arabic.webp');
+    assert.equal(selectIconPath({ id: 'culture' }, 'Arab'), 'Culture/Arabic.png');
     assert.equal(selectIconPath({ id: 'other' }, 'Arab'), null);
 });

@@ -1,0 +1,61 @@
+{
+    "_source": "SR:TS Information Hub 'Quest Givers' page. Rewards are fixed amounts from the page; the +50% reputation rank bonus applies to courier deliveries only.",
+    "quests": [
+        {
+            "id": "mill_run",
+            "name": "Mill Run",
+            "reward": {
+                "money": 200,
+                "reputation": 0
+            },
+            "npc": "Farm Worker Aprim",
+            "location": "Wheat Farm, Levant Frontier",
+            "tasks": [
+                "Gather 5 Wheat",
+                "Mill the Wheat into 5 Milled Grain",
+                "Return 5 Milled Grain to the Farm"
+            ]
+        },
+        {
+            "id": "forging_iron",
+            "name": "Forging Iron",
+            "reward": {
+                "money": 350,
+                "reputation": 0
+            },
+            "npc": "Blacksmith Sarhad",
+            "location": "Forge, Damascus",
+            "tasks": [
+                "Mine 5 Iron",
+                "Forge Ore into 5 Iron Ingots",
+                "Give 5 Iron Ingots to Sarhad"
+            ]
+        },
+        {
+            "id": "arm_yourself",
+            "name": "Arm Yourself",
+            "reward": {
+                "money": 50,
+                "reputation": 0
+            },
+            "npc": "Bandit Hunters (Leo, Vardas, Agapetos, Photeinos, Kyriakos, Joseph)",
+            "location": "Desert and Inland Outposts",
+            "tasks": [
+                "Buy a Sword"
+            ]
+        },
+        {
+            "id": "rid_us_of_them",
+            "name": "Rid Us of Them",
+            "reward": {
+                "money": 200,
+                "reputation": 60
+            },
+            "npc": "Bandit Hunters (Leo, Vardas, Agapetos, Photeinos, Kyriakos, Joseph)",
+            "location": "Desert and Inland Outposts",
+            "tasks": [
+                "Defeat 15 Bandits, Marauders, or Outlaws"
+            ]
+        }
+    ]
+}
