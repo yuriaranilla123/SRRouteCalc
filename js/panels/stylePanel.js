@@ -1,6 +1,8 @@
-import { COLOR_VARS, FONT_SLOTS, FONTS, TEXT_SIZES, SIZE, SPEED, LAYOUT, EASINGS, EFFECTS, emptyStyle, cleanStyle, isDefaultStyle, readStoredStyle, storeStyle, clearStoredStyle, applyStyle } from '../ui/styleStore.js';
+import { COLOR_VARS, FONT_SLOTS, TEXT_SIZES, LAYOUT, EFFECTS, emptyStyle, cleanStyle, isDefaultStyle, readStoredStyle, storeStyle, clearStoredStyle, applyStyle } from '../ui/styleStore.js';
 import { contrastRatio } from '../ui/contrast.js';
-import { loadCustomFonts, addCustomFont, removeCustomFont, MAX_FONTS, MAX_BYTES } from '../ui/fontStore.js';
+import { createFontKit } from './styleFonts.js';
+import { createSliderKit } from './styleSliders.js';
+import { el } from '../ui/domKit.js';
 import { onThemeChange } from '../ui/themeStyle.js';
 import { confirmAction } from '../ui/confirmDialog.js';
 
@@ -15,16 +17,14 @@ const CONTRAST_CHECKS = [
 ];
 let sectionCount = 0;
 
-let style = emptyStyle();
-let customFonts = [];
+const ctx = {
+    style: emptyStyle(),
+    change: () => change(),
+    refresh: () => refreshControls(),
+};
+const fonts = createFontKit(ctx);
+const sliders = createSliderKit(ctx);
 let saveTimer = null;
-
-function el(tag, className, text) {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text !== undefined) node.textContent = text;
-    return node;
-}
 
 function setStatus(message) {
     document.getElementById('style-status').textContent = message;
@@ -36,13 +36,13 @@ function themeColor(variable) {
 }
 
 function shownColor(variable) {
-    return style.colors[variable.id] || themeColor(variable);
+    return ctx.style.colors[variable.id] || themeColor(variable);
 }
 
 function saveSoon() {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
-        if (!storeStyle(style)) setStatus('Could not save your style. Browser storage is full or blocked.');
+        if (!storeStyle(ctx.style)) setStatus('Could not save your style. Browser storage is full or blocked.');
     }, 150);
 }
 
@@ -59,38 +59,15 @@ function refreshContrast() {
 function refreshControls() {
     COLOR_VARS.forEach(v => {
         document.getElementById(`style-color-${v.id}`).value = shownColor(v);
-        document.getElementById(`style-reset-${v.id}`).classList.toggle('is-default', !style.colors[v.id]);
+        document.getElementById(`style-reset-${v.id}`).classList.toggle('is-default', !ctx.style.colors[v.id]);
     });
-    FONT_SLOTS.forEach(slot => {
-        const select = document.getElementById(`style-font-${slot.id}`);
-        select.value = style.fonts[slot.id] || '';
-        if (select.selectedIndex < 0) select.value = '';
-    });
-    TEXT_SIZES.forEach(t => {
-        const value = style.sizes[t.id] || SIZE.default;
-        document.getElementById(`style-size-${t.id}`).value = String(value);
-        document.getElementById(`style-size-num-${t.id}`).value = String(value);
-        document.getElementById(`style-reset-size-${t.id}`).classList.toggle('is-default', !style.sizes[t.id]);
-    });
-    const speed = style.motion.speed || SPEED.default;
-    document.getElementById('style-speed').value = String(speed);
-    document.getElementById('style-speed-num').value = String(speed);
-    document.getElementById('style-reset-speed').classList.toggle('is-default', !style.motion.speed);
-    LAYOUT.forEach(l => {
-        const value = style.layout[l.id] ?? l.default;
-        document.getElementById(`style-layout-${l.id}`).value = String(value);
-        document.getElementById(`style-layout-${l.id}-num`).value = String(value);
-        document.getElementById(`style-reset-layout-${l.id}`).classList.toggle('is-default', style.layout[l.id] === undefined);
-    });
-    document.getElementById('style-easing').value = style.motion.easing || 'smooth';
-    EFFECTS.forEach(fx => {
-        document.getElementById(`style-fx-${fx.id}`).checked = style.motion[fx.id] !== false;
-    });
+    fonts.refresh();
+    sliders.refresh();
     refreshContrast();
 }
 
 function change() {
-    applyStyle(style);
+    applyStyle(ctx.style);
     saveSoon();
     refreshContrast();
 }
@@ -109,13 +86,13 @@ function colorRow(variable) {
     reset.setAttribute('aria-label', reset.title);
 
     input.addEventListener('input', () => {
-        style.colors[variable.id] = input.value.toLowerCase();
+        ctx.style.colors[variable.id] = input.value.toLowerCase();
         reset.classList.remove('is-default');
         change();
     });
     reset.addEventListener('click', () => {
-        delete style.colors[variable.id];
-        applyStyle(style);
+        delete ctx.style.colors[variable.id];
+        applyStyle(ctx.style);
         input.value = themeColor(variable);
         reset.classList.add('is-default');
         change();
@@ -123,321 +100,6 @@ function colorRow(variable) {
 
     row.append(label, input, reset);
     return row;
-}
-
-function fillFontOptions(select) {
-    const current = select.value;
-    select.replaceChildren(new Option('Theme default', ''), ...FONTS.map(f => new Option(f.label, f.id)));
-    if (customFonts.length) {
-        const group = document.createElement('optgroup');
-        group.label = 'Your fonts';
-        customFonts.forEach(f => group.appendChild(new Option(f.name, `custom:${f.id}`)));
-        select.appendChild(group);
-    }
-    select.value = current;
-}
-
-function formatSize(bytes) {
-    return bytes >= 1048576 ? `${(bytes / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
-}
-
-function setFontStatus(message) {
-    document.getElementById('style-font-status').textContent = message;
-}
-
-function renderFontList() {
-    const list = document.getElementById('style-font-list');
-    list.replaceChildren();
-    customFonts.forEach(font => {
-        const li = el('li', 'font-item');
-        const name = el('span', 'font-item-name', font.name);
-        const info = el('span', 'font-item-size', `${font.format.toUpperCase()}, ${formatSize(font.size)}${font.stored < font.size ? `, stored as ${formatSize(font.stored)}` : ''}`);
-        const remove = el('button', 'menu-action', '\u2212');
-        remove.type = 'button';
-        remove.dataset.action = 'delete';
-        remove.setAttribute('aria-label', `Delete ${font.name}`);
-        remove.addEventListener('click', () => removeFont(font));
-        li.append(name, info, remove);
-        list.appendChild(li);
-    });
-    document.getElementById('style-font-upload').disabled = customFonts.length >= MAX_FONTS;
-}
-
-function syncFontSelects() {
-    FONT_SLOTS.forEach(slot => {
-        const select = document.getElementById(`style-font-${slot.id}`);
-        fillFontOptions(select);
-        select.value = style.fonts[slot.id] || '';
-    });
-}
-
-async function removeFont(font) {
-    if (!(await confirmAction(`Delete the font "${font.name}"?`))) return;
-    try {
-        await removeCustomFont(font.id);
-    } catch {
-        setFontStatus('Could not delete that font.');
-        return;
-    }
-    customFonts = customFonts.filter(f => f.id !== font.id);
-    FONT_SLOTS.forEach(slot => {
-        if (style.fonts[slot.id] === `custom:${font.id}`) delete style.fonts[slot.id];
-    });
-    syncFontSelects();
-    renderFontList();
-    change();
-    setFontStatus(`Deleted ${font.name}.`);
-}
-
-async function uploadFont(file) {
-    let result;
-    try {
-        result = await addCustomFont(file, customFonts.length);
-    } catch {
-        result = { ok: false, reason: 'Fonts cannot be saved in this browser.' };
-    }
-    if (!result.ok) return `${file.name}: ${result.reason}`;
-    customFonts.push(result.font);
-    syncFontSelects();
-    renderFontList();
-    return `Added ${result.font.name}.`;
-}
-
-async function uploadFonts(files) {
-    const list = [...files];
-    if (!list.length) return;
-    setFontStatus('Adding font...');
-    const messages = [];
-    for (const file of list) messages.push(await uploadFont(file));
-    setFontStatus(`${messages.join(' ')} Pick it in the dropdowns above.`);
-}
-
-function wireDrop(zone) {
-    const hasFiles = e => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
-    const over = e => {
-        if (!hasFiles(e)) return;
-        e.preventDefault();
-        zone.classList.add('dragging');
-    };
-    zone.addEventListener('dragenter', over);
-    zone.addEventListener('dragover', over);
-    zone.addEventListener('dragleave', e => {
-        if (!zone.contains(e.relatedTarget)) zone.classList.remove('dragging');
-    });
-    zone.addEventListener('drop', async e => {
-        if (!hasFiles(e)) return;
-        e.preventDefault();
-        zone.classList.remove('dragging');
-        await uploadFonts(e.dataTransfer.files);
-    });
-}
-
-function fontManager() {
-    const fileInput = el('input');
-    fileInput.type = 'file';
-    fileInput.id = 'style-font-file';
-    fileInput.accept = '.ttf,.otf,.woff,.woff2';
-    fileInput.multiple = true;
-    fileInput.hidden = true;
-    const upload = el('button', 'menu-action', 'Upload font');
-    upload.type = 'button';
-    upload.id = 'style-font-upload';
-    upload.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', async () => {
-        await uploadFonts(fileInput.files);
-        fileInput.value = '';
-    });
-    const zone = el('div', 'font-drop');
-    zone.append(el('span', 'font-drop-text', 'Drop font files here, or'), upload, fileInput);
-    wireDrop(zone);
-    const toolbar = zone;
-    const status = el('p', 'field-hint');
-    status.id = 'style-font-status';
-    status.setAttribute('role', 'status');
-    status.setAttribute('aria-live', 'polite');
-    const list = el('ul', 'font-list');
-    list.id = 'style-font-list';
-    return [
-        el('h3', 'menu-subtitle', 'Your fonts'),
-        el('p', 'field-hint', `Upload a .ttf, .otf, .woff or .woff2 file up to ${MAX_BYTES / 1048576} MB, ${MAX_FONTS} fonts at most. Fonts stay in this browser only and are compressed when stored. A style export keeps only the font name, so anyone importing it needs to upload the font too.`),
-        toolbar,
-        status,
-        list,
-    ];
-}
-
-function fontRow(slot) {
-    const row = el('div', 'font-row');
-    const label = el('label', 'color-label', slot.label);
-    label.htmlFor = `style-font-${slot.id}`;
-    const select = el('select', 'style-font');
-    select.id = `style-font-${slot.id}`;
-    fillFontOptions(select);
-    select.addEventListener('change', () => {
-        if (select.value) style.fonts[slot.id] = select.value;
-        else delete style.fonts[slot.id];
-        change();
-    });
-    row.append(label, select);
-    return row;
-}
-
-function sizeRow(item) {
-    const row = el('div', 'size-row');
-    const label = el('label', 'color-label', item.label);
-    label.htmlFor = `style-size-${item.id}`;
-
-    const range = el('input', 'style-size');
-    range.type = 'range';
-    range.id = `style-size-${item.id}`;
-    range.min = String(SIZE.min);
-    range.max = String(SIZE.max);
-    range.step = String(SIZE.step);
-
-    const number = el('input', 'style-size-number');
-    number.type = 'number';
-    number.id = `style-size-num-${item.id}`;
-    number.min = String(SIZE.min);
-    number.max = String(SIZE.max);
-    number.step = '1';
-    number.setAttribute('aria-label', `${item.label} size in percent`);
-
-    const unit = el('span', 'size-unit', '%');
-    const reset = el('button', 'menu-action color-reset', '\u21BA');
-    reset.type = 'button';
-    reset.id = `style-reset-size-${item.id}`;
-    reset.title = `Reset ${item.label} size to ${SIZE.default}%`;
-    reset.setAttribute('aria-label', reset.title);
-
-    function setSize(value) {
-        if (value === SIZE.default) delete style.sizes[item.id];
-        else style.sizes[item.id] = value;
-        reset.classList.toggle('is-default', !style.sizes[item.id]);
-        change();
-    }
-
-    range.addEventListener('input', () => {
-        const value = Number(range.value);
-        number.value = String(value);
-        setSize(value);
-    });
-    number.addEventListener('input', () => {
-        const value = Number(number.value);
-        if (number.value.trim() !== '' && Number.isInteger(value) && value >= SIZE.min && value <= SIZE.max) {
-            range.value = String(value);
-            setSize(value);
-        }
-    });
-    number.addEventListener('change', () => {
-        const typed = number.value.trim() === '' ? NaN : Number(number.value);
-        const value = Number.isFinite(typed)
-            ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(typed)))
-            : style.sizes[item.id] || SIZE.default;
-        number.value = String(value);
-        range.value = String(value);
-        setSize(value);
-    });
-    reset.addEventListener('click', () => {
-        number.value = String(SIZE.default);
-        range.value = String(SIZE.default);
-        setSize(SIZE.default);
-    });
-
-    row.append(label, range, number, unit, reset);
-    return row;
-}
-
-function sliderRow({ id, label, min, max, step, def, unit, read, write }) {
-    const row = el('div', 'size-row');
-    const text = el('label', 'color-label', label);
-    text.htmlFor = `style-${id}`;
-    const range = el('input', 'style-size');
-    range.type = 'range';
-    range.id = `style-${id}`;
-    range.min = String(min);
-    range.max = String(max);
-    range.step = String(step);
-    const number = el('input', 'style-size-number');
-    number.type = 'number';
-    number.id = `style-${id}-num`;
-    number.min = String(min);
-    number.max = String(max);
-    number.step = '1';
-    number.setAttribute('aria-label', `${label} in ${unit}`);
-    const unitEl = el('span', 'size-unit', unit);
-    const reset = el('button', 'menu-action color-reset', '\u21BA');
-    reset.type = 'button';
-    reset.id = `style-reset-${id}`;
-    reset.title = `Reset ${label} to ${def}${unit}`;
-    reset.setAttribute('aria-label', reset.title);
-
-    function apply(value) {
-        write(value === def ? undefined : value);
-        reset.classList.toggle('is-default', value === def);
-        change();
-    }
-    range.addEventListener('input', () => {
-        number.value = range.value;
-        apply(Number(range.value));
-    });
-    number.addEventListener('change', () => {
-        const typed = number.value.trim() === '' ? NaN : Number(number.value);
-        const value = Number.isFinite(typed) ? Math.min(max, Math.max(min, Math.round(typed))) : read() ?? def;
-        number.value = String(value);
-        range.value = String(value);
-        apply(value);
-    });
-    reset.addEventListener('click', () => {
-        number.value = String(def);
-        range.value = String(def);
-        apply(def);
-    });
-    row.append(text, range, number, unitEl, reset);
-    return row;
-}
-
-const speedRow = () => sliderRow({
-    id: 'speed', label: 'Animation speed', min: SPEED.min, max: SPEED.max, step: SPEED.step, def: SPEED.default, unit: '%',
-    read: () => style.motion.speed,
-    write: v => { if (v === undefined) delete style.motion.speed; else style.motion.speed = v; },
-});
-
-const layoutRow = l => sliderRow({
-    id: `layout-${l.id}`, label: l.label, min: l.min, max: l.max, step: l.step, def: l.default, unit: l.unit,
-    read: () => style.layout[l.id],
-    write: v => { if (v === undefined) delete style.layout[l.id]; else style.layout[l.id] = v; },
-});
-
-function easingRow() {
-    const row = el('div', 'font-row');
-    const label = el('label', 'color-label', 'Animation style');
-    label.htmlFor = 'style-easing';
-    const select = el('select', 'style-font');
-    select.id = 'style-easing';
-    select.append(...EASINGS.map(e => new Option(e.label, e.id)));
-    select.addEventListener('change', () => {
-        if (select.value === 'smooth') delete style.motion.easing;
-        else style.motion.easing = select.value;
-        change();
-    });
-    row.append(label, select);
-    return row;
-}
-
-function effectToggle(fx) {
-    const label = el('label', 'toggle-switch style-fx');
-    const input = el('input');
-    input.type = 'checkbox';
-    input.id = `style-fx-${fx.id}`;
-    const track = el('span', 'toggle-track');
-    track.appendChild(el('span', 'toggle-thumb'));
-    label.append(input, track, el('span', 'toggle-text', fx.label));
-    input.addEventListener('change', () => {
-        if (input.checked) delete style.motion[fx.id];
-        else style.motion[fx.id] = false;
-        change();
-    });
-    return label;
 }
 
 function section(title, ...children) {
@@ -463,9 +125,9 @@ function section(title, ...children) {
 
 async function resetStyle() {
     if (!(await confirmAction('Reset all style changes? Colors, fonts, text sizes, animation and layout options and the two style toggles go back to default.'))) return;
-    style = emptyStyle();
+    ctx.style = emptyStyle();
     clearStoredStyle();
-    applyStyle(style);
+    applyStyle(ctx.style);
     for (const [id, on] of [['dropdown-style', true], ['infohub-style', false]]) {
         const toggle = document.getElementById(id);
         if (toggle.checked !== on) {
@@ -480,10 +142,10 @@ async function resetStyle() {
 function exportStyle() {
     const fontNames = {};
     FONT_SLOTS.forEach(slot => {
-        const custom = customFonts.find(f => `custom:${f.id}` === style.fonts[slot.id]);
+        const custom = fonts.getCustom().find(f => `custom:${f.id}` === ctx.style.fonts[slot.id]);
         if (custom) fontNames[slot.id] = custom.name;
     });
-    const payload = { v: 1, kind: 'srrc-style', colors: style.colors, fonts: style.fonts, sizes: style.sizes, motion: style.motion, layout: style.layout, fontNames };
+    const payload = { v: 1, kind: 'srrc-style', colors: ctx.style.colors, fonts: ctx.style.fonts, sizes: ctx.style.sizes, motion: ctx.style.motion, layout: ctx.style.layout, fontNames };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -514,11 +176,11 @@ async function importStyle(file) {
         setStatus('That file is not an SRRouteCalc style.');
         return;
     }
-    style = imported;
-    applyStyle(style);
-    storeStyle(style);
+    ctx.style = imported;
+    applyStyle(ctx.style);
+    storeStyle(ctx.style);
     refreshControls();
-    setStatus(isDefaultStyle(style) ? 'Imported a style with no changes.' : 'Imported the style.');
+    setStatus(isDefaultStyle(ctx.style) ? 'Imported a style with no changes.' : 'Imported the style.');
 }
 
 function buildUI() {
@@ -563,26 +225,26 @@ function buildUI() {
             ...colorRows('text'),
             el('h3', 'menu-subtitle', 'Sizes'),
             note('Only the text changes size. The layout and spacing stay the same.'),
-            ...TEXT_SIZES.map(sizeRow)
+            ...TEXT_SIZES.map(sliders.sizeRow)
         ),
         section(
             'Controls',
             note('Buttons, toggles, tabs, focus rings and the dropdown arrow. This does not change the title or other text.'),
             ...colorRows('controls')
         ),
-        section('Fonts', ...FONT_SLOTS.map(fontRow), ...fontManager()),
+        section('Fonts', ...fonts.rows()),
         section(
             'Layout',
             note('Space between frames and border thickness apply always. Minimum frame width only matters when Dynamic frames is on, and icon size when Show icons is on, both in Settings.'),
-            ...LAYOUT.map(layoutRow)
+            ...LAYOUT.map(sliders.layoutRow)
         ),
         section(
             'Animations',
             note('Turn animations off completely with the Animations switch in Settings. These options only matter while it is on.'),
-            speedRow(),
-            easingRow(),
+            sliders.speedRow(),
+            sliders.easingRow(),
             el('h3', 'menu-subtitle', 'Effects'),
-            ...EFFECTS.map(effectToggle)
+            ...EFFECTS.map(sliders.effectToggle)
         ),
         contrast,
         toolbar,
@@ -591,21 +253,13 @@ function buildUI() {
 }
 
 export function applySavedStyle() {
-    style = readStoredStyle();
-    applyStyle(style);
+    ctx.style = readStoredStyle();
+    applyStyle(ctx.style);
 }
 
 export function wireStylePanel() {
     buildUI();
     refreshControls();
     onThemeChange(refreshControls);
-    loadCustomFonts().then(fonts => {
-        customFonts = fonts;
-        syncFontSelects();
-        renderFontList();
-        refreshControls();
-    }).catch(() => {
-        setFontStatus('Custom fonts are not available in this browser.');
-        document.getElementById('style-font-upload').disabled = true;
-    });
+    fonts.load();
 }

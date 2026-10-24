@@ -25,6 +25,8 @@ import { applySavedStyle, wireStylePanel } from './panels/stylePanel.js';
 import { setAnimations, setDynamicFrames, setClickHighlight } from './ui/styleStore.js';
 import { wireDynamicFrames } from './ui/dynamicFrames.js';
 import { wireIcons, applyIcons } from './ui/icons.js';
+import { wireShortcuts } from './ui/shortcuts.js';
+import { wireKeybindPanel } from './panels/keybindPanel.js';
 import { restoreSettings, wireAutoSave, clearSettings } from './core/storage.js';
 
 function populateCitySelects() {
@@ -111,6 +113,8 @@ async function init() {
 
     wireMenu();
     wireLoadouts();
+    wireKeybindPanel();
+    wireShortcuts();
     wireStylePanel();
     wireDynamicFrames();
     wireIcons();

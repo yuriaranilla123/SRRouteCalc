@@ -14,10 +14,11 @@ A fan-made trade route calculator for the Roblox game **Silk Road: Trading Simul
 - Optional itemized price breakdown
 - Route searches buy goods only where they are produced, with a switch to include imports
 - Five reputation tracks, including the Rashidun Caliphate, and a quest money calculator
-- Menu with settings, loadouts and a style editor
+- Menu with settings, loadouts, a style editor and customizable keyboard shortcuts
 - Loadouts: save your whole setup (up to 20), then export or import it as a file
 - Style editor: colors, text sizes, fonts (including your own uploaded fonts, by button or drag and drop), frame spacing and border thickness, animation speed and effects
 - Display options: whole-number rounding, themed dropdowns, an SR:TS Information Hub colour theme, Dynamic frames (a packed multi-column layout), animations and click highlight switches
+- Keyboard shortcuts for the menu, Find best trade, tab switching and the main switches, each rebindable (Alt and Shift combos, never Ctrl)
 - Optional game icons next to cultures, religions, events, bags, animals and city traits, placed left, right, above or below the text
 
 No accounts, no tracking, no backend. The site only loads its own data files and the fonts. Settings, loadouts, styles and uploaded fonts stay in your browser (localStorage and IndexedDB) and are never sent anywhere.
@@ -57,11 +58,11 @@ index.html
 data/        goods, cities, distances, modifiers, reputation, cargo (JSON)
 js/
   main.js    startup and wiring
-  core/      pricing and route engine (calc.js re-exports lookup, distanceBonus, religionLines, modifierLines, pricing, routes), travelCalc, cargoCalc, reputationCalc, returnCargo, money, state, storage
-  panels/    one file per page section, plus loadoutPanel and stylePanel for the menu
-  ui/        menu, confirm dialog, dropdown and theme settings, style store, font store, icons, dynamic frames
+  core/      keybinds (shortcut rules and storage), pricing and route engine (calc.js re-exports lookup, distanceBonus, religionLines, modifierLines, pricing, routes), travelCalc, cargoCalc, reputationCalc, returnCargo, money, state, storage
+  panels/    one file per page section, plus the menu panels (loadoutPanel, keybindPanel, and stylePanel with its styleFonts and styleSliders parts)
+  ui/        menu, confirm dialog, dropdown and theme settings, style store, font store, icons, dynamic frames, shortcuts, domKit
 style/       base, components, layout, motion, icons, menu, dialog, style editor, per-panel CSS, dropdown CSS, theme-infohub.css
-tests/       calc, petra, style, fonts, frames and icons tests
+tests/       calc, petra, style, fonts, frames, icons, quests and keybinds tests
 ```
 
 ## Game icons

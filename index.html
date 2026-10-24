@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="style/theme-infohub.css">
     <link rel="stylesheet" href="style/layout.css">
     <link rel="stylesheet" href="style/icons.css">
+    <link rel="stylesheet" href="style/keybinds.css">
     <link rel="stylesheet" href="style/motion.css">
 </head>
 
@@ -421,6 +422,7 @@
                 <button type="button" class="tab-btn active" data-menu-tab="settings">Settings</button>
                 <button type="button" class="tab-btn" data-menu-tab="style">Style</button>
                 <button type="button" class="tab-btn" data-menu-tab="loadouts">Loadouts</button>
+                <button type="button" class="tab-btn" data-menu-tab="keys">Keys</button>
             </div>
             <div class="menu-body">
                 <div data-menu-section="settings">
@@ -517,6 +519,23 @@
                         </label>
                     </div>
                     <div id="style-editor"></div>
+                </div>
+                <div data-menu-section="keys" hidden>
+                    <div class="menu-toggles">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="keybinds-enabled" checked>
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Keyboard shortcuts</span>
+                        </label>
+                        <p class="field-hint">Shortcuts never fire while you type in a box or dropdown, unless they use
+                            Alt. Ctrl and Cmd combinations are not allowed, so browser shortcuts keep working. Click a
+                            key to change it, then press the new key.</p>
+                    </div>
+                    <ul id="keybind-list" class="keybind-list"></ul>
+                    <p id="keybind-status" class="field-hint" role="status" aria-live="polite"></p>
+                    <div class="loadout-toolbar">
+                        <button type="button" id="keybind-reset-all" class="menu-action">Reset all</button>
+                    </div>
                 </div>
                 <div data-menu-section="loadouts" hidden>
                     <p class="field-hint">A loadout saves your whole setup: trader, caravan, gamepasses, guild perks,
