@@ -39,12 +39,54 @@ html[data-intro="on"] {
     line-height: 1.25;
     text-shadow: 0 0 6px var(--glow), 0 0 14px var(--glow);
     animation: intro-flicker 0.12s steps(2) infinite;
+    transition: rotate calc(0.3s / var(--motion-speed, 1)) ease;
+}
+
+.intro-split {
+    display: flex;
+    gap: 2.5em;
+    height: 100%;
 }
 
 .intro-term {
+    flex: 0 1 auto;
+    min-width: 0;
     max-width: 34em;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
+}
+
+.intro-console {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    padding-left: 1.4em;
+    border-left: 2px solid currentColor;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    animation: intro-open 0.35s ease-out backwards;
+}
+
+.intro-console[hidden] {
+    display: none;
+}
+
+@media (max-aspect-ratio: 1/1) {
+    .intro-split {
+        flex-direction: column;
+        gap: 0.8em;
+    }
+
+    .intro-term {
+        flex: 0 0 auto;
+    }
+
+    .intro-console {
+        padding: 0.6em 0 0;
+        border-left: 0;
+        border-top: 2px solid currentColor;
+    }
 }
 
 .intro-cursor::after {
@@ -204,6 +246,14 @@ html[data-intro="on"] {
     text-shadow: -3px 0 rgba(255, 40, 80, 0.85), 3px 0 rgba(0, 255, 255, 0.6), 0 0 12px var(--glow);
 }
 
+.intro-crt.flip .intro-screen {
+    rotate: 180deg;
+}
+
+.intro-crt.shake .intro-screen {
+    animation: intro-shake 0.07s linear infinite;
+}
+
 .intro-crt.glitching {
     filter: contrast(1.35) saturate(1.5);
 }
@@ -342,5 +392,39 @@ html[data-intro="on"] {
 
     to {
         background-color: transparent;
+    }
+}
+
+@keyframes intro-shake {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-1.6%, 0.8%);
+    }
+
+    50% {
+        transform: translate(1.4%, -1%);
+    }
+
+    75% {
+        transform: translate(-0.8%, -0.6%);
+    }
+
+    100% {
+        transform: translate(1%, 0.9%);
+    }
+}
+
+@keyframes intro-open {
+    from {
+        opacity: 0;
+        translate: 3em 0;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
     }
 }

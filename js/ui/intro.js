@@ -1,6 +1,8 @@
 import { sfx, prepareSfx, unlockSfx, resumeSfx, stopAllSfx } from './sfx.js';
 import { markSeen } from './introGate.js';
 import { el } from './domKit.js';
+import { eggFor } from './introEggs.js';
+import { pauseAfter } from './introPause.js';
 
 const CSS_HREF = 'style/intro.css';
 const FONT_HREF = 'https://fonts.googleapis.com/css2?family=VT323&display=swap';
@@ -46,15 +48,19 @@ function build() {
     root.setAttribute('aria-label', 'Intro');
     const crt = el('div', 'intro-crt standby');
     const screen = el('div', 'intro-screen');
+    const split = el('div', 'intro-split');
     const term = el('div', 'intro-term');
-    screen.appendChild(term);
+    const out = el('div', 'intro-console');
+    out.hidden = true;
+    split.append(term, out);
+    screen.appendChild(split);
     crt.append(screen, el('div', 'intro-lines'), el('div', 'intro-noise'), el('div', 'intro-vignette'), el('div', 'intro-glass'));
     root.appendChild(crt);
     root.addEventListener('pointerdown', unlockSfx);
     root.addEventListener('click', e => {
         if (!e.target.closest('button')) sfx.click();
     });
-    return { root, crt, screen, term, keys: null };
+    return { root, crt, screen, split, term, out, keys: null };
 }
 
 function setTone(ui, palette) {
@@ -73,17 +79,19 @@ function button(label, className = 'intro-btn') {
     return b;
 }
 
-async function typeLine(ui, text, speed = 24) {
-    ui.term.querySelectorAll('.intro-cursor').forEach(n => n.classList.remove('intro-cursor'));
+async function typeLine(ui, text, speed = 24, target = ui.term) {
+    ui.screen.querySelectorAll('.intro-cursor').forEach(n => n.classList.remove('intro-cursor'));
     const line = el('div', 'intro-line intro-cursor');
     line.classList.add('typing');
-    ui.term.appendChild(line);
+    target.appendChild(line);
+    target.scrollTop = target.scrollHeight;
     for (let i = 0; i < text.length; i++) {
         line.textContent += text[i];
         if (i % 2 === 0) sfx.type();
-        await wait(speed);
+        await wait(speed + pauseAfter(text, i));
     }
     line.classList.remove('typing');
+    target.scrollTop = target.scrollHeight;
     return line;
 }
 
@@ -118,46 +126,54 @@ async function lockPhase(ui) {
     for (let i = 0; i < 6; i++) slots.appendChild(el('span', 'intro-slot'));
     const pad = el('div', 'intro-keys');
     ui.term.append(slots, pad);
-    let code = '';
-    const render = () => [...slots.children].forEach((slot, i) => { slot.textContent = code[i] ? '*' : ''; });
-    await new Promise(resolve => {
-        let finished = false;
-        const add = digit => {
-            if (finished || code.length >= 6) return;
-            code += digit;
-            sfx.key();
-            render();
-            if (code.length === 6) {
-                finished = true;
-                ui.keys = null;
-                resolve();
-            }
-        };
-        const back = () => { if (!finished) { code = code.slice(0, -1); render(); } };
-        const clear = () => { if (!finished) { code = ''; render(); } };
-        ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'DEL', '0', 'CLR'].forEach(label => {
-            const key = button(label, 'intro-btn intro-key');
-            key.addEventListener('click', () => {
-                if (label === 'DEL') back();
-                else if (label === 'CLR') clear();
-                else add(label);
-            });
-            pad.appendChild(key);
+    const lock = { code: '', waiting: null };
+    const render = () => [...slots.children].forEach((slot, i) => { slot.textContent = lock.code[i] ? '*' : ''; });
+    const add = digit => {
+        if (!lock.waiting || lock.code.length >= 6) return;
+        lock.code += digit;
+        sfx.key();
+        render();
+        if (lock.code.length === 6) {
+            const done = lock.waiting;
+            lock.waiting = null;
+            done(lock.code);
+        }
+    };
+    const back = () => {
+        if (!lock.waiting) return;
+        lock.code = lock.code.slice(0, -1);
+        render();
+    };
+    const clear = () => {
+        if (!lock.waiting) return;
+        lock.code = '';
+        render();
+    };
+    ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'DEL', '0', 'CLR'].forEach(label => {
+        const key = button(label, 'intro-btn intro-key');
+        key.addEventListener('click', () => {
+            if (label === 'DEL') back();
+            else if (label === 'CLR') clear();
+            else add(label);
         });
-        ui.keys = e => {
-            if (/^[0-9]$/.test(e.key)) add(e.key);
-            else if (e.key === 'Backspace') back();
-            else return false;
-            return true;
-        };
+        pad.appendChild(key);
     });
-    await wait(300);
-    await typeLine(ui, 'VERIFYING ...');
-    await wait(700);
+    ui.keys = e => {
+        if (/^[0-9]$/.test(e.key)) add(e.key);
+        else if (e.key === 'Backspace') back();
+        else return false;
+        return true;
+    };
+    lock.read = () => new Promise(resolve => {
+        lock.code = '';
+        render();
+        lock.waiting = resolve;
+    });
+    return lock;
 }
 
 function scramble(ui) {
-    const lines = [...ui.term.querySelectorAll('.intro-line')];
+    const lines = [...ui.screen.querySelectorAll('.intro-line')];
     for (let n = 0; n < 3 && lines.length; n++) {
         const line = pick(lines);
         line.dataset.orig ??= line.textContent;
@@ -186,7 +202,7 @@ function slices(ui) {
     const count = 2 + Math.floor(Math.random() * 4);
     for (let i = 0; i < count; i++) {
         const slice = el('div', 'intro-screen intro-slice');
-        slice.appendChild(ui.term.cloneNode(true));
+        slice.appendChild(ui.split.cloneNode(true));
         const top = Math.random() * 90;
         const height = 3 + Math.random() * 18;
         slice.style.clipPath = `inset(${top}% 0 ${Math.max(0, 100 - top - height)}% 0)`;
@@ -195,11 +211,16 @@ function slices(ui) {
     }
 }
 
-function clearGlitch(ui) {
+function clearGlitch(ui, restore = true) {
     ui.crt.classList.remove('blink');
     ui.crt.style.filter = '';
-    ui.term.style.transform = '';
+    ui.split.style.transform = '';
     ui.crt.querySelectorAll('.intro-bar, .intro-slice').forEach(n => n.remove());
+    if (restore) {
+        ui.screen.querySelectorAll('.intro-line').forEach(line => {
+            if (line.dataset.orig !== undefined) line.textContent = line.dataset.orig;
+        });
+    }
 }
 
 function glitchFrame(ui, progress) {
@@ -214,8 +235,55 @@ function glitchFrame(ui, progress) {
     const x = (Math.random() - 0.5) * 8;
     const y = Math.random() < 0.15 ? (Math.random() - 0.5) * 20 : 0;
     const scaleY = Math.random() < 0.15 ? 1 + Math.random() * 0.5 : 1;
-    ui.term.style.transform = `translate(${x}%, ${y}%) scaleY(${scaleY})`;
+    ui.split.style.transform = `translate(${x}%, ${y}%) scaleY(${scaleY})`;
     ui.crt.classList.toggle('blink', Math.random() < 0.07);
+}
+
+async function burst(ui, frames, { shake = false, unflip = false } = {}) {
+    ui.crt.classList.add('glitching');
+    if (shake) ui.crt.classList.add('shake');
+    for (let i = 0; i < frames; i++) {
+        glitchFrame(ui, 0.2);
+        sfx.glitchTick();
+        if (unflip && i === 3) ui.crt.classList.remove('flip');
+        await wait(60);
+    }
+    clearGlitch(ui);
+    setTone(ui, GREENS[0]);
+    ui.crt.classList.remove('glitching', 'shake', 'flip');
+    await wait(400);
+}
+
+async function consolePhase(ui, code, isEgg) {
+    if (ui.out.hidden) {
+        ui.out.hidden = false;
+        sfx.blink();
+        await wait(350);
+        await typeLine(ui, '> console open', 18, ui.out);
+    }
+    await typeLine(ui, `> auth --code ${code}`, 18, ui.out);
+    await typeLine(ui, 'HANDSHAKE ........ OK', 14, ui.out);
+    await typeLine(ui, isEgg ? 'KEY FOUND IN REGISTRY' : 'KEY NOT IN REGISTRY', 18, ui.out);
+    if (isEgg) return;
+    await typeLine(ui, 'CONTINUING ANYWAY ...', 18, ui.out);
+    await typeLine(ui, '!! INTEGRITY FAULT !!', 18, ui.out);
+    await wait(500);
+}
+
+async function eggPhase(ui, egg) {
+    for (const line of egg.lines) await typeLine(ui, line, 20, ui.out);
+    sfx.ok();
+    if (egg.flip) {
+        ui.crt.classList.add('flip');
+        await wait(2000);
+        await burst(ui, 10, { unflip: true });
+    } else if (egg.shake) {
+        await burst(ui, 10, { shake: true });
+    } else {
+        await wait(900);
+    }
+    await typeLine(ui, '> hold --await-input', 18, ui.out);
+    await typeLine(ui, 'STILL LISTENING ...', 18, ui.out);
 }
 
 async function glitchPhase(ui) {
@@ -231,7 +299,7 @@ async function glitchPhase(ui) {
         if (Math.random() < 0.4) sfx.glitchTick();
         await wait(40 + Math.random() * 90);
     }
-    clearGlitch(ui);
+    clearGlitch(ui, false);
     setTone(ui, REDS[0]);
     sfx.glitchTick();
     await wait(500);
@@ -247,6 +315,8 @@ async function blackoutPhase(ui) {
 
 async function blinkPhase(ui) {
     ui.term.replaceChildren();
+    ui.out.replaceChildren();
+    ui.out.hidden = true;
     setTone(ui, GREENS[0]);
     ui.crt.classList.remove('off');
     ui.crt.classList.add('powering');
@@ -288,7 +358,17 @@ async function run(ui, onKey) {
     try {
         await powerPhase(ui);
         await bootPhase(ui);
-        await lockPhase(ui);
+        const lock = await lockPhase(ui);
+        let code = await lock.read();
+        for (; ;) {
+            await wait(250);
+            const egg = eggFor(code);
+            await consolePhase(ui, code, !!egg);
+            if (!egg) break;
+            await eggPhase(ui, egg);
+            code = await lock.read();
+        }
+        ui.keys = null;
         await glitchPhase(ui);
         await blackoutPhase(ui);
         await blinkPhase(ui);
