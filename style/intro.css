@@ -1,0 +1,346 @@
+html[data-intro="on"] {
+    overflow: hidden;
+}
+
+.intro-root {
+    --fg: #7dff9a;
+    --bg: #06220f;
+    --glow: #2cff6a;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1000;
+    background: #000;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: 'VT323', 'Courier New', monospace;
+    color: var(--fg);
+}
+
+.intro-crt {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: var(--bg);
+    box-shadow: inset 0 0 14vmin rgba(0, 0, 0, 0.85);
+    transition: background-color calc(0.08s / var(--motion-speed, 1)) linear;
+}
+
+.intro-screen {
+    position: absolute;
+    inset: 0;
+    padding: max(9vmin, env(safe-area-inset-top)) max(8vmin, env(safe-area-inset-right)) max(9vmin, env(safe-area-inset-bottom)) max(8vmin, env(safe-area-inset-left));
+    overflow: hidden;
+    font-size: clamp(1.3rem, 3.4vmin, 2.2rem);
+    line-height: 1.25;
+    text-shadow: 0 0 6px var(--glow), 0 0 14px var(--glow);
+    animation: intro-flicker 0.12s steps(2) infinite;
+}
+
+.intro-term {
+    max-width: 34em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.intro-cursor::after {
+    content: '\2588';
+    margin-left: 0.15em;
+    animation: intro-blink 1s step-end infinite;
+}
+
+.intro-cursor.typing::after {
+    animation: none;
+}
+
+.intro-lines,
+.intro-noise,
+.intro-vignette,
+.intro-glass {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.intro-lines {
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 3px);
+}
+
+.intro-lines::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 18%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05), transparent);
+    animation: intro-roll 6s linear infinite;
+}
+
+.intro-noise {
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+    animation: intro-grain 0.4s steps(4) infinite;
+}
+
+.intro-vignette {
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.5) 80%, rgba(0, 0, 0, 0.92) 100%);
+}
+
+.intro-glass {
+    background: radial-gradient(ellipse at 28% 18%, rgba(255, 255, 255, 0.09), transparent 42%);
+}
+
+.intro-btn {
+    margin-top: 0.8em;
+    padding: 0.15em 0.9em;
+    background: transparent;
+    border: 2px solid currentColor;
+    border-radius: 0;
+    color: inherit;
+    font: inherit;
+    text-shadow: inherit;
+    cursor: pointer;
+}
+
+.intro-btn:hover,
+.intro-btn:focus-visible {
+    background: var(--fg);
+    color: var(--bg);
+    text-shadow: none;
+    outline: none;
+}
+
+.intro-slots {
+    display: flex;
+    gap: 0.4em;
+    margin-top: 0.6em;
+}
+
+.intro-slot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5em;
+    height: 1.9em;
+    border: 2px solid currentColor;
+}
+
+.intro-keys {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4em;
+    max-width: 13em;
+    margin-top: 0.8em;
+}
+
+.intro-key {
+    margin: 0;
+    padding: 0.1em 0;
+}
+
+.intro-root button:focus {
+    outline: none;
+}
+
+.intro-bar {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: var(--fg);
+    opacity: 0.22;
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.intro-slice {
+    background: var(--bg);
+    pointer-events: none;
+    text-shadow: -3px 0 rgba(255, 40, 80, 0.9), 3px 0 rgba(0, 255, 255, 0.7);
+}
+
+.intro-crt.glitching .intro-slice {
+    animation: none;
+}
+
+.intro-crt.standby {
+    opacity: 0;
+}
+
+.intro-power {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    padding: 1em;
+    background: transparent;
+    border: 0;
+    color: #3fbf68;
+    font: inherit;
+    font-size: clamp(1.3rem, 3.4vmin, 2.2rem);
+    text-shadow: 0 0 8px #1f9a48;
+    cursor: pointer;
+    animation: intro-blink 1.4s step-end infinite;
+}
+
+.intro-crt.powering {
+    animation: intro-on 0.9s ease-out backwards;
+}
+
+.intro-crt.off {
+    animation: intro-off 0.55s ease-in forwards;
+}
+
+.intro-crt.blink {
+    opacity: 0;
+}
+
+.intro-crt.glitching .intro-screen {
+    animation: intro-jitter 0.2s steps(2) infinite;
+    text-shadow: -3px 0 rgba(255, 40, 80, 0.85), 3px 0 rgba(0, 255, 255, 0.6), 0 0 12px var(--glow);
+}
+
+.intro-crt.glitching {
+    filter: contrast(1.35) saturate(1.5);
+}
+
+.intro-root.leaving {
+    animation: intro-fade 0.9s ease-in forwards;
+}
+
+.intro-root.leaving .intro-crt {
+    animation: intro-off 0.7s ease-in forwards;
+}
+
+@keyframes intro-flicker {
+    from {
+        opacity: 0.96;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes intro-blink {
+
+    0%,
+    49.9% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes intro-roll {
+    from {
+        translate: 0 -120%;
+    }
+
+    to {
+        translate: 0 650%;
+    }
+}
+
+@keyframes intro-grain {
+    0% {
+        background-position: 0 0;
+    }
+
+    25% {
+        background-position: -40px 25px;
+    }
+
+    50% {
+        background-position: 30px -35px;
+    }
+
+    75% {
+        background-position: -20px -10px;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
+@keyframes intro-on {
+    0% {
+        scale: 1 0.005;
+        filter: brightness(5);
+    }
+
+    35% {
+        scale: 1 0.01;
+        filter: brightness(5);
+    }
+
+    60% {
+        scale: 1 1.02;
+        filter: brightness(2);
+    }
+
+    100% {
+        scale: 1 1;
+        filter: brightness(1);
+    }
+}
+
+@keyframes intro-off {
+    0% {
+        scale: 1 1;
+        filter: brightness(1);
+        opacity: 1;
+    }
+
+    55% {
+        scale: 1 0.01;
+        filter: brightness(4);
+        opacity: 1;
+    }
+
+    100% {
+        scale: 0 0.01;
+        filter: brightness(6);
+        opacity: 0;
+    }
+}
+
+@keyframes intro-jitter {
+    0% {
+        transform: translate(0, 0) skewX(0deg);
+    }
+
+    25% {
+        transform: translate(-2.2%, 0) skewX(-3deg);
+    }
+
+    50% {
+        transform: translate(1.8%, 0.5%) skewX(2deg);
+    }
+
+    75% {
+        transform: translate(2.6%, -0.4%) skewX(4deg);
+    }
+
+    100% {
+        transform: translate(0, 0) skewX(0deg);
+    }
+}
+
+@keyframes intro-fade {
+    from {
+        background-color: #000;
+    }
+
+    to {
+        background-color: transparent;
+    }
+}

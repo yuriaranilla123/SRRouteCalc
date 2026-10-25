@@ -41,7 +41,19 @@ function populateCitySelects() {
     });
 }
 
+async function startIntro() {
+    try {
+        const gate = await import('./ui/introGate.js');
+        if (!gate.shouldPlayIntro(new Date(), window.localStorage, window.location.search, window.sessionStorage)) return;
+        const intro = await import('./ui/intro.js');
+        await intro.mountIntro();
+    } catch {
+        return;
+    }
+}
+
 async function init() {
+    await startIntro();
     applySavedStyle();
     await loadData();
 
