@@ -41,6 +41,18 @@ function populateCitySelects() {
     });
 }
 
+function registerOffline() {
+    if (!('serviceWorker' in navigator)) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('nosw')) {
+        navigator.serviceWorker.getRegistrations().then(list => list.forEach(r => r.unregister())).catch(() => { });
+        if (window.caches) caches.keys().then(keys => keys.forEach(key => caches.delete(key))).catch(() => { });
+        return;
+    }
+    if (window.location.protocol !== 'https:' && !params.has('sw')) return;
+    navigator.serviceWorker.register('sw.js').catch(() => { });
+}
+
 async function startIntro() {
     try {
         const gate = await import('./ui/introGate.js');
@@ -149,6 +161,7 @@ async function init() {
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    registerOffline();
 }
 
 init();

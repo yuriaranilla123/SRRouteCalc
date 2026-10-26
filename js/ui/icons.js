@@ -74,6 +74,7 @@ export const ICONS = {
     good: {},
     language: `${T}Language.png`,
     quest: 'Quest Money.png',
+    site: 'SRRouteCalcIcon.png',
 };
 
 const GOOD_FOLDERS = {
@@ -207,6 +208,7 @@ export function refreshLabelIcons() {
     });
     document.querySelectorAll('.animal-select').forEach(select => paintLabel(labelFor(select), selectIconPath(select, select.value)));
     paintLabel(document.querySelector('.quest-money-result'), ICONS.quest);
+    paintLabel(document.querySelector('.site-header h1'), ICONS.site);
 }
 
 export function applyIcons() {

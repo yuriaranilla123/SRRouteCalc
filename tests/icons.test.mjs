@@ -45,3 +45,8 @@ test('icon urls are encoded and select lookups ignore other selects', () => {
     assert.equal(selectIconPath({ id: 'culture' }, 'Arab'), 'Culture/Arabic.png');
     assert.equal(selectIconPath({ id: 'other' }, 'Arab'), null);
 });
+
+test('the site icon is mapped for the title', () => {
+    assert.equal(ICONS.site, 'SRRouteCalcIcon.png');
+    assert.equal(iconUrl(ICONS.site), 'assets/icons/SRRouteCalcIcon.png');
+});
