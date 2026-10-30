@@ -24,6 +24,7 @@ import { wireMenu, setMenuSticky } from './ui/menu.js';
 import { applySavedStyle, wireStylePanel } from './panels/stylePanel.js';
 import { setAnimations, setDynamicFrames, setClickHighlight } from './ui/styleStore.js';
 import { wireDynamicFrames } from './ui/dynamicFrames.js';
+import { wireFrameDrag, setFrameDrag } from './ui/frameDrag.js';
 import { wireIcons, applyIcons } from './ui/icons.js';
 import { wireShortcuts } from './ui/shortcuts.js';
 import { wireKeybindPanel } from './panels/keybindPanel.js';
@@ -94,6 +95,10 @@ async function init() {
         setDynamicFrames(e.target.checked);
     });
 
+    document.getElementById('frame-drag').addEventListener('change', (e) => {
+        setFrameDrag(e.target.checked);
+    });
+
     document.getElementById('click-highlight').addEventListener('change', (e) => {
         setClickHighlight(e.target.checked);
     });
@@ -140,6 +145,7 @@ async function init() {
     wireKeybindPanel();
     wireShortcuts();
     wireStylePanel();
+    wireFrameDrag();
     wireDynamicFrames();
     wireIcons();
 

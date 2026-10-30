@@ -124,6 +124,20 @@
     outline-offset: 2px;
 }
 
+.gamepass-toggles .toggle-switch {
+    align-items: flex-start;
+    white-space: normal;
+}
+
+.gamepass-toggles .toggle-track {
+    margin-top: 0.15rem;
+}
+
+.toggle-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
 /* Header toggles - "Round to whole numbers" and "Show detailed breakdown" sit side by side, wrapping on narrow screens. */
 .header-toggles {
     display: flex;
@@ -134,6 +148,7 @@
 /* Tabs - used by Find a Route (Global/Specific) and All Profitable Trades (General Best/Global). */
 .tab-row {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1rem;
     border-bottom: 1px solid var(--hairline);
@@ -304,14 +319,16 @@ td.loss {
 /* Funding bar - footer widget */
 .funding-bar {
     position: relative;
-    height: 2.25rem;
+    min-height: 2.25rem;
     border-radius: 4px;
     background: var(--ink-surface-raised);
     border: 1px solid var(--hairline);
     overflow: hidden;
     margin-bottom: 1.25rem;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    padding: 0.3rem 0;
 }
 
 .funding-fill {
@@ -338,6 +355,7 @@ td.loss {
 
 /* Credits - collapsible footer block */
 .credits {
+    overflow-wrap: anywhere;
     margin-bottom: 1rem;
     font-size: calc(0.8rem * var(--ts-small, 1));
 }

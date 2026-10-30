@@ -1,5 +1,6 @@
 .specific-item-row {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.75rem;
     align-items: end;
     margin-bottom: 0.75rem;
@@ -61,6 +62,8 @@
 
 .specific-item-line {
     display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
     justify-content: space-between;
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--hairline);
@@ -84,6 +87,7 @@
 
 .result-route {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.6rem;
     color: var(--parchment-dim);

@@ -1,5 +1,5 @@
-import { getReputationData, getGoodsData, getQuestsData } from '../core/state.js';
-import { computeQuestMoney, isGoodUnlocked, listGatedGoods } from '../core/reputationCalc.js';
+import { getReputationData, getGoodsData, getQuestsData, getCargoData } from '../core/state.js';
+import { computeQuestMoney, isGoodUnlocked, listGatedGoods, questReputation } from '../core/reputationCalc.js';
 import { money } from '../core/money.js';
 
 export function populateReputationFields() {
@@ -65,6 +65,7 @@ export function renderQuestMoney() {
 export function renderQuestGivers() {
     const list = document.getElementById('quest-giver-list');
     const quests = getQuestsData().quests;
+    const nobility = document.getElementById('gamepass-nobility').checked;
     list.replaceChildren();
     quests.forEach(quest => {
         const li = document.createElement('li');
@@ -76,7 +77,8 @@ export function renderQuestGivers() {
         name.textContent = quest.name;
         const reward = document.createElement('span');
         reward.className = 'quest-giver-reward';
-        reward.textContent = quest.reward.reputation ? `${money(quest.reward.money)} + ${quest.reward.reputation} reputation` : money(quest.reward.money);
+        const reputation = questReputation(quest.reward.reputation, nobility, getCargoData());
+        reward.textContent = reputation ? `${money(quest.reward.money)} + ${reputation} reputation` : money(quest.reward.money);
         head.append(name, reward);
         const meta = document.createElement('p');
         meta.className = 'field-hint';
@@ -102,6 +104,7 @@ export function wireReputationControls() {
             renderQuestMoney();
         });
     });
+    document.getElementById('gamepass-nobility').addEventListener('change', renderQuestGivers);
     document.getElementById('quest-faction').addEventListener('change', renderQuestMoney);
     document.getElementById('quest-type').addEventListener('change', renderQuestMoney);
     document.getElementById('round-to-int').addEventListener('change', () => {

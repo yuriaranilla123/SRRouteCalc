@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="style/styleEditor.css">
     <link rel="stylesheet" href="style/theme-infohub.css">
     <link rel="stylesheet" href="style/layout.css">
+    <link rel="stylesheet" href="style/frameDrag.css">
     <link rel="stylesheet" href="style/icons.css">
     <link rel="stylesheet" href="style/keybinds.css">
     <link rel="stylesheet" href="style/motion.css">
@@ -190,7 +191,7 @@
                     <label class="toggle-switch">
                         <input type="checkbox" id="gamepass-nobility">
                         <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                        <span class="toggle-text">Nobility (+20% sale revenue) - 119 R$</span>
+                        <span class="toggle-text">Nobility (+20% sale revenue and reputation) - 119 R$</span>
                     </label>
                     <label class="toggle-switch">
                         <input type="checkbox" id="gamepass-royal-indian-elephant">
@@ -460,6 +461,20 @@
                         </label>
                         <p class="field-hint">Lets the frames flow into as many columns as fit your screen, keeping an
                             even gap between them. Frame spacing and minimum width are in the Style tab.</p>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="frame-drag">
+                            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                            <span class="toggle-text">Rearrange frames</span>
+                        </label>
+                        <p class="field-hint">Off by default so nothing moves by accident. Turn it on to show a grip at
+                            the top right of each frame,
+                            then drag it and the other frames adjust on their own. Escape cancels a drag. With the
+                            keyboard, focus a grip and use the
+                            arrow keys. The order is saved in this browser.</p>
+                        <div class="loadout-toolbar">
+                            <button type="button" id="frame-order-reset" class="menu-action">Reset frame order</button>
+                        </div>
+                        <p id="frame-status" class="field-hint" role="status" aria-live="polite"></p>
                         <label class="toggle-switch">
                             <input type="checkbox" id="click-highlight" checked>
                             <span class="toggle-track"><span class="toggle-thumb"></span></span>

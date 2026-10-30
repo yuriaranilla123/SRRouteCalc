@@ -1,5 +1,5 @@
 {
-    "_source": "SR:TS Information Hub 'Quest Givers' page. Rewards are fixed amounts from the page; the +50% reputation rank bonus applies to courier deliveries only.",
+    "_source": "SR:TS Information Hub 'Quest Givers' page. Rewards are fixed amounts from the page; the +50% reputation rank bonus applies to courier deliveries only. Nobility raises the reputation reward by 20% (60 becomes 72), per a contributor.",
     "quests": [
         {
             "id": "mill_run",

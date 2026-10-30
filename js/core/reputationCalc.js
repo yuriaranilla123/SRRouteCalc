@@ -66,3 +66,8 @@ export function listGatedGoods(reputationData) {
     }
     return gated;
 }
+export function questReputation(base, hasNobility, cargoData) {
+    if (!base) return 0;
+    const multiplier = hasNobility ? cargoData.gamepasses.nobility.reputationMultiplier || 1 : 1;
+    return Math.round(base * multiplier);
+}

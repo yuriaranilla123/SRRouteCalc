@@ -83,6 +83,23 @@ main {
     padding: 1.5rem;
 }
 
+.panel {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.panel select,
+.panel input[type="text"] {
+    max-width: 100%;
+    min-width: 0;
+}
+
+.form-field select,
+.caravan-slot select {
+    width: 100%;
+}
+
 .panel h2 {
     font-family: var(--font-serif);
     font-size: calc(1.1rem * var(--ts-heading, 1));
@@ -195,4 +212,18 @@ html[data-click-highlight="off"] {
 html[data-click-highlight="off"] :is(select, button):focus:not(:focus-visible),
 html[data-click-highlight="off"] input:is([type="text"], [type="number"]):focus {
     outline: none;
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 0 0.75rem 3rem;
+    }
+
+    .panel {
+        padding: 1rem;
+    }
+
+    .site-header {
+        padding: 3rem 0.75rem 1.5rem;
+    }
 }

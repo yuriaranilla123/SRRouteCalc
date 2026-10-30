@@ -1,0 +1,78 @@
+.panel h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.panel-grip {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--parchment-dim);
+    cursor: grab;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.panel-grip:hover,
+.panel-grip:focus-visible {
+    color: var(--saffron);
+    border-color: var(--hairline);
+}
+
+html:not([data-frame-drag="on"]) .panel-grip {
+    display: none;
+}
+
+main>.panel.frame-dragging {
+    position: fixed !important;
+    transform: none !important;
+    max-width: none !important;
+    margin: 0 !important;
+    z-index: 60;
+    opacity: 0.97;
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+}
+
+main>.panel.frame-slot {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    background: var(--ink-surface-raised);
+    border: 2px dashed var(--saffron);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.35);
+    opacity: 0.85;
+}
+
+main>.panel.frame-slot::after {
+    content: 'Drop here';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--saffron);
+    font-family: var(--font-serif);
+    font-size: calc(1.1rem * var(--ts-heading, 1));
+}
+
+.panel.frame-settling {
+    z-index: 60;
+}
+
+html.frame-dragging-active,
+html.frame-dragging-active * {
+    cursor: grabbing !important;
+    -webkit-user-select: none;
+    user-select: none;
+}

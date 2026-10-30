@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { computeQuestMoney } from '../js/core/reputationCalc.js';
+import { computeQuestMoney, questReputation } from '../js/core/reputationCalc.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const json = async f => JSON.parse(await readFile(path.join(root, 'data', f), 'utf8'));
@@ -26,4 +26,11 @@ test('courier money matches the Info Hub rank tables', async () => {
         assert.equal(computeQuestMoney('short_distance_delivery', rank, rep), short[rank - 1], `short ${rank}`);
         assert.equal(computeQuestMoney('long_distance_delivery', rank, rep), long[rank - 1], `long ${rank}`);
     }
+});
+
+test('Nobility raises quest giver reputation by 20 percent', async () => {
+    const cargo = await json('cargo.json');
+    assert.equal(questReputation(60, false, cargo), 60);
+    assert.equal(questReputation(60, true, cargo), 72);
+    assert.equal(questReputation(0, true, cargo), 0);
 });

@@ -21,7 +21,8 @@
             "price": 119,
             "currency": "robux",
             "effect": "Increases reputation earned and sale revenue by 20%.",
-            "note": "Confirmed via the official Roblox game-pass page description. Sale revenue (+20% sell price) is wired into the calculator; the reputation-earned half isn't, since the calculator has no reputation-gain-from-trading mechanic (same limitation as Mahayana Buddhism's Sanctuary Faith Level effect)."
+            "note": "Confirmed via the official Roblox game-pass page description. Sale revenue (+20% sell price) is wired into the calculator; the reputation half is wired into the Quest Givers list only (reputationMultiplier 1.2; a contributor confirmed Rid Us of Them pays 72 instead of 60). The calculator has no reputation-gain-from-trading mechanic.",
+            "reputationMultiplier": 1.2
         },
         "extra_caravan_slot": {
             "name": "Extra Caravan Slot",

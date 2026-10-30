@@ -22,7 +22,7 @@ html[data-dynamic-frames="on"] #all-trades {
     grid-column: 1 / -1;
     width: auto;
     max-width: none;
-    position: static;
+    position: relative;
     left: auto;
     transform: none;
 }

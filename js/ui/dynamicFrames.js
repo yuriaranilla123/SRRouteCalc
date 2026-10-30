@@ -34,6 +34,7 @@ export function wireDynamicFrames() {
         main.querySelectorAll(':scope > .panel').forEach(p => observer.observe(p));
         observer.observe(main);
     }
+    new MutationObserver(schedule).observe(main, { childList: true });
     new MutationObserver(schedule).observe(root, { attributes: true, attributeFilter: ['style', 'data-dynamic-frames'] });
     window.addEventListener('resize', schedule);
     schedule();
