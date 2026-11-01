@@ -1,7 +1,7 @@
 const FUNDING_CONFIG = {
-    month: 'October',
+    month: 'November',
     current: 0,
-    goal: 0,
+    goal: 1,
 };
 
 export function renderFundingBar() {
