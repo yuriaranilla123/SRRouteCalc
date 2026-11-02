@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { pauseAfter } from '../js/ui/introPause.js';
 import { eggFor, EGGS } from '../js/ui/introEggs.js';
-import { isHalloweenWindow, shouldPlayIntro, markSeen, readMode, SEEN_KEY, SESSION_KEY } from '../js/ui/introGate.js';
+import { isBot, isHalloweenWindow, shouldPlayIntro, markSeen, readMode, SEEN_KEY, SESSION_KEY } from '../js/ui/introGate.js';
 
 const day = (m, d) => new Date(2026, m - 1, d, 12);
 const bag = (init = {}) => {
@@ -75,4 +75,11 @@ test('typing pauses after commas and sentence dots only', () => {
     assert.equal(at('data/goods.json', '.'), 0);
     assert.equal(pauseAfter('HANDSHAKE ........ OK', 16), 0);
     assert.equal(at('HELLO', 'L'), 0);
+});
+
+test('search engine crawlers never get the intro', () => {
+    assert.equal(isBot('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'), true);
+    assert.equal(isBot('Mozilla/5.0 (Windows NT 10.0) Chrome/120 Safari/537.36'), false);
+    assert.equal(shouldPlayIntro(day(10, 31), bag(), '', null, 'Googlebot/2.1'), false);
+    assert.equal(shouldPlayIntro(day(10, 31), bag(), '', null, 'Mozilla/5.0 Chrome/120'), true);
 });

@@ -18,7 +18,10 @@ export function readMode(storage) {
     }
 }
 
-export function shouldPlayIntro(date, storage, search = '', session = null) {
+export const isBot = userAgent => /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|lighthouse/i.test(userAgent || '');
+
+export function shouldPlayIntro(date, storage, search = '', session = null, userAgent = '') {
+    if (isBot(userAgent)) return false;
     if (/[?&]intro(=|&|$)/.test(search)) return true;
     const mode = readMode(storage);
     if (mode === 'never') return false;

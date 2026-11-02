@@ -57,7 +57,7 @@ function registerOffline() {
 async function startIntro() {
     try {
         const gate = await import('./ui/introGate.js');
-        if (!gate.shouldPlayIntro(new Date(), window.localStorage, window.location.search, window.sessionStorage)) return;
+        if (!gate.shouldPlayIntro(new Date(), window.localStorage, window.location.search, window.sessionStorage, navigator.userAgent)) return;
         const intro = await import('./ui/intro.js');
         await intro.mountIntro();
     } catch {
