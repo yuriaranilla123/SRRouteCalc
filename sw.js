@@ -156,7 +156,8 @@ self.addEventListener('fetch', event => {
         return;
     }
     if (SKIP.some(end => url.pathname.endsWith(end))) return;
-    if (request.mode === 'navigate') event.respondWith(pageRequest(event));
-    else if (url.pathname.includes('/assets/')) event.respondWith(assetRequest(event));
+    if (request.mode === 'navigate') {
+        if (url.pathname === new URL(SCOPE).pathname || url.pathname.endsWith('/index.html')) event.respondWith(pageRequest(event));
+    } else if (url.pathname.includes('/assets/')) event.respondWith(assetRequest(event));
     else event.respondWith(codeRequest(event));
 });
