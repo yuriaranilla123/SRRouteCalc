@@ -1,6 +1,8 @@
 import { computeHopCount } from './travelCalc.js';
 import { isLocallyProduced } from './lookup.js';
 
+const producerMemo = new WeakMap();
+
 function interpolateByBase(values, bases, base) {
     const last = bases.length - 1;
     if (base <= bases[0]) return values[0] * base / bases[0];
@@ -22,7 +24,7 @@ function bonusForHops(hops, good, modifiersData) {
     return Math.round(at(cap) + (hops - cap) * (at(cap) - at(cap - 1)));
 }
 
-function nearestProducerHops(good, cityId, citiesData, modifiersData) {
+function searchProducerHops(good, cityId, citiesData, modifiersData) {
     const real = citiesData.cities.filter(c => c.id !== cityId && isLocallyProduced(c, good.id, good)).map(c => c.id);
     const virtual = modifiersData.distanceBonus.virtualProducers[good.id] || [];
     let min = null;
@@ -31,6 +33,17 @@ function nearestProducerHops(good, cityId, citiesData, modifiersData) {
         if (h !== null && (min === null || h < min)) min = h;
     }
     return min;
+}
+
+function nearestProducerHops(good, cityId, citiesData, modifiersData) {
+    let memo = producerMemo.get(modifiersData);
+    if (!memo || memo.cities !== citiesData) {
+        memo = { cities: citiesData, map: new Map() };
+        producerMemo.set(modifiersData, memo);
+    }
+    const key = `${good.id}|${cityId}`;
+    if (!memo.map.has(key)) memo.map.set(key, searchProducerHops(good, cityId, citiesData, modifiersData));
+    return memo.map.get(key);
 }
 
 export function supplyDemandAmount(base, city, good, modifiersData, citiesData) {

@@ -113,12 +113,6 @@ export function wireTabControls() {
     refreshIfGeneralBestActive();
     refreshIfPerLegActive();
   });
-  document.querySelectorAll('.faction-rank-select').forEach(select => {
-    select.addEventListener('change', () => {
-      refreshIfGeneralBestActive();
-      refreshIfPerLegActive();
-    });
-  });
   document.getElementById('round-to-int').addEventListener('change', () => {
     refreshIfGeneralBestActive();
     refreshIfPerLegActive();

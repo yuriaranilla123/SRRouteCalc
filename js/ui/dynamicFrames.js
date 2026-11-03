@@ -20,7 +20,8 @@ export function wireDynamicFrames() {
             return;
         }
         const gap = frameGap();
-        panels.forEach(p => { p.style.gridRowEnd = `span ${spanFor(p.getBoundingClientRect().height, gap)}`; });
+        const spans = [...panels].map(p => spanFor(p.getBoundingClientRect().height, gap));
+        panels.forEach((p, i) => { p.style.gridRowEnd = `span ${spans[i]}`; });
     }
 
     function schedule() {

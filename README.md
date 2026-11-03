@@ -2,26 +2,30 @@
 
 A fan-made trade route calculator for the Roblox game **Silk Road: Trading Simulator** (SR:TS). Pick your trader, caravan and reputation, and it ranks the most profitable trades between cities, with an optional line-by-line price breakdown that mirrors the game's own purchase/sale text.
 
+Live site: https://srroutecalc.pages.dev/. A desktop program may follow later.
+
 > Fan-made and not affiliated with or endorsed by the game's developers. The game's official support team confirmed the developers don't partner with calculators but don't discourage fan-made ones.
 
 ## Features
 
-- Best trade between two cities, every profitable trade, and a best route per good
+- Best trade between two cities, every profitable trade, and a best route per good, each with the best return cargo for the trip back
 - Multi-leg route chaining, with an optional best loop back to the start
-- Trader profile: culture, religion and Faith Level, languages, gamepasses, reputation ranks, active events
+- Trader profile: culture, religion and Faith Level, languages, gamepasses, guild perks, reputation ranks, active events
 - Caravan: bags, animals, saddlebags, cargo and auto-walk speed
 - Travel time and profit per minute
 - Optional itemized price breakdown
 - Route searches buy goods only where they are produced, with a switch to include imports
-- Five reputation tracks, including the Rashidun Caliphate, and a quest money calculator
+- Five reputation tracks, including the Rashidun Caliphate, a quest money calculator and the fixed-reward quest givers (Nobility raises their reputation)
 - Menu with settings, loadouts, a style editor and customizable keyboard shortcuts
 - Loadouts: save your whole setup (up to 20), then export or import it as a file
 - Style editor: colors, text sizes, fonts (including your own uploaded fonts, by button or drag and drop), frame spacing and border thickness, animation speed and effects
 - Display options: whole-number rounding, themed dropdowns, an SR:TS Information Hub colour theme, Dynamic frames (a packed multi-column layout), animations and click highlight switches
+- Rearrange frames (off by default): drag a frame by its grip, or use the arrow keys on the grip, and the order is saved in your browser
+- Offline cache: after the first visit over HTTPS, the site keeps its own files so it can reload without a connection
 - Keyboard shortcuts for the menu, Find best trade, tab switching and the main switches, each rebindable (Alt and Shift combos, never Ctrl)
 - Optional game icons next to cultures, religions, events, bags, animals and city traits, placed left, right, above or below the text
 
-No accounts, no tracking, no backend. The site only loads its own data files and the fonts. Settings, loadouts, styles and uploaded fonts stay in your browser (localStorage and IndexedDB) and are never sent anywhere.
+No accounts, no tracking, no backend. The site only loads its own data files and the fonts. Settings, loadouts, styles, frame order, uploaded fonts and the offline cache stay in your browser (localStorage, IndexedDB and the Cache API) and are never sent anywhere.
 
 ## Run it locally
 
@@ -33,6 +37,8 @@ npx serve          # or: python3 -m http.server
 
 VS Code's Five Server extension works too. Then open the printed address.
 
+The offline cache only registers on HTTPS. To try it locally add `?sw` to the address, and `?nosw` removes it and clears its caches.
+
 ## Tests
 
 Node 18+ is enough, with no dependencies:
@@ -41,7 +47,7 @@ Node 18+ is enough, with no dependencies:
 npm test
 ```
 
-The tests live in `tests/`. They run the real calculator against the real data files and also cover the style, font, icon and layout helpers. Run them before and after any change to `js/core/` or `data/`.
+The tests live in `tests/`. They run the real calculator against the real data files and also cover the road graph, quests, style, font, icon, keybind, frame order and offline cache helpers. Run them before and after any change to `js/core/` or `data/`.
 
 ## Where the numbers come from
 
@@ -55,14 +61,17 @@ When sources disagree, the Info Hub wins and the discarded value is kept in a `n
 
 ```
 index.html
-data/        goods, cities, distances, modifiers, reputation, cargo (JSON)
+sw.js, swDiscover.js     offline cache worker and its file discovery
+robots.txt, sitemap.xml  search engine files
+googlea06c47b82e7c8a98.html  Google Search Console verification, keep it in the repo root
+data/        goods, cities, distances, modifiers, reputation, cargo, quests (JSON)
 js/
   main.js    startup and wiring
-  core/      keybinds (shortcut rules and storage), pricing and route engine (calc.js re-exports lookup, distanceBonus, religionLines, modifierLines, pricing, routes), travelCalc, cargoCalc, reputationCalc, returnCargo, money, state, storage
+  core/      keybinds (shortcut rules and storage), pricing and route engine (calc.js re-exports lookup, distanceBonus, religionLines, modifierLines, pricing, routes), travelCalc, cargoCalc, reputationCalc, returnCargo, frameOrder, money, state, storage
   panels/    one file per page section, plus the menu panels (loadoutPanel, keybindPanel, and stylePanel with its styleFonts and styleSliders parts)
-  ui/        menu, confirm dialog, dropdown and theme settings, style store, font store, icons, dynamic frames, shortcuts, domKit
-style/       base, components, layout, motion, icons, menu, dialog, style editor, per-panel CSS, dropdown CSS, theme-infohub.css
-tests/       calc, petra, style, fonts, frames, icons, quests and keybinds tests
+  ui/        menu, confirm dialog, dropdown and theme settings, themed selects and goods search, style store, font store, icons, dynamic frames, frame dragging, shortcuts, domKit
+style/       base, components, layout, motion, icons, menu, dialog, style editor, frame drag, keybinds, per-panel CSS, dropdown CSS, theme-infohub.css
+tests/       calc, petra, travel, quests, style, fonts, frames, frameorder, icons, keybinds and sw tests
 ```
 
 ## Game icons
@@ -71,7 +80,7 @@ Icons are optional and off by default (Menu, Settings, Show icons). They live in
 
 ## Roadmap
 
-Rarity for the remaining goods, the Rashidun Caliphate quest and sale reputation, saving the Specific mode routes, and resolving the Petra Distance Bonus mismatches (marked as todo tests). Guild perks are wired but depend on goods rarity, and the game's Junk Hoarding bug is behind a switch.
+Rarity for the remaining goods, the Rashidun Caliphate rank 8 bonus and sale reputation, saving the Specific mode routes, and resolving the Petra Distance Bonus mismatches (marked as todo tests). Guild perks are wired but depend on goods rarity, and the game's Junk Hoarding bug is behind a switch. Still unverified in a real browser or on the live host: frame dragging, the mobile layout fixes and the offline cache. A desktop program is a possible later step.
 
 ## Support
 

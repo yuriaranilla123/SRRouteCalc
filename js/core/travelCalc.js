@@ -1,26 +1,27 @@
 import { getDistancesData } from './state.js';
 
+const adjacencyCache = new WeakMap();
+const distanceCache = new WeakMap();
+const hopCache = new WeakMap();
+
 function buildAdjacency(distancesData) {
+    if (adjacencyCache.has(distancesData)) return adjacencyCache.get(distancesData);
     const adj = {};
     distancesData.edges.forEach(e => {
         (adj[e.from] ??= []).push({ to: e.to, dist: e.distance });
         (adj[e.to] ??= []).push({ to: e.from, dist: e.distance });
     });
+    adjacencyCache.set(distancesData, adj);
     return adj;
 }
 
-/**
- * Shortest known-road distance (studs) between two cities, summed through
- * intermediate cities when there's no direct leg. Returns null if the two
- * cities aren't connected anywhere in data/distances.json's known graph -
- * that graph only covers what's actually been measured, not a guess at
- * every possible pair.
- */
-export function computeDistance(cityAId, cityBId) {
-    if (cityAId === cityBId) return 0;
-    const distancesData = getDistancesData();
-    const adj = buildAdjacency(distancesData);
+function memoFor(store, key) {
+    if (!store.has(key)) store.set(key, new Map());
+    return store.get(key);
+}
 
+function searchDistance(cityAId, cityBId, distancesData) {
+    const adj = buildAdjacency(distancesData);
     const visited = new Set([cityAId]);
     const queue = [{ city: cityAId, dist: 0 }];
     while (queue.length) {
@@ -37,10 +38,8 @@ export function computeDistance(cityAId, cityBId) {
     return null;
 }
 
-/** Number of cities crossed on the known road graph (edges, not studs), or null if unconnected. */
-export function computeHopCount(cityAId, cityBId) {
-    if (cityAId === cityBId) return 0;
-    const adj = buildAdjacency(getDistancesData());
+function searchHops(cityAId, cityBId, distancesData) {
+    const adj = buildAdjacency(distancesData);
     const visited = new Set([cityAId]);
     const queue = [{ city: cityAId, hops: 0 }];
     while (queue.length) {
@@ -56,17 +55,30 @@ export function computeHopCount(cityAId, cityBId) {
     return null;
 }
 
+function cached(store, cityAId, cityBId, search) {
+    const data = getDistancesData();
+    const memo = memoFor(store, data);
+    const key = `${cityAId}|${cityBId}`;
+    if (!memo.has(key)) memo.set(key, search(cityAId, cityBId, data));
+    return memo.get(key);
+}
+
+export function computeDistance(cityAId, cityBId) {
+    if (cityAId === cityBId) return 0;
+    return cached(distanceCache, cityAId, cityBId, searchDistance);
+}
+
+export function computeHopCount(cityAId, cityBId) {
+    if (cityAId === cityBId) return 0;
+    return cached(hopCache, cityAId, cityBId, searchHops);
+}
+
 function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = Math.round(totalSeconds % 60);
     return `~${minutes}m ${seconds}s`;
 }
 
-/**
- * Mutates each trade in `trades`, attaching `.travelTimeLabel` (a display
- * string like "~6m 7s") and `.profitPerMin`. Both stay null if the distance
- * between that trade's cities isn't in the known graph, or if speed is 0.
- */
 export function attachTravelStats(trades, speed) {
     trades.forEach(trade => {
         const distance = computeDistance(trade.buyCityId, trade.sellCityId);
