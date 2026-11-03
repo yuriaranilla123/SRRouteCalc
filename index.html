@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="style/reputationPanel.css">
     <link rel="stylesheet" href="style/routeFinderPanel.css">
     <link rel="stylesheet" href="style/legChainPanel.css">
+    <link rel="stylesheet" href="style/events.css">
     <link rel="stylesheet" href="style/menu.css">
     <link rel="stylesheet" href="style/dialog.css">
     <link rel="stylesheet" href="style/styleEditor.css">
@@ -86,7 +87,8 @@
                     </svg>
                 </button>
             </div>
-            <p class="tagline">A free, fan-made Silk Road Calculator (Silk Road Calc) and trade route calculator for Silk Road: Trading Simulator (SR:TS) on Roblox.
+            <p class="tagline">A free, fan-made Silk Road Calculator (Silk Road Calc) and trade route calculator for
+                Silk Road: Trading Simulator (SR:TS) on Roblox.
                 It ranks the most profitable trades between cities, with travel time, profit per minute and an
                 itemized price breakdown. Covers Antioch, Bosra, Ctesiphon, Damascus, Dunhuang, Ecbatana, Isfahan,
                 Jiayuguan, Merv, Palmyra, Petra, Samarkand, Susa and Tyre. Not affiliated with or endorsed by the
@@ -299,40 +301,6 @@
                 </div>
             </section>
 
-            <section class="panel" id="active-event">
-                <h2>Active event</h2>
-                <p class="field-hint">Simulate one city currently experiencing an event (matches the old SilkroadCalc's
-                    "active events" bar - only one at a time). Only goods in that event's affected categories change
-                    price, and only in that one city.</p>
-                <div class="profile-fields">
-                    <label class="form-field">
-                        City
-                        <select id="event-city" class="city-select">
-                            <option value="">None</option>
-                        </select>
-                    </label>
-                    <label class="form-field">
-                        Event
-                        <select id="event-type">
-                            <option value="">None</option>
-                            <option value="drought">Drought</option>
-                            <option value="harvest">Harvest</option>
-                            <option value="conflict">Conflict</option>
-                            <option value="festival">Festival</option>
-                        </select>
-                    </label>
-                    <label class="form-field">
-                        Level
-                        <select id="event-level">
-                            <option value="1">Level 1</option>
-                            <option value="2">Level 2</option>
-                            <option value="3">Level 3</option>
-                        </select>
-                    </label>
-                </div>
-                <p class="field-hint" id="event-hint"></p>
-            </section>
-
             <section class="panel" id="route-finder">
                 <h2>Find a route</h2>
                 <div class="tab-row">
@@ -369,6 +337,14 @@
                         <button type="button" id="find-best-trade-btn" class="primary-btn">Find best trade</button>
                     </div>
                     <p class="field-hint">Quantity auto-fills from your caravan above, or set it manually.</p>
+                    <div class="global-events">
+                        <h3 class="menu-subtitle">Active events</h3>
+                        <p class="field-hint">Each city can have up to four events at once, one of each kind. Blocks
+                            appear for City A and City B. They apply to the best trade, General Best and Global
+                            tables.</p>
+                        <div id="global-events" class="event-blocks" data-empty="Pick City A and City B to set events.">
+                        </div>
+                    </div>
                     <div class="best-trade">
                         <h3 class="menu-subtitle">Best trade</h3>
                         <div id="result-card">

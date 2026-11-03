@@ -18,7 +18,7 @@ import { renderFundingBar } from './panels/fundingBar.js';
 import { renderCredits } from './panels/creditsPanel.js';
 import { wireGoodsCombobox } from './ui/goodsComboBox.js';
 import { wireThemedSelects } from './ui/themedSelect.js';
-import { wireEventControls, renderEventHint } from './panels/eventPanel.js';
+import { wireEventControls } from './panels/eventPanel.js';
 import { wireLoadouts } from './panels/loadoutPanel.js';
 import { wireMenu, setMenuSticky } from './ui/menu.js';
 import { applySavedStyle, wireStylePanel } from './panels/stylePanel.js';
@@ -54,19 +54,7 @@ function registerOffline() {
     navigator.serviceWorker.register('sw.js').catch(() => { });
 }
 
-async function startIntro() {
-    try {
-        const gate = await import('./ui/introGate.js');
-        if (!gate.shouldPlayIntro(new Date(), window.localStorage, window.location.search, window.sessionStorage, navigator.userAgent)) return;
-        const intro = await import('./ui/intro.js');
-        await intro.mountIntro();
-    } catch {
-        return;
-    }
-}
-
 async function init() {
-    await startIntro();
     applySavedStyle();
     await loadData();
 
@@ -151,7 +139,6 @@ async function init() {
 
     recomputeCaravan();
     renderFaithHint();
-    renderEventHint();
     renderLockedGoodsHint();
     renderQuestMoney();
     renderQuestGivers();

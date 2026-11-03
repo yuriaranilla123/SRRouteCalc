@@ -7,6 +7,9 @@ import { resolveGoodSelection } from '../ui/goodsDatalist.js';
 import { money } from '../core/money.js';
 import { bestUnlockedTradeForDirection } from '../core/returnCargo.js';
 import { withGoodIcon, ICONS, iconUrl } from '../ui/icons.js';
+import { createStore, bindStore, syncBlocks, eventsFor } from '../ui/eventBlocks.js';
+
+const processStores = new WeakMap();
 
 function escapeHtml(str) {
     return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -27,11 +30,23 @@ function populateCitySelect(select) {
         citiesData.cities.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }
 
+function cardCities(card) {
+    const ids = [];
+    card.querySelectorAll('.leg-row').forEach(row => {
+        [row.querySelector('.leg-city-a').value, row.querySelector('.leg-city-b').value].forEach(id => {
+            if (id && !ids.includes(id)) ids.push(id);
+        });
+    });
+    return ids;
+}
+
+function syncProcessEvents(card) {
+    const count = syncBlocks(card.querySelector('.process-events'), processStores.get(card), cardCities(card));
+    card.querySelector('.process-event summary').textContent = count ? `Active events (${count} ${count === 1 ? 'city' : 'cities'})` : 'Active events';
+}
+
 function processOpts(card) {
-    const cityId = card.querySelector('.process-event-city').value;
-    const type = card.querySelector('.process-event-type').value;
-    const level = parseInt(card.querySelector('.process-event-level').value, 10) || 1;
-    return { ...getCalcOpts(), activeEvent: cityId && type ? { cityId, type, level } : null };
+    return { ...getCalcOpts(), activeEvents: eventsFor(processStores.get(card), cardCities(card)) };
 }
 
 function addProcess() {
@@ -43,29 +58,9 @@ function addProcess() {
       <button type="button" class="remove-process-btn" aria-label="Remove this process">×</button>
     </div>
     <details class="process-event">
-      <summary>Active event for this process</summary>
-      <p class="field-hint">Only affects this process. The Active event frame applies to Global and the tables, not here.</p>
-      <div class="profile-fields">
-        <label class="form-field">City
-          <select class="process-event-city"></select>
-        </label>
-        <label class="form-field">Event
-          <select class="process-event-type">
-            <option value="">None</option>
-            <option value="drought">Drought</option>
-            <option value="harvest">Harvest</option>
-            <option value="conflict">Conflict</option>
-            <option value="festival">Festival</option>
-          </select>
-        </label>
-        <label class="form-field">Level
-          <select class="process-event-level">
-            <option value="1">Level 1</option>
-            <option value="2">Level 2</option>
-            <option value="3">Level 3</option>
-          </select>
-        </label>
-      </div>
+      <summary>Active events</summary>
+      <p class="field-hint">One block per city on this route, up to four events each. It grows when you chain a leg and shrinks when you remove one. Only affects this process.</p>
+      <div class="event-blocks process-events" data-empty="Pick the cities of this route to set events."></div>
     </details>
     <div class="leg-list"></div>
     <button type="button" class="add-process-btn">+ New process</button>
@@ -76,11 +71,10 @@ function addProcess() {
   `;
     processListEl().appendChild(card);
 
-    card.querySelector('.process-event-city').innerHTML = '<option value="">None</option>' +
-        getCitiesData().cities.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-    card.querySelectorAll('.process-event-city, .process-event-type, .process-event-level').forEach(select => {
-        select.addEventListener('change', recomputeAll);
-    });
+    processStores.set(card, createStore());
+    const eventBlocks = card.querySelector('.process-events');
+    bindStore(eventBlocks, processStores.get(card));
+    eventBlocks.addEventListener('change', recomputeAll);
 
     card.querySelector('.add-process-btn').addEventListener('click', addProcess);
     card.querySelector('.remove-process-btn').addEventListener('click', () => {
@@ -319,6 +313,7 @@ export function recomputeAll() {
     let allTotal = 0;
 
     document.querySelectorAll('.process-card').forEach(card => {
+        syncProcessEvents(card);
         const opts = processOpts(card);
         let processTotal = 0;
         const legRows = card.querySelectorAll('.leg-row');
@@ -413,10 +408,7 @@ export function getProcessLegOptions() {
             const cityB = row.querySelector('.leg-city-b').value;
             legs.push({ index: lIdx, cityA, cityB, cityAName: cityName(cityA), cityBName: cityName(cityB) });
         });
-        const eventCity = card.querySelector('.process-event-city').value;
-        const eventType = card.querySelector('.process-event-type').value;
-        const eventLevel = parseInt(card.querySelector('.process-event-level').value, 10) || 1;
-        processes.push({ index: pIdx, legs, event: eventCity && eventType ? { cityId: eventCity, type: eventType, level: eventLevel } : null });
+        processes.push({ index: pIdx, legs, events: eventsFor(processStores.get(card), cardCities(card)) });
     });
     return processes;
 }

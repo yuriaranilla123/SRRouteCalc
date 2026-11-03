@@ -10,7 +10,8 @@ Live site: https://srroutecalc.pages.dev/. A desktop program may follow later.
 
 - Best trade between two cities, every profitable trade, and a best route per good, each with the best return cargo for the trip back
 - Multi-leg route chaining, with an optional best loop back to the start
-- Trader profile: culture, religion and Faith Level, languages, gamepasses, guild perks, reputation ranks, active events
+- Trader profile: culture, religion and Faith Level, languages, gamepasses, guild perks, reputation ranks
+- Active events per city (Drought, Harvest, Conflict and Festival, each with its own level), set for the two cities of Global and separately for every city on a Specific route
 - Caravan: bags, animals, saddlebags, cargo and auto-walk speed
 - Travel time and profit per minute
 - Optional itemized price breakdown

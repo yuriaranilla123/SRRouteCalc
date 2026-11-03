@@ -1,0 +1,56 @@
+.event-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.event-blocks:empty::before {
+    content: attr(data-empty);
+    color: var(--parchment-dim);
+    font-size: calc(0.85rem * var(--ts-small, 1));
+}
+
+.event-city-block {
+    flex: 1 1 200px;
+    min-width: 0;
+    margin: 0;
+    padding: 0.4rem 0.75rem 0.7rem;
+    background: var(--ink-surface-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+}
+
+.event-city-block legend {
+    padding: 0 0.35rem;
+    font-family: var(--font-serif);
+    font-size: calc(0.9rem * var(--ts-heading, 1));
+    color: var(--accent-text);
+}
+
+.event-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    font-size: calc(0.85rem * var(--ts-small, 1));
+    color: var(--parchment);
+}
+
+.event-row select {
+    width: auto;
+    min-width: 5.5rem;
+    padding: 0.25rem 1.6rem 0.25rem 0.45rem;
+    font-size: calc(0.8rem * var(--ts-control, 1));
+    background-position: calc(100% - 0.6rem) 50%;
+}
+
+.global-events {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--hairline);
+}
+
+.global-events .menu-subtitle {
+    margin-top: 0;
+}

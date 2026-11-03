@@ -1,7 +1,7 @@
 let goodsData, citiesData, modifiersData, cargoData, reputationData, distancesData, questsData;
 let roundToInt = false;
 let detailedMode = false;
-let activeEvent = null; // { cityId, type, level } | null - only one active event at a time
+let activeEvents = [];
 
 export async function loadData() {
     const [goods, cities, modifiers, cargo, reputation, distances, quests] = await Promise.all([
@@ -31,7 +31,7 @@ export function getDistancesData() { return distancesData; }
 export function getQuestsData() { return questsData; }
 
 export function getCalcOpts() {
-    return { goodsData, citiesData, modifiersData, reputationData, activeEvent };
+    return { goodsData, citiesData, modifiersData, reputationData, activeEvents };
 }
 
 export function isRoundToInt() { return roundToInt; }
@@ -40,5 +40,5 @@ export function setRoundToInt(value) { roundToInt = value; }
 export function isDetailedMode() { return detailedMode; }
 export function setDetailedMode(value) { detailedMode = value; }
 
-export function getActiveEvent() { return activeEvent; }
-export function setActiveEvent(event) { activeEvent = event; }
+export function getActiveEvents() { return activeEvents; }
+export function setActiveEvents(events) { activeEvents = events; }

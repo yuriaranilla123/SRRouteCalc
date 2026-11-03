@@ -80,15 +80,21 @@ export function reputationDiscountLines(base, city, context, opts) {
 }
 
 export function eventLines(base, good, city, opts) {
-    const { modifiersData, activeEvent = null } = opts;
-    if (!activeEvent || activeEvent.cityId !== city.id || !modifiersData.events.types) return [];
-    const typeInfo = modifiersData.events.types[activeEvent.type];
-    const affectsGood = typeInfo && ((typeInfo.categories && typeInfo.categories.includes(good.category)) ||
-        (typeInfo.goods && typeInfo.goods.includes(good.id)));
-    if (!affectsGood) return [];
-    const tier = modifiersData.events.tiers.find(t => t.level === activeEvent.level);
-    if (!tier) return [];
-    const sign = typeInfo.direction === 'decrease' ? -1 : 1;
-    const label = (typeInfo.levelNames && typeInfo.levelNames[activeEvent.level - 1]) || activeEvent.type;
-    return [{ label, amount: sign * (tier.flatBase + Math.floor(tier.multiplier * base)) }];
+    const { modifiersData, activeEvent = null, activeEvents = [] } = opts;
+    if (!modifiersData.events.types) return [];
+    const list = activeEvent ? [...activeEvents, activeEvent] : activeEvents;
+    const lines = [];
+    for (const event of list) {
+        if (event.cityId !== city.id) continue;
+        const typeInfo = modifiersData.events.types[event.type];
+        const affectsGood = typeInfo && ((typeInfo.categories && typeInfo.categories.includes(good.category)) ||
+            (typeInfo.goods && typeInfo.goods.includes(good.id)));
+        if (!affectsGood) continue;
+        const tier = modifiersData.events.tiers.find(t => t.level === event.level);
+        if (!tier) continue;
+        const sign = typeInfo.direction === 'decrease' ? -1 : 1;
+        const label = (typeInfo.levelNames && typeInfo.levelNames[event.level - 1]) || event.type;
+        lines.push({ label, amount: sign * (tier.flatBase + Math.floor(tier.multiplier * base)) });
+    }
+    return lines;
 }

@@ -69,7 +69,7 @@ export function renderPerLeg() {
   }
 
   const context = getContext();
-  const opts = { ...getCalcOpts(), activeEvent: processes[pIdx].event };
+  const opts = { ...getCalcOpts(), activeEvents: processes[pIdx].events };
   const reputationData = getReputationData();
   const playerRanks = getPlayerRanks();
   const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
@@ -109,6 +109,8 @@ export function wireTabControls() {
     });
   });
 
+  document.getElementById('global-events').addEventListener('change', refreshIfGeneralBestActive);
+
   document.getElementById('process-list').addEventListener('change', e => {
     if (e.target.closest('.process-event')) refreshIfPerLegActive();
   });
@@ -122,7 +124,7 @@ export function wireTabControls() {
     refreshIfPerLegActive();
   });
 
-  ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility', 'match-game-bugs', 'allow-imports'].forEach(id => {
+  ['religion', 'faith-level', 'culture', 'gamepass-nobility', 'match-game-bugs', 'allow-imports'].forEach(id => {
     document.getElementById(id).addEventListener('change', () => {
       refreshIfGeneralBestActive();
       refreshIfPerLegActive();

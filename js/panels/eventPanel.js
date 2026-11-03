@@ -1,39 +1,31 @@
-import { getModifiersData, setActiveEvent } from '../core/state.js';
+import { setActiveEvents } from '../core/state.js';
+import { createStore, bindStore, syncBlocks, eventsFor } from '../ui/eventBlocks.js';
 
-function readSelection() {
-    return {
-        cityId: document.getElementById('event-city').value,
-        type: document.getElementById('event-type').value,
-        level: parseInt(document.getElementById('event-level').value, 10) || 1,
-    };
+const store = createStore();
+let signature = '';
+
+function routeCities() {
+    const ids = ['city-a', 'city-b'].map(id => document.getElementById(id).value).filter(Boolean);
+    return [...new Set(ids)];
 }
 
-export function renderEventHint() {
-    const { cityId, type, level } = readSelection();
-    const hint = document.getElementById('event-hint');
-
-    if (!cityId || !type) {
-        hint.textContent = 'No active event - prices are unaffected.';
-        return;
-    }
-
-    const typeInfo = getModifiersData().events.types[type];
-    if (!typeInfo) { hint.textContent = ''; return; }
-
-    const levelName = typeInfo.levelNames[level - 1];
-    const categories = typeInfo.categories.join(' and ');
-    const direction = typeInfo.direction === 'decrease' ? 'cheaper' : 'more expensive';
-    hint.textContent = `${levelName}: ${categories} goods are ${direction} in this city.`;
-}
-
-function updateActiveEvent() {
-    const { cityId, type, level } = readSelection();
-    setActiveEvent(cityId && type ? { cityId, type, level } : null);
-    renderEventHint();
+function commit() {
+    const events = eventsFor(store, routeCities());
+    setActiveEvents(events);
+    signature = JSON.stringify(events);
 }
 
 export function wireEventControls() {
-    document.getElementById('event-city').addEventListener('change', updateActiveEvent);
-    document.getElementById('event-type').addEventListener('change', updateActiveEvent);
-    document.getElementById('event-level').addEventListener('change', updateActiveEvent);
+    const container = document.getElementById('global-events');
+    bindStore(container, store);
+    container.addEventListener('change', commit);
+    const onCities = () => {
+        const before = signature;
+        syncBlocks(container, store, routeCities());
+        commit();
+        if (signature !== before) container.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    ['city-a', 'city-b'].forEach(id => document.getElementById(id).addEventListener('change', onCities));
+    syncBlocks(container, store, routeCities());
+    commit();
 }
