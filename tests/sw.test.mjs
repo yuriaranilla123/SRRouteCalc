@@ -52,7 +52,7 @@ async function crawlDisk() {
 test('crawling from index.html reaches every page, script, style and data file', async () => {
     const { reached } = await crawlDisk();
     const files = ['index.html', ...await walk('js'), ...await walk('style'), ...await walk('data')];
-    const orphans = ['js/ui/goodsField.js'];
+    const orphans = ['js/ui/goodsField.js', 'js/ui/intro.js', 'js/ui/introGate.js', 'js/ui/introEggs.js', 'js/ui/introPause.js', 'js/ui/sfx.js', 'style/intro.css'];
     for (const file of files.filter(f => !orphans.includes(f))) assert.ok(reached.has(`${BASE}${file}`), `${file} is not reachable from index.html`);
 });
 

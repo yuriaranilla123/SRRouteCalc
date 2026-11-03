@@ -142,3 +142,22 @@
 .best-trade .menu-subtitle {
     margin-top: 0;
 }
+
+.search-wrap {
+    position: relative;
+    display: block;
+}
+
+.search-wrap .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.6rem;
+    width: min(var(--icon-size), 1.6rem);
+    height: min(var(--icon-size), 1.6rem);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+html[data-icons="on"] .specific-item-row .search-wrap.has-icon input[type="text"] {
+    padding-left: calc(min(var(--icon-size), 1.6rem) + 1.2rem);
+}

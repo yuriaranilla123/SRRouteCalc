@@ -69,7 +69,7 @@ export function renderPerLeg() {
   }
 
   const context = getContext();
-  const opts = getCalcOpts();
+  const opts = { ...getCalcOpts(), activeEvent: processes[pIdx].event };
   const reputationData = getReputationData();
   const playerRanks = getPlayerRanks();
   const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
@@ -107,6 +107,10 @@ export function wireTabControls() {
       }
 
     });
+  });
+
+  document.getElementById('process-list').addEventListener('change', e => {
+    if (e.target.closest('.process-event')) refreshIfPerLegActive();
   });
 
   document.getElementById('quantity').addEventListener('input', () => {

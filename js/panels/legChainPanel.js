@@ -6,7 +6,7 @@ import { getPlayerRanks } from './reputationPanel.js';
 import { resolveGoodSelection } from '../ui/goodsDatalist.js';
 import { money } from '../core/money.js';
 import { bestUnlockedTradeForDirection } from '../core/returnCargo.js';
-import { withGoodIcon } from '../ui/icons.js';
+import { withGoodIcon, ICONS, iconUrl } from '../ui/icons.js';
 
 function escapeHtml(str) {
     return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -27,6 +27,13 @@ function populateCitySelect(select) {
         citiesData.cities.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }
 
+function processOpts(card) {
+    const cityId = card.querySelector('.process-event-city').value;
+    const type = card.querySelector('.process-event-type').value;
+    const level = parseInt(card.querySelector('.process-event-level').value, 10) || 1;
+    return { ...getCalcOpts(), activeEvent: cityId && type ? { cityId, type, level } : null };
+}
+
 function addProcess() {
     const card = document.createElement('div');
     card.className = 'process-card';
@@ -35,6 +42,31 @@ function addProcess() {
       <span class="process-label"></span>
       <button type="button" class="remove-process-btn" aria-label="Remove this process">×</button>
     </div>
+    <details class="process-event">
+      <summary>Active event for this process</summary>
+      <p class="field-hint">Only affects this process. The Active event frame applies to Global and the tables, not here.</p>
+      <div class="profile-fields">
+        <label class="form-field">City
+          <select class="process-event-city"></select>
+        </label>
+        <label class="form-field">Event
+          <select class="process-event-type">
+            <option value="">None</option>
+            <option value="drought">Drought</option>
+            <option value="harvest">Harvest</option>
+            <option value="conflict">Conflict</option>
+            <option value="festival">Festival</option>
+          </select>
+        </label>
+        <label class="form-field">Level
+          <select class="process-event-level">
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+          </select>
+        </label>
+      </div>
+    </details>
     <div class="leg-list"></div>
     <button type="button" class="add-process-btn">+ New process</button>
     <div class="process-total-row">
@@ -43,6 +75,12 @@ function addProcess() {
     </div>
   `;
     processListEl().appendChild(card);
+
+    card.querySelector('.process-event-city').innerHTML = '<option value="">None</option>' +
+        getCitiesData().cities.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    card.querySelectorAll('.process-event-city, .process-event-type, .process-event-level').forEach(select => {
+        select.addEventListener('change', recomputeAll);
+    });
 
     card.querySelector('.add-process-btn').addEventListener('click', addProcess);
     card.querySelector('.remove-process-btn').addEventListener('click', () => {
@@ -133,7 +171,10 @@ function addItemRow(container) {
     item.innerHTML = `
     <label class="form-field item-search-field">
       Good
-      <input type="text" class="specific-item-search" placeholder="Search a good...">
+      <span class="search-wrap">
+        <img class="icon search-icon" alt="" hidden>
+        <input type="text" class="specific-item-search" placeholder="Search a good...">
+      </span>
     </label>
     <div class="stepper-field">
       <span class="field-label">Quantity</span>
@@ -147,7 +188,21 @@ function addItemRow(container) {
   `;
     container.appendChild(item);
 
-    item.querySelector('.specific-item-search').addEventListener('input', recomputeAll);
+    const searchInput = item.querySelector('.specific-item-search');
+    const searchWrap = item.querySelector('.search-wrap');
+    const searchIcon = item.querySelector('.search-icon');
+    searchInput.addEventListener('input', () => {
+        const goodId = resolveGoodSelection(searchInput.value);
+        const url = goodId ? iconUrl(ICONS.good[goodId]) : null;
+        if (url) {
+            if (searchIcon.getAttribute('src') !== url) searchIcon.src = url;
+            searchIcon.hidden = false;
+        } else {
+            searchIcon.hidden = true;
+        }
+        searchWrap.classList.toggle('has-icon', !!url);
+    });
+    searchInput.addEventListener('input', recomputeAll);
     item.querySelector('.specific-item-qty').addEventListener('input', recomputeAll);
     item.querySelectorAll('.specific-qty-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -180,7 +235,7 @@ function toggleBrowse(legRow) {
     }
 
     const context = getContext();
-    const opts = getCalcOpts();
+    const opts = processOpts(legRow.closest('.process-card'));
     const reputationData = getReputationData();
     const playerRanks = getPlayerRanks();
     const goodsData = getGoodsData();
@@ -257,7 +312,6 @@ function renumberProcesses() {
 
 export function recomputeAll() {
     const context = getContext();
-    const opts = getCalcOpts();
     const goodsData = getGoodsData();
     const reputationData = getReputationData();
     const playerRanks = getPlayerRanks();
@@ -265,6 +319,7 @@ export function recomputeAll() {
     let allTotal = 0;
 
     document.querySelectorAll('.process-card').forEach(card => {
+        const opts = processOpts(card);
         let processTotal = 0;
         const legRows = card.querySelectorAll('.leg-row');
 
@@ -335,7 +390,7 @@ export function wireLegChainReactivity() {
     });
     document.getElementById('round-to-int').addEventListener('change', recomputeAll);
 
-    ['religion', 'faith-level', 'culture', 'event-city', 'event-type', 'event-level', 'gamepass-nobility', 'match-game-bugs', 'allow-imports'].forEach(id => {
+    ['religion', 'faith-level', 'culture', 'gamepass-nobility', 'match-game-bugs', 'allow-imports'].forEach(id => {
         document.getElementById(id).addEventListener('change', recomputeAll);
     });
     document.querySelectorAll('.language-select, .guild-perk-check').forEach(select => {
@@ -358,7 +413,10 @@ export function getProcessLegOptions() {
             const cityB = row.querySelector('.leg-city-b').value;
             legs.push({ index: lIdx, cityA, cityB, cityAName: cityName(cityA), cityBName: cityName(cityB) });
         });
-        processes.push({ index: pIdx, legs });
+        const eventCity = card.querySelector('.process-event-city').value;
+        const eventType = card.querySelector('.process-event-type').value;
+        const eventLevel = parseInt(card.querySelector('.process-event-level').value, 10) || 1;
+        processes.push({ index: pIdx, legs, event: eventCity && eventType ? { cityId: eventCity, type: eventType, level: eventLevel } : null });
     });
     return processes;
 }

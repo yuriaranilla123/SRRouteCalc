@@ -11,3 +11,12 @@ Thumbs.db
 
 .vscode/
 .idea/
+
+js/ui/intro.js
+js/ui/introGate.js
+js/ui/introEggs.js
+js/ui/introPause.js
+js/ui/sfx.js
+style/intro.css
+tests/intro.test.mjs
+assets/sfx/
