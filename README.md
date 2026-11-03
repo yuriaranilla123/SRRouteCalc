@@ -85,7 +85,7 @@ Rarity for the remaining goods, the Rashidun Caliphate rank 8 bonus and sale rep
 
 ## Support
 
-Free to use. Optional donations toward server costs: https://ko-fi.com/yuriaranilla123
+Free to use. Donations on Ko-fi, even $1, are the "update fuel" that keeps new features and fixes coming: https://ko-fi.com/yuriaranilla123
 
 ## AI-assisted
 
